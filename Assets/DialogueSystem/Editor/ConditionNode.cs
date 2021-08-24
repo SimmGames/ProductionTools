@@ -1,8 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DialogueSystem;
 
-public class ConditionNode : BasicNode
+namespace DialogueSystem
 {
-    public string Condition;
+    public class ConditionNode : BasicNode
+    {
+        public string Condition;
+    }
 }

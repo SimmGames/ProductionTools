@@ -1,8 +1,12 @@
 ﻿using System;
 using UnityEngine;
+using DialogueSystem;
 
-[Serializable]
-public class ConditionNodeData : NodeData
+namespace DialogueSystem
 {
-    public string Condition;
+    [Serializable]
+    public class ConditionNodeData : NodeData
+    {
+        public string Condition;
+    }
 }

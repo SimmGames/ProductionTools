@@ -1,8 +1,12 @@
 ﻿using System;
 using UnityEngine;
+using DialogueSystem;
 
-[Serializable]
-public class DialogueNodeData : NodeData
+namespace DialogueSystem
 {
-    public string DialogueText;
+    [Serializable]
+    public class DialogueNodeData : NodeData
+    {
+        public string DialogueText;
+    }
 }

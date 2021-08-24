@@ -1,9 +1,13 @@
 ﻿using System;
 using UnityEngine;
+using DialogueSystem;
 
-[Serializable]
-public class NodeData
+namespace DialogueSystem
 {
-    public string Guid;
-    public Vector2 Position;
+    [Serializable]
+    public class NodeData
+    {
+        public string Guid;
+        public Vector2 Position;
+    }
 }

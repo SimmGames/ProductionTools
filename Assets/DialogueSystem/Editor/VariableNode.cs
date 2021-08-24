@@ -2,8 +2,12 @@
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEditor.Experimental.GraphView;
+using DialogueSystem;
 
-public class VariableNode : BasicNode
+namespace DialogueSystem
 {
-    public string Code;
+    public class VariableNode : BasicNode
+    {
+        public string Code;
+    }
 }

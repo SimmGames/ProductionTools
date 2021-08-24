@@ -6,12 +6,16 @@ using UnityEngine;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine.UIElements;
 using System.Linq;
+using DialogueSystem;
 
-[Serializable]
-public class OutputPort
+namespace DialogueSystem
 {
-    public string NodeGUID;
-    public string GUID;
-    public string Value;
-    public string Condition;
+    [Serializable]
+    public class OutputPort
+    {
+        public string NodeGUID;
+        public string GUID;
+        public string Value;
+        public string Condition;
+    }
 }
