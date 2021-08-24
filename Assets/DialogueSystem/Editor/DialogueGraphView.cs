@@ -30,7 +30,7 @@ public class DialogueGraphView : GraphView
         AddElement(GenerateEntryPointNode());
     }
 
-    private Port GeneratePort(DialogueNode node, Direction portDirection, Port.Capacity capacity) 
+    private Port GeneratePort(BasicNode node, Direction portDirection, Port.Capacity capacity) 
     {
         return node.InstantiatePort(Orientation.Horizontal, portDirection, capacity, typeof(float));
     }
@@ -78,7 +78,62 @@ public class DialogueGraphView : GraphView
             case nodeType.Dialogue:
                 AddElement(CreateDialogueNode(nodeName, location));
                 break;
+            case nodeType.Branch:
+                AddElement(CreateConditionNode(nodeName, location));
+                break;
         }
+    }
+
+    public ConditionNode CreateConditionNode(string condition, Vector2 location)
+    {
+        var conditionNode = new ConditionNode
+        {
+            title = "Condition",
+            Condition = condition,
+            GUID = Guid.NewGuid().ToString(),
+            Type = nodeType.Branch
+        };
+        conditionNode.styleSheets.Add(Resources.Load<StyleSheet>("Node"));
+
+        // Condition Info
+        var conditionContainer = new VisualElement { name = "conditions" };
+
+        var conditionLabel = new Label("Condition: ");
+        conditionContainer.Add(conditionLabel);
+
+        var conditionTextField = new TextField(string.Empty);
+        conditionTextField.multiline = true;
+        conditionTextField.RegisterValueChangedCallback(evt =>
+        {
+            conditionNode.Condition = evt.newValue;
+        });
+        conditionTextField.SetValueWithoutNotify(conditionNode.Condition);
+        conditionContainer.Add(conditionTextField);
+
+        conditionNode.mainContainer.Add(conditionContainer);
+
+        // Input
+        var inputPort = GeneratePort(conditionNode, Direction.Input, Port.Capacity.Multi);
+        inputPort.portName = "Input";
+        conditionNode.inputContainer.Add(inputPort);
+
+        // Output
+
+        var passPort = GeneratePort(conditionNode, Direction.Output, Port.Capacity.Multi);
+        passPort.portName = "Pass";
+        conditionNode.outputContainer.Add(passPort);
+
+        var failPort = GeneratePort(conditionNode, Direction.Output, Port.Capacity.Multi);
+        failPort.portName = "Fail";
+        conditionNode.outputContainer.Add(failPort);
+
+        // Update Graphics and Position
+
+        conditionNode.RefreshExpandedState();
+        conditionNode.RefreshPorts();
+        conditionNode.SetPosition(new Rect(location, DefaltNodeSize));
+
+        return conditionNode;
     }
 
     private string limit(string str, int length) 
@@ -92,7 +147,8 @@ public class DialogueGraphView : GraphView
         {
             title = $"Dialogue: {limit(nodeName, 20)}",
             DialogueText = nodeName,
-            GUID = Guid.NewGuid().ToString()
+            GUID = Guid.NewGuid().ToString(),
+            Type = nodeType.Dialogue
         };
         dialogueNode.styleSheets.Add(Resources.Load<StyleSheet>("Node"));
 
@@ -152,14 +208,14 @@ public class DialogueGraphView : GraphView
         return dialogueNode;
     }
 
-    public void AddChoicePort(DialogueNode dialogueNode, string overriddenPortName = "", string conditions = "") 
+    public void AddChoicePort(DialogueNode dialogueNode, string overriddenPortName = "", string conditions = "", string overriddenGUID = "") 
     {
         var generatedPort = GeneratePort(dialogueNode, Direction.Output, Port.Capacity.Multi);
         var outputPortCount = dialogueNode.outputContainer.Query("connector").ToList().Count;
         var outputPort = new OutputPort
         {
             NodeGUID = dialogueNode.GUID,
-            GUID = GUID.Generate().ToString(),
+            GUID = (string.IsNullOrEmpty(overriddenGUID) ? Guid.NewGuid().ToString() : overriddenGUID),
             Condition = conditions,
             Value = ""
         };

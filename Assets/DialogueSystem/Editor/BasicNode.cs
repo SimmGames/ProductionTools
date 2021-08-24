@@ -6,6 +6,12 @@ using UnityEditor.Experimental.GraphView;
 public class BasicNode : Node
 {
     public string GUID;
-
     public bool EntryPoint = false;
+    public List<OutputPort> outputPorts;
+    public nodeType Type;
+
+    public BasicNode()
+    {
+        outputPorts = new List<OutputPort>();
+    }
 }

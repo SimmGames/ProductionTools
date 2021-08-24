@@ -39,6 +39,10 @@ public class DialogueGraph : EditorWindow
             {
                 _graphView.CreateNode("Dialogue Node", nodeType.Dialogue, _graphView.localMousePosition);
             });
+            evt.menu.AppendAction("Create Condition Node", (x) =>
+            {
+                _graphView.CreateNode("true", nodeType.Branch, _graphView.localMousePosition);
+            });
         }));
     }
 
