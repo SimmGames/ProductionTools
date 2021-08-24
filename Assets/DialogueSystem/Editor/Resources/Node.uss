@@ -22,3 +22,7 @@ ConditionNode #title {
 EventNode #title {
 	background-color: darkblue;
 }
+
+VariableNode #title {
+	background-color: darkorchid;
+}

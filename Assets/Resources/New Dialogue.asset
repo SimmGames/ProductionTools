@@ -28,6 +28,11 @@ MonoBehaviour:
     PortName: Pass
     Condition: 
     TargetNodeGuid: 1eb83f95-81a3-4f4c-a596-03054104c516
+  - BaseNodeGuid: e7fb90dd-0181-47a2-885d-49cbce973e60
+    NodeGUID: 
+    PortName: Pass
+    Condition: 
+    TargetNodeGuid: 170a9adb-3f04-4715-9a1b-47da17e0de11
   - BaseNodeGuid: 170a9adb-3f04-4715-9a1b-47da17e0de11
     NodeGUID: b980229a-3b0f-43c9-8682-2b401f261933
     PortName: Choice 1
@@ -38,11 +43,6 @@ MonoBehaviour:
     PortName: Choice 2
     Condition: 
     TargetNodeGuid: 498f128a-0a15-44d3-9eef-a5194b6d058d
-  - BaseNodeGuid: e7fb90dd-0181-47a2-885d-49cbce973e60
-    NodeGUID: 
-    PortName: Pass
-    Condition: 
-    TargetNodeGuid: 170a9adb-3f04-4715-9a1b-47da17e0de11
   - BaseNodeGuid: 170a9adb-3f04-4715-9a1b-47da17e0de11
     NodeGUID: 
     PortName: Choice 0
@@ -66,3 +66,7 @@ MonoBehaviour:
   - Guid: 498f128a-0a15-44d3-9eef-a5194b6d058d
     Position: {x: 748, y: -215}
     code: // TODO //
+  VariableNodeData:
+  - Guid: 38013ccc-4839-4be0-bec0-505a0c69e8dd
+    Position: {x: 52, y: -259}
+    Code: // TODO //

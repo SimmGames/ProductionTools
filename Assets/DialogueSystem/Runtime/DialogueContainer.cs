@@ -10,4 +10,5 @@ public class DialogueContainer : ScriptableObject
     public List<DialogueNodeData> DialogueNodeData = new List<DialogueNodeData>();
     public List<ConditionNodeData> ConditionNodeData = new List<ConditionNodeData>();
     public List<EventNodeData> EventNodeData = new List<EventNodeData>();
+    public List<VariableNodeData> VariableNodeData = new List<VariableNodeData>();
 }

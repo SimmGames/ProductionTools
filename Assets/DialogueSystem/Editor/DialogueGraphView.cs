@@ -86,6 +86,9 @@ public class DialogueGraphView : GraphView
             case nodeType.Event:
                 AddElement(CreateEventNode(nodeName, location));
                 break;
+            case nodeType.Variable:
+                AddElement(CreateVariableNode(nodeName, location));
+                break;
         }
     }
 
@@ -200,6 +203,43 @@ public class DialogueGraphView : GraphView
         eventNode.SetPosition(new Rect(location, DefaltNodeSize));
 
         return eventNode;
+    }
+
+    public VariableNode CreateVariableNode(string code, Vector2 location)
+    {
+        var varNode = new VariableNode
+        {
+            title = "Variables",
+            Code = code,
+            GUID = ensureGuid(),
+            Type = nodeType.Variable
+        };
+        varNode.styleSheets.Add(Resources.Load<StyleSheet>("Node"));
+
+        // Event Info
+        var varContainer = new VisualElement
+        {
+            name = "bottom"
+        };
+
+        var varTextField = new TextField(string.Empty);
+        varTextField.multiline = true;
+        varTextField.RegisterValueChangedCallback(evt =>
+        {
+            varNode.Code = evt.newValue;
+        });
+        varTextField.SetValueWithoutNotify(varNode.Code);
+        varContainer.Add(varTextField);
+
+        varNode.mainContainer.Add(varContainer);
+
+        // Update Graphics and Position
+
+        varNode.RefreshExpandedState();
+        varNode.RefreshPorts();
+        varNode.SetPosition(new Rect(location, DefaltNodeSize));
+
+        return varNode;
     }
 
     private string limit(string str, int length) 

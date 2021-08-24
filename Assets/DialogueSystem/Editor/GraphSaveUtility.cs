@@ -25,40 +25,41 @@ public class GraphSaveUtility
 
     public void SaveGraph(string fileName) 
     {
-        if (!Edges.Any()) return;
-
         var dialogueContainer = ScriptableObject.CreateInstance<DialogueContainer>();
 
-        var connectedPorts = Edges.Where(x => x.input.node != null).ToArray();
-        for (var i = 0; i < connectedPorts.Length; i++) 
+        if (Edges.Any())
         {
-            BasicNode outputNode = connectedPorts[i].output.node as BasicNode;
-            BasicNode inputNode = connectedPorts[i].input.node as BasicNode;
-            var lookingForGUID = connectedPorts[i].output.portName;
+            var connectedPorts = Edges.Where(x => x.input.node != null).ToArray();
+            for (var i = 0; i < connectedPorts.Length; i++)
+            {
+                BasicNode outputNode = connectedPorts[i].output.node as BasicNode;
+                BasicNode inputNode = connectedPorts[i].input.node as BasicNode;
+                var lookingForGUID = connectedPorts[i].output.portName;
 
 
-            if (outputNode.Type == nodeType.Dialogue && !outputNode.EntryPoint)
-            {
-                var outputPort = ((DialogueNode)outputNode).outputPorts.Find(x => x.GUID == lookingForGUID);
-                dialogueContainer.NodeLinks.Add(new NodeLinkData
+                if (outputNode.Type == nodeType.Dialogue && !outputNode.EntryPoint)
                 {
-                    BaseNodeGuid = outputNode.GUID,
-                    NodeGUID = connectedPorts[i].output.portName,
-                    PortName = outputPort.Value,
-                    Condition = outputPort.Condition,
-                    TargetNodeGuid = inputNode.GUID
-                });
-            }
-            else 
-            {
-                dialogueContainer.NodeLinks.Add(new NodeLinkData
+                    var outputPort = ((DialogueNode)outputNode).outputPorts.Find(x => x.GUID == lookingForGUID);
+                    dialogueContainer.NodeLinks.Add(new NodeLinkData
+                    {
+                        BaseNodeGuid = outputNode.GUID,
+                        NodeGUID = connectedPorts[i].output.portName,
+                        PortName = outputPort.Value,
+                        Condition = outputPort.Condition,
+                        TargetNodeGuid = inputNode.GUID
+                    });
+                }
+                else
                 {
-                    BaseNodeGuid = outputNode.GUID,
-                    PortName = connectedPorts[i].output.portName,
-                    Condition = "",
-                    TargetNodeGuid = inputNode.GUID,
-                    NodeGUID = ""
-                });
+                    dialogueContainer.NodeLinks.Add(new NodeLinkData
+                    {
+                        BaseNodeGuid = outputNode.GUID,
+                        PortName = connectedPorts[i].output.portName,
+                        Condition = "",
+                        TargetNodeGuid = inputNode.GUID,
+                        NodeGUID = ""
+                    });
+                }
             }
         }
 
@@ -100,12 +101,21 @@ public class GraphSaveUtility
                     Position = node.GetPosition().position
                 });
             }
-            else if (node.Type == nodeType.Event) 
+            else if (node.Type == nodeType.Event)
             {
-                dialogueContainer.EventNodeData.Add(new EventNodeData 
+                dialogueContainer.EventNodeData.Add(new EventNodeData
                 {
                     Guid = node.GUID,
                     code = ((EventNode)node).Code,
+                    Position = node.GetPosition().position
+                });
+            }
+            else if (node.Type == nodeType.Variable) 
+            {
+                dialogueContainer.VariableNodeData.Add(new VariableNodeData
+                {
+                    Guid = node.GUID,
+                    Code = ((VariableNode)node).Code,
                     Position = node.GetPosition().position
                 });
             }
@@ -184,6 +194,14 @@ public class GraphSaveUtility
         foreach (var nodeData in _containerCache.EventNodeData)
         {
             var tempNode = _targetGraphView.CreateEventNode(nodeData.code, nodeData.Position);
+            tempNode.GUID = nodeData.Guid;
+
+            _targetGraphView.AddElement(tempNode);
+        }
+
+        foreach (var nodeData in _containerCache.VariableNodeData)
+        {
+            var tempNode = _targetGraphView.CreateVariableNode(nodeData.Code, nodeData.Position);
             tempNode.GUID = nodeData.Guid;
 
             _targetGraphView.AddElement(tempNode);

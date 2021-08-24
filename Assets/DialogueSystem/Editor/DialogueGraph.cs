@@ -47,6 +47,10 @@ public class DialogueGraph : EditorWindow
             {
                 _graphView.CreateNode("// TODO //", nodeType.Event, _graphView.localMousePosition);
             });
+            evt.menu.AppendAction("Create Variable Node", (x) =>
+            {
+                _graphView.CreateNode("// TODO //", nodeType.Variable, _graphView.localMousePosition);
+            });
         }));
     }
 
