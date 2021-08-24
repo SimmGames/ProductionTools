@@ -154,6 +154,9 @@ namespace DialogueSystem
             failPort.portName = "Fail";
             conditionNode.outputContainer.Add(failPort);
 
+            // GUID Label
+            conditionNode.extensionContainer.Add(new Label($"GUID: {conditionNode.GUID}"));
+
             // Update Graphics and Position
 
             conditionNode.RefreshExpandedState();
@@ -199,6 +202,9 @@ namespace DialogueSystem
             inputPort.portName = "Input";
             eventNode.inputContainer.Add(inputPort);
 
+            // GUID Label
+            eventNode.extensionContainer.Add(new Label($"GUID: {eventNode.GUID}"));
+
             // Update Graphics and Position
 
             eventNode.RefreshExpandedState();
@@ -236,6 +242,9 @@ namespace DialogueSystem
 
             varNode.mainContainer.Add(varContainer);
 
+            // GUID Label
+            varNode.extensionContainer.Add(new Label($"GUID: {varNode.GUID}"));
+
             // Update Graphics and Position
 
             varNode.RefreshExpandedState();
@@ -268,8 +277,8 @@ namespace DialogueSystem
                 name = "bottom"
             };
 
-            var dialogueLable = new Label("Dialogue Text:");
-            dialogueContainer.Add(dialogueLable);
+            var dialogueLabel = new Label("Dialogue Text:");
+            dialogueContainer.Add(dialogueLabel);
 
             var dialogueTextField = new TextField(string.Empty);
             dialogueTextField.multiline = true;
@@ -298,8 +307,6 @@ namespace DialogueSystem
             button.text = "+";
             dialogueNode.titleContainer.Add(button);
 
-
-
             // Script Container
             var scriptContainer = new VisualElement
             {
@@ -307,6 +314,9 @@ namespace DialogueSystem
             };
 
             dialogueNode.extensionContainer.Add(scriptContainer);
+
+            // GUID Label
+            dialogueNode.extensionContainer.Add(new Label($"GUID: {dialogueNode.GUID}"));
 
             // Update Graphics and Position
 
