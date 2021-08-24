@@ -43,6 +43,10 @@ public class DialogueGraph : EditorWindow
             {
                 _graphView.CreateNode("true", nodeType.Branch, _graphView.localMousePosition);
             });
+            evt.menu.AppendAction("Create Event Node", (x) =>
+            {
+                _graphView.CreateNode("// TODO //", nodeType.Event, _graphView.localMousePosition);
+            });
         }));
     }
 

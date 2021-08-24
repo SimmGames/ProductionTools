@@ -83,6 +83,9 @@ public class DialogueGraphView : GraphView
             case nodeType.Branch:
                 AddElement(CreateConditionNode(nodeName, location));
                 break;
+            case nodeType.Event:
+                AddElement(CreateEventNode(nodeName, location));
+                break;
         }
     }
 
@@ -111,7 +114,10 @@ public class DialogueGraphView : GraphView
         conditionNode.styleSheets.Add(Resources.Load<StyleSheet>("Node"));
 
         // Condition Info
-        var conditionContainer = new VisualElement { name = "conditions" };
+        var conditionContainer = new VisualElement
+        {
+            name = "bottom"
+        };
 
         var conditionLabel = new Label("Condition: ");
         conditionContainer.Add(conditionLabel);
@@ -151,6 +157,51 @@ public class DialogueGraphView : GraphView
         return conditionNode;
     }
 
+    public EventNode CreateEventNode(string code, Vector2 location) 
+    {
+        var eventNode = new EventNode
+        {
+            title = "Event",
+            Code = code,
+            GUID = ensureGuid(),
+            Type = nodeType.Event
+        };
+        eventNode.styleSheets.Add(Resources.Load<StyleSheet>("Node"));
+
+        // Event Info
+        var eventContainer = new VisualElement
+        {
+            name = "bottom"
+        };
+
+        var eventLabel = new Label("Code: ");
+        eventContainer.Add(eventLabel);
+
+        var eventTextField = new TextField(string.Empty);
+        eventTextField.multiline = true;
+        eventTextField.RegisterValueChangedCallback(evt =>
+        {
+            eventNode.Code = evt.newValue;
+        });
+        eventTextField.SetValueWithoutNotify(eventNode.Code);
+        eventContainer.Add(eventTextField);
+
+        eventNode.mainContainer.Add(eventContainer);
+
+        // Input
+        var inputPort = GeneratePort(eventNode, Direction.Input, Port.Capacity.Multi);
+        inputPort.portName = "Input";
+        eventNode.inputContainer.Add(inputPort);
+
+        // Update Graphics and Position
+
+        eventNode.RefreshExpandedState();
+        eventNode.RefreshPorts();
+        eventNode.SetPosition(new Rect(location, DefaltNodeSize));
+
+        return eventNode;
+    }
+
     private string limit(string str, int length) 
     {
         return (str.Length <= length ? str : $"{str.Substring(0,length-3)}...");
@@ -171,7 +222,7 @@ public class DialogueGraphView : GraphView
 
         var dialogueContainer = new VisualElement
         {
-            name = "dialogue"
+            name = "bottom"
         };
 
         var dialogueLable = new Label("Dialogue Text:");

@@ -1,7 +1,7 @@
 ﻿DialogueNode #title {
-	background-color: green;
+	background-color: darkgreen;
 }
-DialogueNode #dialogue {
+#bottom {
 	background-color: rgba(94, 97, 99, 0.7);
 }
 DialogueNode TextField {
@@ -13,4 +13,12 @@ DialogueNode #output Port {
 
 DialogueNode #script {
 	background-color: rgba(74, 77, 79, 0.7);
+}
+
+ConditionNode #title {
+	background-color: darkred;
+}
+
+EventNode #title {
+	background-color: darkblue;
 }

@@ -91,13 +91,21 @@ public class GraphSaveUtility
                     Position = node.GetPosition().position
                 });
             }
-            
-            if (node.Type == nodeType.Branch) 
+            else if (node.Type == nodeType.Branch)
             {
                 dialogueContainer.ConditionNodeData.Add(new ConditionNodeData
                 {
                     Guid = node.GUID,
                     Condition = ((ConditionNode)node).Condition,
+                    Position = node.GetPosition().position
+                });
+            }
+            else if (node.Type == nodeType.Event) 
+            {
+                dialogueContainer.EventNodeData.Add(new EventNodeData 
+                {
+                    Guid = node.GUID,
+                    code = ((EventNode)node).Code,
                     Position = node.GetPosition().position
                 });
             }
@@ -168,6 +176,14 @@ public class GraphSaveUtility
         foreach (var nodeData in _containerCache.ConditionNodeData)
         {
             var tempNode = _targetGraphView.CreateConditionNode(nodeData.Condition, nodeData.Position);
+            tempNode.GUID = nodeData.Guid;
+
+            _targetGraphView.AddElement(tempNode);
+        }
+
+        foreach (var nodeData in _containerCache.EventNodeData)
+        {
+            var tempNode = _targetGraphView.CreateEventNode(nodeData.code, nodeData.Position);
             tempNode.GUID = nodeData.Guid;
 
             _targetGraphView.AddElement(tempNode);
