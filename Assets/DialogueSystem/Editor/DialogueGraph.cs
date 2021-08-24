@@ -27,6 +27,19 @@ public class DialogueGraph : EditorWindow
         ConstructGraph();
         GenerateToolbar();
         GenerateMiniMap();
+        GenerateContextMenu();
+    }
+
+    private void GenerateContextMenu()
+    {
+        
+        _graphView.AddManipulator(new ContextualMenuManipulator((ContextualMenuPopulateEvent evt) => 
+        {
+            evt.menu.AppendAction("Create Dialogue Node", (x) => 
+            {
+                _graphView.CreateNode("Dialogue Node", nodeType.Dialogue, _graphView.localMousePosition);
+            });
+        }));
     }
 
     private void GenerateMiniMap()
@@ -68,12 +81,6 @@ public class DialogueGraph : EditorWindow
         _toolbar.Add(new Button(() => RequestDataOperation(true)) { text = "Save Data" });
         _toolbar.Add(new Button(() => RequestDataOperation(false)) { text = "Load Data" });
 
-        var nodeCreateButton = new Button(() => {
-            _graphView.CreateNode("Dialogue Node");
-        });
-        nodeCreateButton.text = "Create Node";
-        _toolbar.Add(nodeCreateButton);
-
         rootVisualElement.Add(_toolbar);
     }
 
@@ -90,5 +97,5 @@ public class DialogueGraph : EditorWindow
             saveUtility.SaveGraph(_fileName);
         else
             saveUtility.LoadGraph(_fileName);
-;    }
+    }
 }

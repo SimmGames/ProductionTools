@@ -1,3 +1,16 @@
 ﻿DialogueNode #title {
 	background-color: green;
 }
+DialogueNode #dialogue {
+	background-color: rgba(94, 97, 99, 0.7);
+}
+DialogueNode TextField {
+	white-space: normal;
+}
+DialogueNode #output Port {
+	height: 200%;
+}
+
+DialogueNode #script {
+	background-color: rgba(74, 77, 79, 0.7);
+}

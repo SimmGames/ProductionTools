@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEditor.Experimental.GraphView;
 
-public class DialogueNode : Node
+public class DialogueNode : BasicNode
 {
-    public string GUID;
-
     public string DialogueText;
+    public List<OutputPort> outputPorts;
 
-    public bool EntryPoint = false;
+    public DialogueNode() 
+    {
+        outputPorts = new List<OutputPort>();
+    }
 }

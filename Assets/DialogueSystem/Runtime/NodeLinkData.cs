@@ -6,5 +6,6 @@ public class NodeLinkData
 {
     public string BaseNodeGuid;
     public string PortName;
+    public string Condition;
     public string TargetNodeGuid;
 }

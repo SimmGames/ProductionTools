@@ -2,9 +2,7 @@
 using UnityEngine;
 
 [Serializable]
-public class DialogueNodeData 
+public class DialogueNodeData : NodeData
 {
-    public string Guid;
     public string DialogueText;
-    public Vector2 Position;
 }

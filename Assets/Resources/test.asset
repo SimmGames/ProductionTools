@@ -13,34 +13,33 @@ MonoBehaviour:
   m_Name: test
   m_EditorClassIdentifier: 
   NodeLinks:
-  - BaseNodeGuid: 55d479ba-86c1-4d68-84ab-d5f5eb9e81d3
+  - BaseNodeGuid: ce90bfaf-16f3-43f9-8db0-fec64fed2074
     PortName: Next
-    TargetNodeGuid: 241430cc-2bda-42b4-98df-4ac132127072
-  - BaseNodeGuid: 241430cc-2bda-42b4-98df-4ac132127072
-    PortName: pee
-    TargetNodeGuid: 93174156-05ac-4598-8401-549dee1ecb08
-  - BaseNodeGuid: 241430cc-2bda-42b4-98df-4ac132127072
-    PortName: poo
-    TargetNodeGuid: b6f4110f-1691-4c18-bccc-ac43ec6c3be1
-  - BaseNodeGuid: 93174156-05ac-4598-8401-549dee1ecb08
-    PortName: Choice 2
-    TargetNodeGuid: b6f4110f-1691-4c18-bccc-ac43ec6c3be1
-  - BaseNodeGuid: b6f4110f-1691-4c18-bccc-ac43ec6c3be1
-    PortName: Choice 0
-    TargetNodeGuid: 
-  - BaseNodeGuid: 93174156-05ac-4598-8401-549dee1ecb08
-    PortName: Choice 2[1]
-    TargetNodeGuid: 
-  - BaseNodeGuid: 93174156-05ac-4598-8401-549dee1ecb08
+    Condition: 
+    TargetNodeGuid: 7f65ec4a-53bc-420b-be35-bfeb5152549b
+  - BaseNodeGuid: 7f65ec4a-53bc-420b-be35-bfeb5152549b
     PortName: Choice 1
+    Condition: 
+    TargetNodeGuid: 71a9ba81-f855-4431-8e47-93ce8f277e49
+  - BaseNodeGuid: 7f65ec4a-53bc-420b-be35-bfeb5152549b
+    PortName: Choice 0
+    Condition: r4rbe
+    TargetNodeGuid: 5011dcc4-4c9d-4957-a17c-dd96a5564063
+  - BaseNodeGuid: 71a9ba81-f855-4431-8e47-93ce8f277e49
+    PortName: Choice 0
+    Condition: 
+    TargetNodeGuid: 
+  - BaseNodeGuid: 5011dcc4-4c9d-4957-a17c-dd96a5564063
+    PortName: Choice 0
+    Condition: 
     TargetNodeGuid: 
   DialogueNodeData:
-  - Guid: 241430cc-2bda-42b4-98df-4ac132127072
-    DialogueText: penis
-    Position: {x: 161, y: -33}
-  - Guid: b6f4110f-1691-4c18-bccc-ac43ec6c3be1
+  - Guid: 71a9ba81-f855-4431-8e47-93ce8f277e49
+    Position: {x: 713, y: 52}
     DialogueText: Dialogue Node
-    Position: {x: 845, y: 159}
-  - Guid: 93174156-05ac-4598-8401-549dee1ecb08
+  - Guid: 7f65ec4a-53bc-420b-be35-bfeb5152549b
+    Position: {x: 299, y: -114}
     DialogueText: Dialogue Node
-    Position: {x: 388, y: -66}
+  - Guid: 5011dcc4-4c9d-4957-a17c-dd96a5564063
+    Position: {x: 483, y: 225}
+    DialogueText: Dialogue Node

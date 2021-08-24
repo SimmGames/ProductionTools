@@ -32,26 +32,44 @@ public class GraphSaveUtility
         var connectedPorts = Edges.Where(x => x.input.node != null).ToArray();
         for (var i = 0; i < connectedPorts.Length; i++) 
         {
-            var outputNode = connectedPorts[i].output.node as DialogueNode;
-            var inputNode = connectedPorts[i].input.node as DialogueNode;
+            DialogueNode outputNode = connectedPorts[i].output.node as DialogueNode;
+            DialogueNode inputNode = connectedPorts[i].input.node as DialogueNode;
+            var lookingForGUID = connectedPorts[i].output.portName;
+            var outputPort = outputNode.outputPorts.Find(x => x.GUID == lookingForGUID);
 
-            dialogueContainer.NodeLinks.Add(new NodeLinkData
+            if (lookingForGUID == "Next") 
             {
-                BaseNodeGuid = outputNode.GUID,
-                PortName = connectedPorts[i].output.portName,
-                TargetNodeGuid = inputNode.GUID
-            });
+                dialogueContainer.NodeLinks.Add(new NodeLinkData
+                {
+                    BaseNodeGuid = outputNode.GUID,
+                    PortName = connectedPorts[i].output.portName,
+                    Condition = "",
+                    TargetNodeGuid = inputNode.GUID
+                });
+            }
+            else
+            {
+                dialogueContainer.NodeLinks.Add(new NodeLinkData
+                {
+                    BaseNodeGuid = outputNode.GUID,
+                    PortName = outputPort.Value,
+                    Condition = outputPort.Condition,
+                    TargetNodeGuid = inputNode.GUID
+                });
+            }
         }
 
         var unconnectedPorts = Ports.Where(x => x.connected == false && x.direction == Direction.Output).ToArray();
         for (var i = 0; i < unconnectedPorts.Length; i++)
         {
             var outputNode = unconnectedPorts[i].node as DialogueNode;
+            var outputPort = outputNode.outputPorts.Find(x => x.GUID == unconnectedPorts[i].portName);
 
             dialogueContainer.NodeLinks.Add(new NodeLinkData
             {
                 BaseNodeGuid = outputNode.GUID,
-                PortName = unconnectedPorts[i].portName,
+                PortName = outputPort.Value,
+                Condition = outputPort.Condition,
                 TargetNodeGuid = ""
             });
         }
@@ -121,16 +139,13 @@ public class GraphSaveUtility
     {
         foreach (var nodeData in _containerCache.DialogueNodeData) 
         {
-            var tempNode = _targetGraphView.CreateDialogueNode(nodeData.DialogueText);
+            var tempNode = _targetGraphView.CreateDialogueNode(nodeData.DialogueText, _containerCache.DialogueNodeData.First(x => x.Guid == nodeData.Guid).Position);
             tempNode.GUID = nodeData.Guid;
-
-            tempNode.SetPosition(new Rect(_containerCache.DialogueNodeData.First(x=>x.Guid==tempNode.GUID).Position,
-                _targetGraphView.DefaltNodeSize));
 
             _targetGraphView.AddElement(tempNode);
 
             var nodePorts = _containerCache.NodeLinks.Where(x => x.BaseNodeGuid == nodeData.Guid).ToList();
-            nodePorts.ForEach(x => _targetGraphView.AddChoicePort(tempNode, x.PortName));
+            nodePorts.ForEach(x => _targetGraphView.AddChoicePort(tempNode, x.PortName, x.Condition));
         }
     }
 
