@@ -1,0 +1,46 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d22888574f9e9fa4fa361e996cfea431, type: 3}
+  m_Name: test
+  m_EditorClassIdentifier: 
+  NodeLinks:
+  - BaseNodeGuid: 55d479ba-86c1-4d68-84ab-d5f5eb9e81d3
+    PortName: Next
+    TargetNodeGuid: 241430cc-2bda-42b4-98df-4ac132127072
+  - BaseNodeGuid: 241430cc-2bda-42b4-98df-4ac132127072
+    PortName: pee
+    TargetNodeGuid: 93174156-05ac-4598-8401-549dee1ecb08
+  - BaseNodeGuid: 241430cc-2bda-42b4-98df-4ac132127072
+    PortName: poo
+    TargetNodeGuid: b6f4110f-1691-4c18-bccc-ac43ec6c3be1
+  - BaseNodeGuid: 93174156-05ac-4598-8401-549dee1ecb08
+    PortName: Choice 2
+    TargetNodeGuid: b6f4110f-1691-4c18-bccc-ac43ec6c3be1
+  - BaseNodeGuid: b6f4110f-1691-4c18-bccc-ac43ec6c3be1
+    PortName: Choice 0
+    TargetNodeGuid: 
+  - BaseNodeGuid: 93174156-05ac-4598-8401-549dee1ecb08
+    PortName: Choice 2[1]
+    TargetNodeGuid: 
+  - BaseNodeGuid: 93174156-05ac-4598-8401-549dee1ecb08
+    PortName: Choice 1
+    TargetNodeGuid: 
+  DialogueNodeData:
+  - Guid: 241430cc-2bda-42b4-98df-4ac132127072
+    DialogueText: penis
+    Position: {x: 161, y: -33}
+  - Guid: b6f4110f-1691-4c18-bccc-ac43ec6c3be1
+    DialogueText: Dialogue Node
+    Position: {x: 845, y: 159}
+  - Guid: 93174156-05ac-4598-8401-549dee1ecb08
+    DialogueText: Dialogue Node
+    Position: {x: 388, y: -66}
