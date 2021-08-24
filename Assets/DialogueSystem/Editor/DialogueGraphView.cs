@@ -12,6 +12,8 @@ public class DialogueGraphView : GraphView
     public readonly Vector2 DefaltNodeSize = new Vector2(150, 200);
     public Vector2 localMousePosition;
 
+    private List<BasicNode> Nodes => nodes.ToList().Cast<BasicNode>().ToList();
+
     public DialogueGraphView() 
     {
         styleSheets.Add(Resources.Load<StyleSheet>("DialogueGraph"));
@@ -52,7 +54,7 @@ public class DialogueGraphView : GraphView
         var node = new DialogueNode
         {
             title = "START",
-            GUID = Guid.NewGuid().ToString(),
+            GUID = ensureGuid(),
             DialogueText = "ENTRYPOINT",
             EntryPoint = true
         };
@@ -84,15 +86,28 @@ public class DialogueGraphView : GraphView
         }
     }
 
+    public string ensureGuid() 
+    {
+        string tempGuid = Guid.NewGuid().ToString();
+        while (Nodes.Where(x => x.GUID == tempGuid).Count() > 0)
+        {
+            tempGuid = Guid.NewGuid().ToString();
+        }
+        return tempGuid;
+    }
+
     public ConditionNode CreateConditionNode(string condition, Vector2 location)
     {
         var conditionNode = new ConditionNode
         {
             title = "Condition",
             Condition = condition,
-            GUID = Guid.NewGuid().ToString(),
+            GUID = ensureGuid(),
             Type = nodeType.Branch
         };
+
+        
+
         conditionNode.styleSheets.Add(Resources.Load<StyleSheet>("Node"));
 
         // Condition Info
@@ -147,7 +162,7 @@ public class DialogueGraphView : GraphView
         {
             title = $"Dialogue: {limit(nodeName, 20)}",
             DialogueText = nodeName,
-            GUID = Guid.NewGuid().ToString(),
+            GUID = ensureGuid(),
             Type = nodeType.Dialogue
         };
         dialogueNode.styleSheets.Add(Resources.Load<StyleSheet>("Node"));

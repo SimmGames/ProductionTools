@@ -1,8 +1,7 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System;
 using UnityEngine;
 
-[SerializeField]
+[Serializable]
 public class ConditionNodeData : NodeData
 {
     public string Condition;

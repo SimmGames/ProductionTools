@@ -37,7 +37,7 @@ public class GraphSaveUtility
             var lookingForGUID = connectedPorts[i].output.portName;
 
 
-            if (outputNode.Type == nodeType.Dialogue && lookingForGUID != "Next")
+            if (outputNode.Type == nodeType.Dialogue && !outputNode.EntryPoint)
             {
                 var outputPort = ((DialogueNode)outputNode).outputPorts.Find(x => x.GUID == lookingForGUID);
                 dialogueContainer.NodeLinks.Add(new NodeLinkData

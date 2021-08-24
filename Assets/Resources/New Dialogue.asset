@@ -13,45 +13,39 @@ MonoBehaviour:
   m_Name: New Dialogue
   m_EditorClassIdentifier: 
   NodeLinks:
-  - BaseNodeGuid: 5c24274b-b821-4443-b5fb-f83c2d037251
-    NodeGUID: 22276649-19bd-4880-8baf-ae7d33a6cf76
-    PortName: Choice 1
-    Condition: 
-    TargetNodeGuid: 03f8d29d-16f5-4160-bd15-1332a08bbb09
-  - BaseNodeGuid: 5c24274b-b821-4443-b5fb-f83c2d037251
+  - BaseNodeGuid: adfafe1e-ebe9-4831-93bc-383fffc392eb
     NodeGUID: 
     PortName: Next
     Condition: 
-    TargetNodeGuid: 75b014cb-f03d-4729-9790-1d398cd20e20
-  - BaseNodeGuid: 03f8d29d-16f5-4160-bd15-1332a08bbb09
-    NodeGUID: 
-    PortName: Pass
-    Condition: 
-    TargetNodeGuid: 523b57dc-e3d0-466f-8ea0-962f6a635d56
-  - BaseNodeGuid: 75b014cb-f03d-4729-9790-1d398cd20e20
+    TargetNodeGuid: e7fb90dd-0181-47a2-885d-49cbce973e60
+  - BaseNodeGuid: e7fb90dd-0181-47a2-885d-49cbce973e60
     NodeGUID: 
     PortName: Fail
     Condition: 
-    TargetNodeGuid: 5c24274b-b821-4443-b5fb-f83c2d037251
-  - BaseNodeGuid: 523b57dc-e3d0-466f-8ea0-962f6a635d56
+    TargetNodeGuid: 149e58de-faa2-40fd-abd4-ac1f2f60327c
+  - BaseNodeGuid: 170a9adb-3f04-4715-9a1b-47da17e0de11
+    NodeGUID: b980229a-3b0f-43c9-8682-2b401f261933
+    PortName: Choice 1
+    Condition: 
+    TargetNodeGuid: 149e58de-faa2-40fd-abd4-ac1f2f60327c
+  - BaseNodeGuid: 170a9adb-3f04-4715-9a1b-47da17e0de11
     NodeGUID: 
     PortName: Choice 0
     Condition: 
     TargetNodeGuid: 
-  - BaseNodeGuid: 5c24274b-b821-4443-b5fb-f83c2d037251
-    NodeGUID: 
-    PortName: Choice 0
-    Condition: 
-    TargetNodeGuid: 
-  - BaseNodeGuid: 5c24274b-b821-4443-b5fb-f83c2d037251
+  - BaseNodeGuid: 170a9adb-3f04-4715-9a1b-47da17e0de11
     NodeGUID: 
     PortName: Choice 2
     Condition: 
     TargetNodeGuid: 
   DialogueNodeData:
-  - Guid: 523b57dc-e3d0-466f-8ea0-962f6a635d56
-    Position: {x: 726, y: 62}
+  - Guid: 170a9adb-3f04-4715-9a1b-47da17e0de11
+    Position: {x: 336, y: -227}
     DialogueText: Dialogue Node
-  - Guid: 5c24274b-b821-4443-b5fb-f83c2d037251
-    Position: {x: 258, y: 77}
-    DialogueText: Dialogue Node
+  ConditionNodeData:
+  - Guid: e7fb90dd-0181-47a2-885d-49cbce973e60
+    Position: {x: 164, y: 13}
+    Condition: true
+  - Guid: 149e58de-faa2-40fd-abd4-ac1f2f60327c
+    Position: {x: 675, y: 78}
+    Condition: true
