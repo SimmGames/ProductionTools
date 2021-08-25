@@ -11,8 +11,9 @@ DialogueNode #output Port {
 	height: 200%;
 }
 
-DialogueNode #script {
-	background-color: rgba(74, 77, 79, 0.7);
+#script #unity-text-input {
+	color: rgb(230, 90, 105);
+	background-color: rgba(80, 30, 40, 0.8);
 }
 
 ConditionNode #title {
@@ -25,4 +26,9 @@ EventNode #title {
 
 VariableNode #title {
 	background-color: darkorchid;
+}
+
+#guid {
+	font-size: 7px;
+	background-color: rgba(44, 47, 49, 0.4);
 }

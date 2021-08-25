@@ -128,7 +128,7 @@ namespace DialogueSystem
             var conditionLabel = new Label("Condition: ");
             conditionContainer.Add(conditionLabel);
 
-            var conditionTextField = new TextField(string.Empty);
+            var conditionTextField = new TextField(string.Empty) { name = "script" };
             conditionTextField.multiline = true;
             conditionTextField.RegisterValueChangedCallback(evt =>
             {
@@ -155,7 +155,7 @@ namespace DialogueSystem
             conditionNode.outputContainer.Add(failPort);
 
             // GUID Label
-            conditionNode.extensionContainer.Add(new Label($"GUID: {conditionNode.GUID}"));
+            conditionNode.extensionContainer.Add(new Label($"{conditionNode.GUID}") { name = "guid" });
 
             // Update Graphics and Position
 
@@ -186,7 +186,7 @@ namespace DialogueSystem
             var eventLabel = new Label("Code: ");
             eventContainer.Add(eventLabel);
 
-            var eventTextField = new TextField(string.Empty);
+            var eventTextField = new TextField(string.Empty) { name = "script" };
             eventTextField.multiline = true;
             eventTextField.RegisterValueChangedCallback(evt =>
             {
@@ -203,7 +203,7 @@ namespace DialogueSystem
             eventNode.inputContainer.Add(inputPort);
 
             // GUID Label
-            eventNode.extensionContainer.Add(new Label($"GUID: {eventNode.GUID}"));
+            eventNode.extensionContainer.Add(new Label($"{eventNode.GUID}") { name = "guid" });
 
             // Update Graphics and Position
 
@@ -231,7 +231,7 @@ namespace DialogueSystem
                 name = "bottom"
             };
 
-            var varTextField = new TextField(string.Empty);
+            var varTextField = new TextField(string.Empty) { name = "script" };
             varTextField.multiline = true;
             varTextField.RegisterValueChangedCallback(evt =>
             {
@@ -243,7 +243,7 @@ namespace DialogueSystem
             varNode.mainContainer.Add(varContainer);
 
             // GUID Label
-            varNode.extensionContainer.Add(new Label($"GUID: {varNode.GUID}"));
+            varNode.extensionContainer.Add(new Label($"{varNode.GUID}") { name = "guid" });
 
             // Update Graphics and Position
 
@@ -316,7 +316,7 @@ namespace DialogueSystem
             dialogueNode.extensionContainer.Add(scriptContainer);
 
             // GUID Label
-            dialogueNode.extensionContainer.Add(new Label($"GUID: {dialogueNode.GUID}"));
+            dialogueNode.extensionContainer.Add(new Label($"{dialogueNode.GUID}") { name = "guid" });
 
             // Update Graphics and Position
 
@@ -361,10 +361,10 @@ namespace DialogueSystem
 
             var conditionField = new TextField
             {
+                name = "script",
                 value = conditions,
                 multiline = true
             };
-            conditionField.name = "condition";
             conditionField.RegisterValueChangedCallback(evt =>
             {
                 outputPort.Condition = evt.newValue;
