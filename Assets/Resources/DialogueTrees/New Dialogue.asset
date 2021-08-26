@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d22888574f9e9fa4fa361e996cfea431, type: 3}
   m_Name: New Dialogue
   m_EditorClassIdentifier: 
+  DialogueName: New Dialogue
   NodeLinks:
   - BaseNodeGuid: adfafe1e-ebe9-4831-93bc-383fffc392eb
     NodeGUID: 
@@ -36,37 +37,37 @@ MonoBehaviour:
   - BaseNodeGuid: 170a9adb-3f04-4715-9a1b-47da17e0de11
     NodeGUID: b980229a-3b0f-43c9-8682-2b401f261933
     PortName: Choice 1
-    Condition: 
+    Condition: fun == 1
     TargetNodeGuid: 149e58de-faa2-40fd-abd4-ac1f2f60327c
   - BaseNodeGuid: 170a9adb-3f04-4715-9a1b-47da17e0de11
     NodeGUID: fb857a76-b1c0-4497-9483-68bc0a5e972e
     PortName: Choice 2
-    Condition: 
+    Condition: fun == 2
     TargetNodeGuid: 498f128a-0a15-44d3-9eef-a5194b6d058d
   - BaseNodeGuid: 170a9adb-3f04-4715-9a1b-47da17e0de11
-    NodeGUID: 
-    PortName: Choice 0
-    Condition: 
+    NodeGUID: 8ac45178-28a0-49af-a6ab-c23a54625ed3
+    PortName: Choice 2
+    Condition: fun == 3
     TargetNodeGuid: 
   DialogueNodeData:
   - Guid: 170a9adb-3f04-4715-9a1b-47da17e0de11
-    Position: {x: 336, y: -227}
+    Position: {x: 329, y: -265}
     DialogueText: Dialogue Node
   ConditionNodeData:
-  - Guid: e7fb90dd-0181-47a2-885d-49cbce973e60
-    Position: {x: 164, y: 13}
-    Condition: true
   - Guid: 149e58de-faa2-40fd-abd4-ac1f2f60327c
     Position: {x: 675, y: 78}
     Condition: true
+  - Guid: e7fb90dd-0181-47a2-885d-49cbce973e60
+    Position: {x: 127, y: 55}
+    Condition: fun <= 5
   EventNodeData:
   - Guid: 1eb83f95-81a3-4f4c-a596-03054104c516
     Position: {x: 420, y: 192}
     code: // TODO //
   - Guid: 498f128a-0a15-44d3-9eef-a5194b6d058d
     Position: {x: 748, y: -215}
-    code: // TODO //
+    code: fun = 1000;
   VariableNodeData:
   - Guid: 38013ccc-4839-4be0-bec0-505a0c69e8dd
-    Position: {x: 52, y: -259}
-    Code: // TODO //
+    Position: {x: 108, y: -133}
+    Code: int fun = 0;

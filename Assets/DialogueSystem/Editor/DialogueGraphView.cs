@@ -105,13 +105,13 @@ namespace DialogueSystem
             return tempGuid;
         }
 
-        public ConditionNode CreateConditionNode(string condition, Vector2 location)
+        public ConditionNode CreateConditionNode(string condition, Vector2 location, string overrideGUID = "")
         {
             var conditionNode = new ConditionNode
             {
                 title = "Condition",
                 Condition = condition,
-                GUID = ensureGuid(),
+                GUID = (string.IsNullOrEmpty(overrideGUID) ? ensureGuid() : overrideGUID),
                 Type = nodeType.Branch
             };
 
@@ -166,13 +166,13 @@ namespace DialogueSystem
             return conditionNode;
         }
 
-        public EventNode CreateEventNode(string code, Vector2 location)
+        public EventNode CreateEventNode(string code, Vector2 location, string overrideGUID = "")
         {
             var eventNode = new EventNode
             {
                 title = "Event",
                 Code = code,
-                GUID = ensureGuid(),
+                GUID = (string.IsNullOrEmpty(overrideGUID) ? ensureGuid() : overrideGUID),
                 Type = nodeType.Event
             };
             eventNode.styleSheets.Add(Resources.Load<StyleSheet>("Node"));
@@ -214,13 +214,13 @@ namespace DialogueSystem
             return eventNode;
         }
 
-        public VariableNode CreateVariableNode(string code, Vector2 location)
+        public VariableNode CreateVariableNode(string code, Vector2 location, string overrideGUID = "")
         {
             var varNode = new VariableNode
             {
                 title = "Variables",
                 Code = code,
-                GUID = ensureGuid(),
+                GUID = (string.IsNullOrEmpty(overrideGUID) ? ensureGuid() : overrideGUID),
                 Type = nodeType.Variable
             };
             varNode.styleSheets.Add(Resources.Load<StyleSheet>("Node"));
@@ -259,13 +259,13 @@ namespace DialogueSystem
             return (str.Length <= length ? str : $"{str.Substring(0, length - 3)}...");
         }
 
-        public DialogueNode CreateDialogueNode(string nodeName, Vector2 position)
+        public DialogueNode CreateDialogueNode(string nodeName, Vector2 position, string overrideGUID = "")
         {
             var dialogueNode = new DialogueNode
             {
                 title = $"Dialogue: {limit(nodeName, 20)}",
                 DialogueText = nodeName,
-                GUID = ensureGuid(),
+                GUID = (string.IsNullOrEmpty(overrideGUID) ? ensureGuid() : overrideGUID),
                 Type = nodeType.Dialogue
             };
             dialogueNode.styleSheets.Add(Resources.Load<StyleSheet>("Node"));

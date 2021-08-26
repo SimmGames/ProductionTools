@@ -30,6 +30,8 @@ namespace DialogueSystem
         {
             var dialogueContainer = ScriptableObject.CreateInstance<DialogueContainer>();
 
+            dialogueContainer.DialogueName = fileName;
+
             if (Edges.Any())
             {
                 var connectedPorts = Edges.Where(x => x.input.node != null).ToArray();
@@ -79,7 +81,8 @@ namespace DialogueSystem
                         BaseNodeGuid = outputNode.GUID,
                         PortName = outputPort.Value,
                         Condition = outputPort.Condition,
-                        TargetNodeGuid = ""
+                        TargetNodeGuid = "",
+                        NodeGUID = unconnectedPorts[i].portName
                     });
                 }
             }
@@ -127,13 +130,16 @@ namespace DialogueSystem
             if (!AssetDatabase.IsValidFolder("Assets/Resources"))
                 AssetDatabase.CreateFolder("Assets", "Resources");
 
-            AssetDatabase.CreateAsset(dialogueContainer, $"Assets/Resources/{fileName}.asset");
+            if (!AssetDatabase.IsValidFolder("Assets/Resources/DialogueTrees"))
+                AssetDatabase.CreateFolder("Resources", "DialogueTrees");
+
+            AssetDatabase.CreateAsset(dialogueContainer, $"Assets/Resources/DialogueTrees/{fileName}.asset");
             AssetDatabase.SaveAssets();
         }
 
         public void LoadGraph(string fileName)
         {
-            _containerCache = Resources.Load<DialogueContainer>(fileName);
+            _containerCache = Resources.Load<DialogueContainer>("DialogueTrees/" + fileName);
 
             if (_containerCache == null)
             {
@@ -188,32 +194,28 @@ namespace DialogueSystem
         {
             foreach (var nodeData in _containerCache.ConditionNodeData)
             {
-                var tempNode = _targetGraphView.CreateConditionNode(nodeData.Condition, nodeData.Position);
-                tempNode.GUID = nodeData.Guid;
+                var tempNode = _targetGraphView.CreateConditionNode(nodeData.Condition, nodeData.Position, nodeData.Guid);
 
                 _targetGraphView.AddElement(tempNode);
             }
 
             foreach (var nodeData in _containerCache.EventNodeData)
             {
-                var tempNode = _targetGraphView.CreateEventNode(nodeData.code, nodeData.Position);
-                tempNode.GUID = nodeData.Guid;
+                var tempNode = _targetGraphView.CreateEventNode(nodeData.code, nodeData.Position, nodeData.Guid);
 
                 _targetGraphView.AddElement(tempNode);
             }
 
             foreach (var nodeData in _containerCache.VariableNodeData)
             {
-                var tempNode = _targetGraphView.CreateVariableNode(nodeData.Code, nodeData.Position);
-                tempNode.GUID = nodeData.Guid;
+                var tempNode = _targetGraphView.CreateVariableNode(nodeData.Code, nodeData.Position, nodeData.Guid);
 
                 _targetGraphView.AddElement(tempNode);
             }
 
             foreach (var nodeData in _containerCache.DialogueNodeData)
             {
-                var tempNode = _targetGraphView.CreateDialogueNode(nodeData.DialogueText, _containerCache.DialogueNodeData.First(x => x.Guid == nodeData.Guid).Position);
-                tempNode.GUID = nodeData.Guid;
+                var tempNode = _targetGraphView.CreateDialogueNode(nodeData.DialogueText, _containerCache.DialogueNodeData.First(x => x.Guid == nodeData.Guid).Position, nodeData.Guid);
 
                 _targetGraphView.AddElement(tempNode);
 

@@ -54,6 +54,11 @@ namespace DialogueSystem
                 {
                     _graphView.CreateNode("// TODO //", nodeType.Variable, _graphView.localMousePosition);
                 });
+
+                evt.menu.AppendAction("Regenerate Code File", (x) =>
+                {
+                    generateCode();
+                });
             }));
         }
 
@@ -96,8 +101,15 @@ namespace DialogueSystem
 
             _toolbar.Add(new Button(() => RequestDataOperation(true)) { text = "Save Data" });
             _toolbar.Add(new Button(() => RequestDataOperation(false)) { text = "Load Data" });
+            _toolbar.Add(new Button(() => generateCode()) { text = "Regenerate Code" });
 
             rootVisualElement.Add(_toolbar);
+        }
+
+        [MenuItem("Window/Dialogue System/Regenerate Code", false, 3011)]
+        private static void generateCode() 
+        {
+            DialogueCoder.GenerateCode(DialogueCoder.GrabDialogueContainers());
         }
 
         private void RequestDataOperation(bool save)
