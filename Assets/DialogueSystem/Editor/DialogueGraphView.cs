@@ -52,15 +52,17 @@ namespace DialogueSystem
             return compatiblePorts;
         }
 
-        private DialogueNode GenerateEntryPointNode()
+        private BasicNode GenerateEntryPointNode()
         {
-            var node = new DialogueNode
+            var node = new BasicNode
             {
                 title = "START",
                 GUID = ensureGuid(),
-                DialogueText = "ENTRYPOINT",
-                EntryPoint = true
+                EntryPoint = true,
+                Type = nodeType.Entry
             };
+
+            node.styleSheets.Add(Resources.Load<StyleSheet>("Node"));
 
             var generatedPort = GeneratePort(node, Direction.Output, Port.Capacity.Multi);
             generatedPort.portName = "Next";
@@ -68,6 +70,9 @@ namespace DialogueSystem
 
             node.capabilities &= ~Capabilities.Movable;
             node.capabilities &= ~Capabilities.Deletable;
+
+            // GUID Label
+            node.extensionContainer.Add(new Label($"{node.GUID}") { name = "guid" });
 
             node.RefreshExpandedState();
             node.RefreshPorts();
@@ -91,6 +96,9 @@ namespace DialogueSystem
                     break;
                 case nodeType.Variable:
                     AddElement(CreateVariableNode(nodeName, location));
+                    break;
+                case nodeType.Chat:
+                    AddElement(CreateChatNode(nodeName, location));
                     break;
             }
         }
@@ -259,12 +267,13 @@ namespace DialogueSystem
             return (str.Length <= length ? str : $"{str.Substring(0, length - 3)}...");
         }
 
-        public DialogueNode CreateDialogueNode(string nodeName, Vector2 position, string overrideGUID = "")
+        public DialogueNode CreateDialogueNode(string nodeName, Vector2 position, string charcaterName = "", string overrideGUID = "")
         {
             var dialogueNode = new DialogueNode
             {
                 title = $"Dialogue: {limit(nodeName, 20)}",
                 DialogueText = nodeName,
+                CharacterName = charcaterName,
                 GUID = (string.IsNullOrEmpty(overrideGUID) ? ensureGuid() : overrideGUID),
                 Type = nodeType.Dialogue
             };
@@ -276,6 +285,18 @@ namespace DialogueSystem
             {
                 name = "bottom"
             };
+
+            dialogueContainer.Add(new Label("Character Name:"));
+
+            var nameTextField = new TextField(string.Empty);
+            nameTextField.multiline = true;
+            nameTextField.RegisterValueChangedCallback(evt =>
+            {
+                dialogueNode.CharacterName = evt.newValue;
+            });
+            nameTextField.SetValueWithoutNotify(dialogueNode.CharacterName);
+            dialogueContainer.Add(nameTextField);
+
 
             var dialogueLabel = new Label("Dialogue Text:");
             dialogueContainer.Add(dialogueLabel);
@@ -327,6 +348,76 @@ namespace DialogueSystem
             return dialogueNode;
         }
 
+        public ChatNode CreateChatNode(string nodeName, Vector2 position, string charcaterName = "", string overrideGUID = "")
+        {
+            var dialogueNode = new DialogueNode
+            {
+                title = $"Chat: {limit(nodeName, 20)}",
+                DialogueText = nodeName,
+                CharacterName = charcaterName,
+                GUID = (string.IsNullOrEmpty(overrideGUID) ? ensureGuid() : overrideGUID),
+                Type = nodeType.Chat
+            };
+            dialogueNode.styleSheets.Add(Resources.Load<StyleSheet>("Node"));
+
+            // Dialogue Text Info
+
+            var dialogueContainer = new VisualElement
+            {
+                name = "bottom"
+            };
+
+            dialogueContainer.Add(new Label("Character Name:"));
+
+            var nameTextField = new TextField(string.Empty);
+            nameTextField.multiline = true;
+            nameTextField.RegisterValueChangedCallback(evt =>
+            {
+                dialogueNode.CharacterName = evt.newValue;
+            });
+            nameTextField.SetValueWithoutNotify(dialogueNode.CharacterName);
+            dialogueContainer.Add(nameTextField);
+
+
+            var dialogueLabel = new Label("Dialogue Text:");
+            dialogueContainer.Add(dialogueLabel);
+
+            var dialogueTextField = new TextField(string.Empty);
+            dialogueTextField.multiline = true;
+            dialogueTextField.RegisterValueChangedCallback(evt =>
+            {
+                dialogueNode.DialogueText = evt.newValue;
+                dialogueNode.title = $"Dialogue: {limit(nodeName, 20)}";
+            });
+            dialogueTextField.SetValueWithoutNotify(dialogueNode.DialogueText);
+            dialogueContainer.Add(dialogueTextField);
+
+            dialogueNode.mainContainer.Add(dialogueContainer);
+
+            // Input Ports
+
+            var inputPort = GeneratePort(dialogueNode, Direction.Input, Port.Capacity.Multi);
+            inputPort.portName = "Input";
+            dialogueNode.inputContainer.Add(inputPort);
+
+            // Output Ports
+
+            var outputPort = GeneratePort(dialogueNode, Direction.Output, Port.Capacity.Multi);
+            outputPort.portName = "Next";
+            dialogueNode.outputContainer.Add(outputPort);
+
+            // GUID Label
+            dialogueNode.extensionContainer.Add(new Label($"{dialogueNode.GUID}") { name = "guid" });
+
+            // Update Graphics and Position
+
+            dialogueNode.RefreshExpandedState();
+            dialogueNode.RefreshPorts();
+            dialogueNode.SetPosition(new Rect(position, DefaltNodeSize));
+
+            return dialogueNode;
+        }
+
         public void AddChoicePort(DialogueNode dialogueNode, string overriddenPortName = "", string conditions = "", string overriddenGUID = "")
         {
             var generatedPort = GeneratePort(dialogueNode, Direction.Output, Port.Capacity.Multi);
@@ -339,6 +430,7 @@ namespace DialogueSystem
                 Value = ""
             };
             generatedPort.portName = outputPort.GUID;
+
 
             var oldLabel = generatedPort.contentContainer.Q<Label>("type");
             generatedPort.contentContainer.Remove(oldLabel);
@@ -424,6 +516,9 @@ namespace DialogueSystem
         Dialogue,
         Branch,
         Event,
-        Variable
+        Variable,
+        Chat,
+        Entry,
+        Exit
     }
 }

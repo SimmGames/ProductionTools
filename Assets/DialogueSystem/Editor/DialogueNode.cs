@@ -6,8 +6,7 @@ using DialogueSystem;
 
 namespace DialogueSystem
 {
-    public class DialogueNode : BasicNode
+    public class DialogueNode : ChatNode
     {
-        public string DialogueText;
     }
 }

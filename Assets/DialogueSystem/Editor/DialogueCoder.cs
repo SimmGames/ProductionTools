@@ -65,9 +65,9 @@ namespace DialogueSystem
                 {
                     if (container.DialogueNodeData.Find(x => x.Guid == dialogueChoiceCondition.BaseNodeGuid) != null) 
                     {
-                        var functionName = $"{container.DialogueName.Replace(" ", "_").Trim()}_{dialogueChoiceCondition.BaseNodeGuid.Replace("-", "")}_{dialogueChoiceCondition.NodeGUID.Replace("-", "")}";
+                        var functionName = $"{container.DialogueName.Replace(" ", "_").Trim()}_{dialogueChoiceCondition.BaseNodeGuid.Replace("-", "")}_{dialogueChoiceCondition.PortGUID.Replace("-", "")}";
 
-                        dialogueChecks += $"\n// Node: {dialogueChoiceCondition.BaseNodeGuid} //\n// Choice: {dialogueChoiceCondition.NodeGUID} //\n";
+                        dialogueChecks += $"\n// Node: {dialogueChoiceCondition.BaseNodeGuid} //\n// Choice: {dialogueChoiceCondition.PortGUID} //\n";
                         dialogueChecks += $"public bool {functionName}() {{\nreturn (";
                         dialogueChecks += (string.IsNullOrEmpty(dialogueChoiceCondition.Condition.Trim()) ? "true" : dialogueChoiceCondition.Condition);
                         dialogueChecks += $");\n}}\n\n";

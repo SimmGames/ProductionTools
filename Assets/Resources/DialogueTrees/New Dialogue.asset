@@ -48,11 +48,31 @@ MonoBehaviour:
     NodeGUID: 8ac45178-28a0-49af-a6ab-c23a54625ed3
     PortName: Choice 2
     Condition: fun == 3
-    TargetNodeGuid: 
+    TargetNodeGuid: 875d8195-659d-4612-9b68-bda5007b356c
+  - BaseNodeGuid: 875d8195-659d-4612-9b68-bda5007b356c
+    NodeGUID: 
+    PortName: Next
+    Condition: 
+    TargetNodeGuid: 861ad73d-cb4b-4b88-bb45-648115de3356
+  - BaseNodeGuid: 861ad73d-cb4b-4b88-bb45-648115de3356
+    NodeGUID: 
+    PortName: Pass
+    Condition: 
+    TargetNodeGuid: 4ceaf7fa-8c74-4d95-9fa9-b9f589d1ee02
   DialogueNodeData:
   - Guid: 170a9adb-3f04-4715-9a1b-47da17e0de11
-    Position: {x: 329, y: -265}
+    Position: {x: 330, y: -300}
     DialogueText: Dialogue Node
+    CharacterName: Jeffery Bezos
+  ChatNodeData:
+  - Guid: 875d8195-659d-4612-9b68-bda5007b356c
+    Position: {x: 765, y: -83}
+    DialogueText: A BUNCH OF TEXT
+    CharacterName: Spongebob
+  - Guid: 4ceaf7fa-8c74-4d95-9fa9-b9f589d1ee02
+    Position: {x: 1295, y: -73}
+    DialogueText: Sucks to suck
+    CharacterName: squidward
   ConditionNodeData:
   - Guid: 149e58de-faa2-40fd-abd4-ac1f2f60327c
     Position: {x: 675, y: 78}
@@ -60,6 +80,9 @@ MonoBehaviour:
   - Guid: e7fb90dd-0181-47a2-885d-49cbce973e60
     Position: {x: 127, y: 55}
     Condition: fun <= 5
+  - Guid: 861ad73d-cb4b-4b88-bb45-648115de3356
+    Position: {x: 989, y: -144}
+    Condition: true
   EventNodeData:
   - Guid: 1eb83f95-81a3-4f4c-a596-03054104c516
     Position: {x: 420, y: 192}

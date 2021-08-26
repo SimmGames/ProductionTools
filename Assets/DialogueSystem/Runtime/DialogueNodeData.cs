@@ -5,8 +5,8 @@ using DialogueSystem;
 namespace DialogueSystem
 {
     [Serializable]
-    public class DialogueNodeData : NodeData
+    public class DialogueNodeData : ChatNodeData
     {
-        public string DialogueText;
+        
     }
 }

@@ -54,6 +54,10 @@ namespace DialogueSystem
                 {
                     _graphView.CreateNode("// TODO //", nodeType.Variable, _graphView.localMousePosition);
                 });
+                evt.menu.AppendAction("Create Chat Node", (x) =>
+                {
+                    _graphView.CreateNode("Chat Node", nodeType.Chat, _graphView.localMousePosition);
+                });
 
                 evt.menu.AppendAction("Regenerate Code File", (x) =>
                 {

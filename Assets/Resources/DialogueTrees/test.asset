@@ -1,0 +1,127 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d22888574f9e9fa4fa361e996cfea431, type: 3}
+  m_Name: test
+  m_EditorClassIdentifier: 
+  DialogueName: test
+  EntryPointGUID: 
+  NodeLinks:
+  - BaseNodeGuid: c0ca3835-e1bc-446c-99c9-6184241c1447
+    PortName: Yellow
+    PortGUID: 8ca9394f-f37b-44c3-98bf-243ac7be493e
+    Condition: 
+    TargetNodeGuid: 7dcf00a6-1ba6-41fb-abc7-d21e5ae23e30
+  - BaseNodeGuid: c0ca3835-e1bc-446c-99c9-6184241c1447
+    PortName: Green
+    PortGUID: 0ca3f6c6-5540-49cc-91b9-204e5dd9250c
+    Condition: 
+    TargetNodeGuid: 7dcf00a6-1ba6-41fb-abc7-d21e5ae23e30
+  - BaseNodeGuid: c0ca3835-e1bc-446c-99c9-6184241c1447
+    PortName: Red
+    PortGUID: 8519f8cc-cd27-431f-81b4-223e8fe7a6a5
+    Condition: 
+    TargetNodeGuid: 7dcf00a6-1ba6-41fb-abc7-d21e5ae23e30
+  - BaseNodeGuid: c0ca3835-e1bc-446c-99c9-6184241c1447
+    PortName: Blue
+    PortGUID: 2af6e5ba-d1d3-4805-b055-8b7a6f4a12ca
+    Condition: 
+    TargetNodeGuid: 845d2e23-0d79-4ed1-ad5d-fab49524a953
+  - BaseNodeGuid: c0ca3835-e1bc-446c-99c9-6184241c1447
+    PortName: Yellow
+    PortGUID: 8ca9394f-f37b-44c3-98bf-243ac7be493e
+    Condition: 
+    TargetNodeGuid: 3c7202c4-5719-4aba-9053-4087dad1f847
+  - BaseNodeGuid: c0ca3835-e1bc-446c-99c9-6184241c1447
+    PortName: Green
+    PortGUID: 0ca3f6c6-5540-49cc-91b9-204e5dd9250c
+    Condition: 
+    TargetNodeGuid: db8a2717-fef6-47e8-8b41-094e49d38e07
+  - BaseNodeGuid: c0ca3835-e1bc-446c-99c9-6184241c1447
+    PortName: Red
+    PortGUID: 8519f8cc-cd27-431f-81b4-223e8fe7a6a5
+    Condition: 
+    TargetNodeGuid: 7cb18f90-3e35-4491-b4c5-bb49df7c0b97
+  - BaseNodeGuid: c0ca3835-e1bc-446c-99c9-6184241c1447
+    PortName: Yellow
+    PortGUID: 8ca9394f-f37b-44c3-98bf-243ac7be493e
+    Condition: 
+    TargetNodeGuid: 7dcf00a6-1ba6-41fb-abc7-d21e5ae23e30
+  - BaseNodeGuid: c0ca3835-e1bc-446c-99c9-6184241c1447
+    PortName: Green
+    PortGUID: 0ca3f6c6-5540-49cc-91b9-204e5dd9250c
+    Condition: 
+    TargetNodeGuid: 7dcf00a6-1ba6-41fb-abc7-d21e5ae23e30
+  - BaseNodeGuid: c0ca3835-e1bc-446c-99c9-6184241c1447
+    PortName: Red
+    PortGUID: 8519f8cc-cd27-431f-81b4-223e8fe7a6a5
+    Condition: 
+    TargetNodeGuid: 7dcf00a6-1ba6-41fb-abc7-d21e5ae23e30
+  - BaseNodeGuid: c0ca3835-e1bc-446c-99c9-6184241c1447
+    PortName: Blue
+    PortGUID: 2af6e5ba-d1d3-4805-b055-8b7a6f4a12ca
+    Condition: 
+    TargetNodeGuid: 845d2e23-0d79-4ed1-ad5d-fab49524a953
+  - BaseNodeGuid: c0ca3835-e1bc-446c-99c9-6184241c1447
+    PortName: Yellow
+    PortGUID: 8ca9394f-f37b-44c3-98bf-243ac7be493e
+    Condition: 
+    TargetNodeGuid: 3c7202c4-5719-4aba-9053-4087dad1f847
+  - BaseNodeGuid: c0ca3835-e1bc-446c-99c9-6184241c1447
+    PortName: Green
+    PortGUID: 0ca3f6c6-5540-49cc-91b9-204e5dd9250c
+    Condition: 
+    TargetNodeGuid: db8a2717-fef6-47e8-8b41-094e49d38e07
+  - BaseNodeGuid: c0ca3835-e1bc-446c-99c9-6184241c1447
+    PortName: Red
+    PortGUID: 8519f8cc-cd27-431f-81b4-223e8fe7a6a5
+    Condition: 
+    TargetNodeGuid: 7cb18f90-3e35-4491-b4c5-bb49df7c0b97
+  - BaseNodeGuid: 
+    PortName: Next
+    PortGUID: 
+    Condition: 
+    TargetNodeGuid: c0ca3835-e1bc-446c-99c9-6184241c1447
+  DialogueNodeData:
+  - Guid: c0ca3835-e1bc-446c-99c9-6184241c1447
+    Position: {x: 341, y: -80}
+    DialogueText: 'Hello and welcome to the dialogue testing area!
+
+      You have
+      been selected to test the new dialogue system.
+
+      Select the word "Blue"
+      to continue.'
+    CharacterName: Tester Terry
+  ChatNodeData:
+  - Guid: 845d2e23-0d79-4ed1-ad5d-fab49524a953
+    Position: {x: 970, y: 258}
+    DialogueText: Chat Node
+    CharacterName: 
+  - Guid: 7dcf00a6-1ba6-41fb-abc7-d21e5ae23e30
+    Position: {x: 959, y: 81}
+    DialogueText: Chat Node
+    CharacterName: 
+  ConditionNodeData: []
+  EventNodeData:
+  - Guid: 7cb18f90-3e35-4491-b4c5-bb49df7c0b97
+    Position: {x: 784, y: -211}
+    code: testingColor = "Red";
+  - Guid: 3c7202c4-5719-4aba-9053-4087dad1f847
+    Position: {x: 1173, y: -211}
+    code: testingColor = "Yellow";
+  - Guid: db8a2717-fef6-47e8-8b41-094e49d38e07
+    Position: {x: 978, y: -212}
+    code: testingColor = "Green";
+  VariableNodeData:
+  - Guid: 8d313b4e-4ad3-46cc-922c-343df5237c4d
+    Position: {x: 418, y: -250}
+    Code: string testingColor = "";

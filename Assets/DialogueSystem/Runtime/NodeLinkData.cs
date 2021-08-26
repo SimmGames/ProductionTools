@@ -8,8 +8,8 @@ namespace DialogueSystem
     public class NodeLinkData
     {
         public string BaseNodeGuid;
-        public string NodeGUID;
         public string PortName;
+        public string PortGUID;
         public string Condition;
         public string TargetNodeGuid;
     }

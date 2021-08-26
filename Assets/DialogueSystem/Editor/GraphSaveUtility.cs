@@ -48,7 +48,7 @@ namespace DialogueSystem
                         dialogueContainer.NodeLinks.Add(new NodeLinkData
                         {
                             BaseNodeGuid = outputNode.GUID,
-                            NodeGUID = connectedPorts[i].output.portName,
+                            PortGUID = connectedPorts[i].output.portName,
                             PortName = outputPort.Value,
                             Condition = outputPort.Condition,
                             TargetNodeGuid = inputNode.GUID
@@ -62,7 +62,7 @@ namespace DialogueSystem
                             PortName = connectedPorts[i].output.portName,
                             Condition = "",
                             TargetNodeGuid = inputNode.GUID,
-                            NodeGUID = ""
+                            PortGUID = ""
                         });
                     }
                 }
@@ -82,10 +82,12 @@ namespace DialogueSystem
                         PortName = outputPort.Value,
                         Condition = outputPort.Condition,
                         TargetNodeGuid = "",
-                        NodeGUID = unconnectedPorts[i].portName
+                        PortGUID = unconnectedPorts[i].portName
                     });
                 }
             }
+
+            dialogueContainer.EntryPointGUID = Nodes.Find(x => x.EntryPoint).GUID;
 
             foreach (var node in Nodes.Where(node => !node.EntryPoint))
             {
@@ -95,6 +97,7 @@ namespace DialogueSystem
                     {
                         Guid = node.GUID,
                         DialogueText = ((DialogueNode)node).DialogueText,
+                        CharacterName = ((DialogueNode)node).CharacterName,
                         Position = node.GetPosition().position
                     });
                 }
@@ -122,6 +125,16 @@ namespace DialogueSystem
                     {
                         Guid = node.GUID,
                         Code = ((VariableNode)node).Code,
+                        Position = node.GetPosition().position
+                    });
+                }
+                else if (node.Type == nodeType.Chat) 
+                {
+                    dialogueContainer.ChatNodeData.Add(new DialogueNodeData 
+                    {
+                        Guid = node.GUID,
+                        DialogueText = ((DialogueNode)node).DialogueText,
+                        CharacterName = ((DialogueNode)node).CharacterName,
                         Position = node.GetPosition().position
                     });
                 }
@@ -160,10 +173,10 @@ namespace DialogueSystem
                 for (var j = 0; j < connections.Count; j++)
                 {
                     List<Port> outputPorts;
-                    if (string.IsNullOrEmpty(connections[j].NodeGUID))
+                    if (string.IsNullOrEmpty(connections[j].PortGUID))
                         outputPorts = Ports.Where(x => x.portName == connections[j].PortName).ToList();
                     else
-                        outputPorts = Ports.Where(x => x.portName == connections[j].NodeGUID).ToList();
+                        outputPorts = Ports.Where(x => x.portName == connections[j].PortGUID).ToList();
 
                     var targetNodeGuid = connections[j].TargetNodeGuid;
                     var targetNode = Nodes.First(x => x.GUID == targetNodeGuid);
@@ -215,19 +228,30 @@ namespace DialogueSystem
 
             foreach (var nodeData in _containerCache.DialogueNodeData)
             {
-                var tempNode = _targetGraphView.CreateDialogueNode(nodeData.DialogueText, _containerCache.DialogueNodeData.First(x => x.Guid == nodeData.Guid).Position, nodeData.Guid);
+                var tempNode = _targetGraphView.CreateDialogueNode(nodeData.DialogueText, _containerCache.DialogueNodeData.First(x => x.Guid == nodeData.Guid).Position, nodeData.CharacterName, nodeData.Guid);
 
                 _targetGraphView.AddElement(tempNode);
 
                 var nodePorts = _containerCache.NodeLinks.Where(x => x.BaseNodeGuid == nodeData.Guid).ToList();
-                nodePorts.ForEach(x => _targetGraphView.AddChoicePort(tempNode, x.PortName, x.Condition, x.NodeGUID));
+                nodePorts.ForEach((x) => 
+                {
+                    if(tempNode.outputPorts.Find(y => y.GUID == x.PortGUID) == null)
+                        _targetGraphView.AddChoicePort(tempNode, x.PortName, x.Condition, x.PortGUID);
+                });
+            }
+
+            foreach (var nodeData in _containerCache.ChatNodeData)
+            {
+                var tempNode = _targetGraphView.CreateChatNode(nodeData.DialogueText, nodeData.Position, nodeData.CharacterName, nodeData.Guid);
+
+                _targetGraphView.AddElement(tempNode);
             }
         }
 
         private void ClearGraph()
         {
             var entryPoint = Nodes.Find(x => x.EntryPoint);
-            entryPoint.GUID = _containerCache.NodeLinks[0].BaseNodeGuid;
+            entryPoint.GUID = _containerCache.EntryPointGUID;
 
             foreach (var node in Nodes)
             {
