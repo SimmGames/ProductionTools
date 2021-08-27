@@ -12,6 +12,7 @@ namespace DialogueSystem
         public string DialogueName = "";
         public string EntryPointGUID = "";
         public List<NodeLinkData> NodeLinks = new List<NodeLinkData>();
+
         public List<DialogueNodeData> DialogueNodeData = new List<DialogueNodeData>();
         public List<ChatNodeData> ChatNodeData = new List<ChatNodeData>();
         public List<ConditionNodeData> ConditionNodeData = new List<ConditionNodeData>();

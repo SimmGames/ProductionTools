@@ -40,23 +40,23 @@ namespace DialogueSystem
             {
                 evt.menu.AppendAction("Create Dialogue Node", (x) =>
                 {
-                    _graphView.CreateNode("Dialogue Node", nodeType.Dialogue, _graphView.localMousePosition);
+                    _graphView.CreateNode("Dialogue Node", NodeType.Dialogue, _graphView.localMousePosition);
                 });
                 evt.menu.AppendAction("Create Condition Node", (x) =>
                 {
-                    _graphView.CreateNode("true", nodeType.Branch, _graphView.localMousePosition);
+                    _graphView.CreateNode("true", NodeType.Branch, _graphView.localMousePosition);
                 });
                 evt.menu.AppendAction("Create Event Node", (x) =>
                 {
-                    _graphView.CreateNode("// TODO //", nodeType.Event, _graphView.localMousePosition);
+                    _graphView.CreateNode("// TODO //", NodeType.Event, _graphView.localMousePosition);
                 });
                 evt.menu.AppendAction("Create Variable Node", (x) =>
                 {
-                    _graphView.CreateNode("// TODO //", nodeType.Variable, _graphView.localMousePosition);
+                    _graphView.CreateNode("// TODO //", NodeType.Variable, _graphView.localMousePosition);
                 });
                 evt.menu.AppendAction("Create Chat Node", (x) =>
                 {
-                    _graphView.CreateNode("Chat Node", nodeType.Chat, _graphView.localMousePosition);
+                    _graphView.CreateNode("Chat Node", NodeType.Chat, _graphView.localMousePosition);
                 });
 
                 evt.menu.AppendAction("Regenerate Code File", (x) =>

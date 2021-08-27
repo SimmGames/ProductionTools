@@ -9,5 +9,6 @@ namespace DialogueSystem
     {
         public string Guid;
         public Vector2 Position;
+        public NodeType Type;
     }
 }

@@ -59,7 +59,7 @@ namespace DialogueSystem
                 title = "START",
                 GUID = ensureGuid(),
                 EntryPoint = true,
-                Type = nodeType.Entry
+                Type = NodeType.Entry
             };
 
             node.styleSheets.Add(Resources.Load<StyleSheet>("Node"));
@@ -81,23 +81,23 @@ namespace DialogueSystem
             return node;
         }
 
-        public void CreateNode(string nodeName, nodeType type, Vector2 location)
+        public void CreateNode(string nodeName, NodeType type, Vector2 location)
         {
             switch (type)
             {
-                case nodeType.Dialogue:
+                case NodeType.Dialogue:
                     AddElement(CreateDialogueNode(nodeName, location));
                     break;
-                case nodeType.Branch:
+                case NodeType.Branch:
                     AddElement(CreateConditionNode(nodeName, location));
                     break;
-                case nodeType.Event:
+                case NodeType.Event:
                     AddElement(CreateEventNode(nodeName, location));
                     break;
-                case nodeType.Variable:
+                case NodeType.Variable:
                     AddElement(CreateVariableNode(nodeName, location));
                     break;
-                case nodeType.Chat:
+                case NodeType.Chat:
                     AddElement(CreateChatNode(nodeName, location));
                     break;
             }
@@ -120,7 +120,7 @@ namespace DialogueSystem
                 title = "Condition",
                 Condition = condition,
                 GUID = (string.IsNullOrEmpty(overrideGUID) ? ensureGuid() : overrideGUID),
-                Type = nodeType.Branch
+                Type = NodeType.Branch
             };
 
 
@@ -181,7 +181,7 @@ namespace DialogueSystem
                 title = "Event",
                 Code = code,
                 GUID = (string.IsNullOrEmpty(overrideGUID) ? ensureGuid() : overrideGUID),
-                Type = nodeType.Event
+                Type = NodeType.Event
             };
             eventNode.styleSheets.Add(Resources.Load<StyleSheet>("Node"));
 
@@ -229,7 +229,7 @@ namespace DialogueSystem
                 title = "Variables",
                 Code = code,
                 GUID = (string.IsNullOrEmpty(overrideGUID) ? ensureGuid() : overrideGUID),
-                Type = nodeType.Variable
+                Type = NodeType.Variable
             };
             varNode.styleSheets.Add(Resources.Load<StyleSheet>("Node"));
 
@@ -275,7 +275,7 @@ namespace DialogueSystem
                 DialogueText = nodeName,
                 CharacterName = charcaterName,
                 GUID = (string.IsNullOrEmpty(overrideGUID) ? ensureGuid() : overrideGUID),
-                Type = nodeType.Dialogue
+                Type = NodeType.Dialogue
             };
             dialogueNode.styleSheets.Add(Resources.Load<StyleSheet>("Node"));
 
@@ -356,7 +356,7 @@ namespace DialogueSystem
                 DialogueText = nodeName,
                 CharacterName = charcaterName,
                 GUID = (string.IsNullOrEmpty(overrideGUID) ? ensureGuid() : overrideGUID),
-                Type = nodeType.Chat
+                Type = NodeType.Chat
             };
             dialogueNode.styleSheets.Add(Resources.Load<StyleSheet>("Node"));
 
@@ -509,16 +509,5 @@ namespace DialogueSystem
             dialogueNode.RefreshPorts();
         }
 
-    }
-
-    public enum nodeType
-    {
-        Dialogue,
-        Branch,
-        Event,
-        Variable,
-        Chat,
-        Entry,
-        Exit
     }
 }

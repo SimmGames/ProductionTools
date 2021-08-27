@@ -11,7 +11,7 @@ namespace DialogueSystem
         public string GUID;
         public bool EntryPoint = false;
         public List<OutputPort> outputPorts;
-        public nodeType Type;
+        public NodeType Type;
 
         public BasicNode()
         {

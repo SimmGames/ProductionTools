@@ -42,7 +42,7 @@ namespace DialogueSystem
                     var lookingForGUID = connectedPorts[i].output.portName;
 
 
-                    if (outputNode.Type == nodeType.Dialogue && !outputNode.EntryPoint)
+                    if (outputNode.Type == NodeType.Dialogue && !outputNode.EntryPoint)
                     {
                         var outputPort = ((DialogueNode)outputNode).outputPorts.Find(x => x.GUID == lookingForGUID);
                         dialogueContainer.NodeLinks.Add(new NodeLinkData
@@ -73,7 +73,7 @@ namespace DialogueSystem
             {
                 BasicNode outputNode = unconnectedPorts[i].node as BasicNode;
 
-                if (outputNode.Type == nodeType.Dialogue)
+                if (outputNode.Type == NodeType.Dialogue)
                 {
                     var outputPort = ((DialogueNode)outputNode).outputPorts.Find(x => x.GUID == unconnectedPorts[i].portName);
                     dialogueContainer.NodeLinks.Add(new NodeLinkData
@@ -91,51 +91,56 @@ namespace DialogueSystem
 
             foreach (var node in Nodes.Where(node => !node.EntryPoint))
             {
-                if (node.Type == nodeType.Dialogue)
+                if (node.Type == NodeType.Dialogue)
                 {
                     dialogueContainer.DialogueNodeData.Add(new DialogueNodeData
                     {
                         Guid = node.GUID,
                         DialogueText = ((DialogueNode)node).DialogueText,
                         CharacterName = ((DialogueNode)node).CharacterName,
-                        Position = node.GetPosition().position
+                        Position = node.GetPosition().position,
+                        Type = NodeType.Dialogue
                     });
                 }
-                else if (node.Type == nodeType.Branch)
+                else if (node.Type == NodeType.Branch)
                 {
                     dialogueContainer.ConditionNodeData.Add(new ConditionNodeData
                     {
                         Guid = node.GUID,
                         Condition = ((ConditionNode)node).Condition,
-                        Position = node.GetPosition().position
+                        Position = node.GetPosition().position,
+                        Type = NodeType.Branch
                     });
                 }
-                else if (node.Type == nodeType.Event)
+                else if (node.Type == NodeType.Event)
                 {
                     dialogueContainer.EventNodeData.Add(new EventNodeData
                     {
                         Guid = node.GUID,
                         code = ((EventNode)node).Code,
-                        Position = node.GetPosition().position
+                        Position = node.GetPosition().position,
+                        Type = NodeType.Event
                     });
                 }
-                else if (node.Type == nodeType.Variable)
+                else if (node.Type == NodeType.Variable)
                 {
                     dialogueContainer.VariableNodeData.Add(new VariableNodeData
                     {
                         Guid = node.GUID,
                         Code = ((VariableNode)node).Code,
-                        Position = node.GetPosition().position
+                        Position = node.GetPosition().position,
+                        Type = NodeType.Variable
                     });
                 }
-                else if (node.Type == nodeType.Chat) 
+                else if (node.Type == NodeType.Chat) 
                 {
                     dialogueContainer.ChatNodeData.Add(new DialogueNodeData 
                     {
                         Guid = node.GUID,
                         DialogueText = ((DialogueNode)node).DialogueText,
                         CharacterName = ((DialogueNode)node).CharacterName,
-                        Position = node.GetPosition().position
+                        Position = node.GetPosition().position,
+                        Type = NodeType.Chat
                     });
                 }
             }

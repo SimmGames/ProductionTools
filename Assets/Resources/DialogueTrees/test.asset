@@ -269,7 +269,7 @@ MonoBehaviour:
   ChatNodeData:
   - Guid: 7dcf00a6-1ba6-41fb-abc7-d21e5ae23e30
     Position: {x: 959, y: 81}
-    DialogueText: Oh... Well... ${testingColor} isn't exactly Blue, but whatever...
+    DialogueText: Oh... Well... $testingColor isn't exactly Blue, but whatever...
     CharacterName: Tester Terry
   - Guid: 845d2e23-0d79-4ed1-ad5d-fab49524a953
     Position: {x: 970, y: 258}
@@ -345,9 +345,9 @@ MonoBehaviour:
     Position: {x: 1785, y: 44}
     code: age = 35;
   VariableNodeData:
-  - Guid: 8d313b4e-4ad3-46cc-922c-343df5237c4d
-    Position: {x: 418, y: -250}
-    Code: string testingColor = "";
   - Guid: 361b13b6-7e09-4a3f-a909-e907b9484546
-    Position: {x: 1453, y: -80}
+    Position: {x: 1508, y: 12}
     Code: int age;
+  - Guid: 8d313b4e-4ad3-46cc-922c-343df5237c4d
+    Position: {x: 430, y: -189}
+    Code: string testingColor = "";
