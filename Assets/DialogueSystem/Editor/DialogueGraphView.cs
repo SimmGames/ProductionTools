@@ -387,7 +387,7 @@ namespace DialogueSystem
             dialogueTextField.RegisterValueChangedCallback(evt =>
             {
                 dialogueNode.DialogueText = evt.newValue;
-                dialogueNode.title = $"Dialogue: {limit(nodeName, 20)}";
+                dialogueNode.title = $"Chat: {limit(nodeName, 20)}";
             });
             dialogueTextField.SetValueWithoutNotify(dialogueNode.DialogueText);
             dialogueContainer.Add(dialogueTextField);

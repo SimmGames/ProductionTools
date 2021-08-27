@@ -34,7 +34,7 @@ namespace DialogueSystem
                     variables += $"\n// Node: {variableNodes.Guid} //\n{variableNodes.Code}\n";
                 }
 
-                eventFunctions = $"\n\n// Container: {container.DialogueName} //\n\n";
+                eventFunctions += $"\n\n// Container: {container.DialogueName} //\n\n";
                 foreach (EventNodeData eventNodes in container.EventNodeData) 
                 {
                     var functionName = $"{container.DialogueName.Replace(" ", "_").Trim()}_{eventNodes.Guid.Replace("-", "")}";
@@ -47,7 +47,7 @@ namespace DialogueSystem
                     setUp += $"eventFunctions.Add(\"{functionName}\",{functionName});\n";
                 }
 
-                conditionChecks = $"\n\n// Container: {container.DialogueName} //\n\n";
+                conditionChecks += $"\n\n// Container: {container.DialogueName} //\n\n";
                 foreach (ConditionNodeData conditions in container.ConditionNodeData) 
                 {
                     var functionName = $"{container.DialogueName.Replace(" ", "_").Trim()}_{conditions.Guid.Replace("-", "")}";
@@ -60,10 +60,11 @@ namespace DialogueSystem
                     setUp += $"conditionChecks.Add(\"{functionName}\",{functionName});\n";
                 }
 
-                dialogueChecks = $"\n\n// Container: {container.DialogueName} //\n\n";
+                dialogueChecks += $"\n\n// Container: {container.DialogueName} //\n\n";
+                List<string> ListedPorts = new List<string>();
                 foreach (NodeLinkData dialogueChoiceCondition in container.NodeLinks)
                 {
-                    if (container.DialogueNodeData.Find(x => x.Guid == dialogueChoiceCondition.BaseNodeGuid) != null) 
+                    if (container.DialogueNodeData.Find(x => x.Guid == dialogueChoiceCondition.BaseNodeGuid) != null && ListedPorts.Find(y => y.Equals(dialogueChoiceCondition.PortGUID)) == null) 
                     {
                         var functionName = $"{container.DialogueName.Replace(" ", "_").Trim()}_{dialogueChoiceCondition.BaseNodeGuid.Replace("-", "")}_{dialogueChoiceCondition.PortGUID.Replace("-", "")}";
 
@@ -73,6 +74,7 @@ namespace DialogueSystem
                         dialogueChecks += $");\n}}\n\n";
 
                         setUp += $"dialogueChecks.Add(\"{functionName}\",{functionName});\n";
+                        ListedPorts.Add(dialogueChoiceCondition.PortGUID);
                     }
                 }
             }
