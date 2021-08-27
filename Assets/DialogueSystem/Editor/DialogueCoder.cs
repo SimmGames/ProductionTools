@@ -90,7 +90,8 @@ namespace DialogueSystem
                 $"private Dictionary<string, conditionDelegate> dialogueChecks = new Dictionary<string, conditionDelegate>();\n" +
                 $"public Dictionary<string, eventDelegate> GetEventFunctions() {{ return eventFunctions; }}\n" +
                 $"public Dictionary<string, conditionDelegate> GetConditionChecks() {{ return conditionChecks; }}\n" +
-                $"public Dictionary<string, conditionDelegate> GetDialogueChecks() {{ return dialogueChecks; }}\n";
+                $"public Dictionary<string, conditionDelegate> GetDialogueChecks() {{ return dialogueChecks; }}\n" +
+                $"public string GetVariable(string variableName) {{ return this.GetType().GetField(variableName).GetValue(this).ToString(); }}\n";
 
             WriteString($"{usingStuff}namespace DialogueSystem {{\npublic class GeneratedDialogueCode{{\n" +
                 $"{interfaceStuff}\n\n{variables}\n\npublic void Start() {{\n{setUp}\n}}\n\n{dialogueChecks}\n\n{conditionNodesChecks}\n\n{eventNodeFunctions}\n\n" +

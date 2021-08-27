@@ -16,14 +16,16 @@ public Dictionary<string, eventDelegate> GetEventFunctions() { return eventFunct
 public Dictionary<string, conditionDelegate> GetConditionChecks() { return conditionChecks; }
 public Dictionary<string, conditionDelegate> GetDialogueChecks() { return dialogueChecks; }
 
+        public string GetVariable(string variableName) { return this.GetType().GetField(variableName).GetValue(this).ToString(); }
 
 
 
-// Container: New Dialogue //
+
+        // Container: New Dialogue //
 
 
-// Node: 38013ccc-4839-4be0-bec0-505a0c69e8dd //
-int fun = 0;
+        // Node: 38013ccc-4839-4be0-bec0-505a0c69e8dd //
+        int fun = 0;
 
 
 public void Start() {
