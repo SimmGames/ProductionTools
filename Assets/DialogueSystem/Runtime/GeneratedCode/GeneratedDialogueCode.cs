@@ -7,6 +7,7 @@ using DialogueSystem;
 
 namespace DialogueSystem {
 public class GeneratedDialogueCode{
+
 public delegate void eventDelegate();
 public delegate bool conditionDelegate();
 private Dictionary<string, eventDelegate> eventFunctions = new Dictionary<string, eventDelegate>();
@@ -30,11 +31,11 @@ int fun = 0;
 // Container: test //
 
 
-// Node: 8d313b4e-4ad3-46cc-922c-343df5237c4d //
-string testingColor = "";
-
 // Node: 361b13b6-7e09-4a3f-a909-e907b9484546 //
 int age;
+
+// Node: 8d313b4e-4ad3-46cc-922c-343df5237c4d //
+string testingColor = "";
 
 
 public void Start() {

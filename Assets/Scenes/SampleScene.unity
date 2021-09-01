@@ -811,7 +811,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 406217eb23a055c48ad332cb61ec540f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ActiveDialogue: {fileID: 11400000, guid: f4ebdf4d8657384408e6491b1a4baff6, type: 2}
+  ActiveDialogue: {fileID: 11400000, guid: 83636128c6f88ab4099a2ed77e76e355, type: 2}
 --- !u!4 &1779093569
 Transform:
   m_ObjectHideFlags: 0
