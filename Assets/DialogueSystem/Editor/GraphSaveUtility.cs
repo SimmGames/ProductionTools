@@ -99,7 +99,8 @@ namespace DialogueSystem
                         DialogueText = ((DialogueNode)node).DialogueText,
                         CharacterName = ((DialogueNode)node).CharacterName,
                         Position = node.GetPosition().position,
-                        Type = NodeType.Dialogue
+                        Type = NodeType.Dialogue,
+                        Audio = ((DialogueNode)node).Audio
                     });
                 }
                 else if (node.Type == NodeType.Branch)
@@ -140,7 +141,8 @@ namespace DialogueSystem
                         DialogueText = ((DialogueNode)node).DialogueText,
                         CharacterName = ((DialogueNode)node).CharacterName,
                         Position = node.GetPosition().position,
-                        Type = NodeType.Chat
+                        Type = NodeType.Chat,
+                        Audio = ((DialogueNode)node).Audio
                     });
                 }
             }
@@ -233,7 +235,7 @@ namespace DialogueSystem
 
             foreach (var nodeData in _containerCache.DialogueNodeData)
             {
-                var tempNode = _targetGraphView.CreateDialogueNode(nodeData.DialogueText, _containerCache.DialogueNodeData.First(x => x.Guid == nodeData.Guid).Position, nodeData.CharacterName, nodeData.Guid);
+                var tempNode = _targetGraphView.CreateDialogueNode(nodeData.DialogueText, _containerCache.DialogueNodeData.First(x => x.Guid == nodeData.Guid).Position, nodeData.CharacterName, nodeData.Audio, nodeData.Guid);
 
                 _targetGraphView.AddElement(tempNode);
 
@@ -247,7 +249,7 @@ namespace DialogueSystem
 
             foreach (var nodeData in _containerCache.ChatNodeData)
             {
-                var tempNode = _targetGraphView.CreateChatNode(nodeData.DialogueText, nodeData.Position, nodeData.CharacterName, nodeData.Guid);
+                var tempNode = _targetGraphView.CreateChatNode(nodeData.DialogueText, nodeData.Position, nodeData.CharacterName, nodeData.Audio, nodeData.Guid);
 
                 _targetGraphView.AddElement(tempNode);
             }

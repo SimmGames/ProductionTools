@@ -16,6 +16,7 @@ namespace DialogueSystem
 
         public string DialogueText => getDialogueText();
         public string Character => getCharacter();
+        public string AudioFile => getAudioFile();
         public Dictionary<string, string> DialogueOptions => getDialogueOptions();
 
 
@@ -269,6 +270,18 @@ namespace DialogueSystem
                 return ((ChatNodeData)currentNode).DialogueText;
             }
             else 
+            {
+                return null;
+            }
+        }
+        private string getAudioFile() 
+        {
+            if (currentNode.Type == NodeType.Chat || currentNode.Type == NodeType.Dialogue)
+            {
+                string file = ((ChatNodeData)currentNode).Audio;
+                return string.IsNullOrEmpty(file) ? null : file;
+            }
+            else
             {
                 return null;
             }
