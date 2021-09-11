@@ -9,5 +9,6 @@ namespace DialogueSystem
     {
         public string DialogueText;
         public string CharacterName;
+        public string Audio;
     }
 }

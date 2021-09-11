@@ -267,7 +267,7 @@ namespace DialogueSystem
             return (str.Length <= length ? str : $"{str.Substring(0, length - 3)}...");
         }
 
-        public DialogueNode CreateDialogueNode(string nodeName, Vector2 position, string charcaterName = "", string overrideGUID = "")
+        public DialogueNode CreateDialogueNode(string nodeName, Vector2 position, string charcaterName = "", string audioFile = "", string overrideGUID = "")
         {
             var dialogueNode = new DialogueNode
             {
@@ -275,7 +275,8 @@ namespace DialogueSystem
                 DialogueText = nodeName,
                 CharacterName = charcaterName,
                 GUID = (string.IsNullOrEmpty(overrideGUID) ? ensureGuid() : overrideGUID),
-                Type = NodeType.Dialogue
+                Type = NodeType.Dialogue,
+                Audio = audioFile
             };
             dialogueNode.styleSheets.Add(Resources.Load<StyleSheet>("Node"));
 
@@ -310,6 +311,19 @@ namespace DialogueSystem
             });
             dialogueTextField.SetValueWithoutNotify(dialogueNode.DialogueText);
             dialogueContainer.Add(dialogueTextField);
+
+            // Audio File to be played
+
+            var audioLabel = new Label("Audio File:");
+            dialogueContainer.Add(audioLabel);
+            var audioField = new TextField(string.Empty);
+            audioField.RegisterValueChangedCallback(evt => 
+            {
+                dialogueNode.Audio = evt.newValue;
+            });
+            audioField.SetValueWithoutNotify(dialogueNode.Audio);
+
+            dialogueContainer.Add(audioField);
 
             dialogueNode.mainContainer.Add(dialogueContainer);
 
@@ -348,7 +362,7 @@ namespace DialogueSystem
             return dialogueNode;
         }
 
-        public ChatNode CreateChatNode(string nodeName, Vector2 position, string charcaterName = "", string overrideGUID = "")
+        public ChatNode CreateChatNode(string nodeName, Vector2 position, string charcaterName = "", string audioFile = "", string overrideGUID = "")
         {
             var dialogueNode = new DialogueNode
             {
@@ -356,7 +370,8 @@ namespace DialogueSystem
                 DialogueText = nodeName,
                 CharacterName = charcaterName,
                 GUID = (string.IsNullOrEmpty(overrideGUID) ? ensureGuid() : overrideGUID),
-                Type = NodeType.Chat
+                Type = NodeType.Chat,
+                Audio = audioFile
             };
             dialogueNode.styleSheets.Add(Resources.Load<StyleSheet>("Node"));
 
@@ -391,6 +406,19 @@ namespace DialogueSystem
             });
             dialogueTextField.SetValueWithoutNotify(dialogueNode.DialogueText);
             dialogueContainer.Add(dialogueTextField);
+
+
+            // Audio File to be played
+
+            var audioLabel = new Label("Audio File:");
+            dialogueContainer.Add(audioLabel);
+            var audioField = new TextField(string.Empty);
+            audioField.RegisterValueChangedCallback(evt =>
+            {
+                dialogueNode.Audio = evt.newValue;
+            });
+            audioField.SetValueWithoutNotify(dialogueNode.Audio);
+            dialogueContainer.Add(audioField);
 
             dialogueNode.mainContainer.Add(dialogueContainer);
 
