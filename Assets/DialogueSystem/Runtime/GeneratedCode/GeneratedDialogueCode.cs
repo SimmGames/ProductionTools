@@ -7,7 +7,6 @@ using DialogueSystem;
 
 namespace DialogueSystem {
 public class GeneratedDialogueCode{
-
 public delegate void eventDelegate();
 public delegate bool conditionDelegate();
 private Dictionary<string, eventDelegate> eventFunctions = new Dictionary<string, eventDelegate>();
