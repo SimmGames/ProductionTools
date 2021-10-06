@@ -81,6 +81,28 @@ namespace DialogueSystem
             return node;
         }
 
+        public void CreateNode(NodeData data) 
+        {
+            switch(data.Type)
+            {
+                case NodeType.Dialogue:
+                    
+                    break;
+                case NodeType.Branch:
+                    
+                    break;
+                case NodeType.Event:
+                    
+                    break;
+                case NodeType.Variable:
+                    
+                    break;
+                case NodeType.Chat:
+                    AddElement(ChatNode.CreateNode(data, ensureGuid(data.Guid)));
+                    break;
+            }
+        }
+
         public void CreateNode(string nodeName, NodeType type, Vector2 location)
         {
             switch (type)
@@ -98,11 +120,15 @@ namespace DialogueSystem
                     AddElement(CreateVariableNode(nodeName, location));
                     break;
                 case NodeType.Chat:
-                    AddElement(CreateChatNode(nodeName, location));
+                    AddElement(ChatNode.CreateNode(location, nodeName, ensureGuid()));
                     break;
             }
         }
 
+        private string ensureGuid(string overrideGUID)
+        {
+            return (string.IsNullOrEmpty(overrideGUID) ? ensureGuid() : overrideGUID);
+        }
         private string ensureGuid()
         {
             string tempGuid = Guid.NewGuid().ToString();
@@ -362,90 +388,7 @@ namespace DialogueSystem
             return dialogueNode;
         }
 
-        public ChatNode CreateChatNode(string nodeName, Vector2 position, string charcaterName = "", string audioFile = "", string overrideGUID = "")
-        {
-            var dialogueNode = new DialogueNode
-            {
-                title = $"Chat: {limit(nodeName, 20)}",
-                DialogueText = nodeName,
-                CharacterName = charcaterName,
-                Guid = (string.IsNullOrEmpty(overrideGUID) ? ensureGuid() : overrideGUID),
-                Type = NodeType.Chat,
-                Audio = audioFile
-            };
-            dialogueNode.styleSheets.Add(Resources.Load<StyleSheet>("Node"));
-
-            // Dialogue Text Info
-
-            var dialogueContainer = new VisualElement
-            {
-                name = "bottom"
-            };
-
-            dialogueContainer.Add(new Label("Character Name:"));
-
-            var nameTextField = new TextField(string.Empty);
-            nameTextField.multiline = true;
-            nameTextField.RegisterValueChangedCallback(evt =>
-            {
-                dialogueNode.CharacterName = evt.newValue;
-            });
-            nameTextField.SetValueWithoutNotify(dialogueNode.CharacterName);
-            dialogueContainer.Add(nameTextField);
-
-
-            var dialogueLabel = new Label("Dialogue Text:");
-            dialogueContainer.Add(dialogueLabel);
-
-            var dialogueTextField = new TextField(string.Empty);
-            dialogueTextField.multiline = true;
-            dialogueTextField.RegisterValueChangedCallback(evt =>
-            {
-                dialogueNode.DialogueText = evt.newValue;
-                dialogueNode.title = $"Chat: {limit(nodeName, 20)}";
-            });
-            dialogueTextField.SetValueWithoutNotify(dialogueNode.DialogueText);
-            dialogueContainer.Add(dialogueTextField);
-
-
-            // Audio File to be played
-
-            var audioLabel = new Label("Audio File:");
-            dialogueContainer.Add(audioLabel);
-            var audioField = new TextField(string.Empty);
-            audioField.RegisterValueChangedCallback(evt =>
-            {
-                dialogueNode.Audio = evt.newValue;
-            });
-            audioField.SetValueWithoutNotify(dialogueNode.Audio);
-            dialogueContainer.Add(audioField);
-
-            dialogueNode.mainContainer.Add(dialogueContainer);
-
-            // Input Ports
-
-            var inputPort = GeneratePort(dialogueNode, Direction.Input, Port.Capacity.Multi);
-            inputPort.portName = "Input";
-            dialogueNode.inputContainer.Add(inputPort);
-
-            // Output Ports
-
-            var outputPort = GeneratePort(dialogueNode, Direction.Output, Port.Capacity.Multi);
-            outputPort.portName = "Next";
-            dialogueNode.outputContainer.Add(outputPort);
-
-            // GUID Label
-            dialogueNode.extensionContainer.Add(new Label($"{dialogueNode.Guid}") { name = "guid" });
-
-            // Update Graphics and Position
-
-            dialogueNode.RefreshExpandedState();
-            dialogueNode.RefreshPorts();
-            dialogueNode.SetPosition(new Rect(position, DefaltNodeSize));
-
-            return dialogueNode;
-        }
-
+        
         public void AddChoicePort(DialogueNode dialogueNode, string overriddenPortName = "", string conditions = "", string overriddenGUID = "")
         {
             var generatedPort = GeneratePort(dialogueNode, Direction.Output, Port.Capacity.Multi);

@@ -143,14 +143,14 @@ namespace DialogueSystem
                 }
                 else if (node.Type == NodeType.Chat) // Chat Node
                 {
-                    dialogueContainer.ChatNodeData.Add(new DialogueNodeData 
+                    dialogueContainer.ChatNodeData.Add(new ChatNodeData 
                     {
                         Guid = node.Guid,
-                        DialogueText = ((DialogueNode)node).DialogueText,
-                        CharacterName = ((DialogueNode)node).CharacterName,
+                        DialogueText = ((ChatNode)node).DialogueText,
+                        CharacterName = ((ChatNode)node).CharacterName,
                         Position = node.GetPosition().position,
                         Type = NodeType.Chat,
-                        Audio = ((DialogueNode)node).Audio
+                        Audio = ((ChatNode)node).Audio
                     });
                 }
             }
@@ -264,9 +264,7 @@ namespace DialogueSystem
 
             foreach (var nodeData in _containerCache.ChatNodeData)
             {
-                var tempNode = _targetGraphView.CreateChatNode(nodeData.DialogueText, nodeData.Position, nodeData.CharacterName, nodeData.Audio, nodeData.Guid);
-
-                _targetGraphView.AddElement(tempNode);
+                _targetGraphView.CreateNode(nodeData);
             }
         }
 

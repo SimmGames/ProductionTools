@@ -1,6 +1,7 @@
 ﻿using System;
 using UnityEngine;
 using DialogueSystem;
+using System.Collections.Generic;
 
 namespace DialogueSystem
 {
@@ -10,5 +11,6 @@ namespace DialogueSystem
         public string Guid;
         public Vector2 Position;
         public NodeType Type;
+        public Dictionary<string, string> TextFields;
     }
 }

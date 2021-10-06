@@ -8,5 +8,9 @@ namespace DialogueSystem
 {
     public class DialogueNode : ChatNode
     {
+        public static new BasicNode CreateNode(NodeData data, string guid)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }
