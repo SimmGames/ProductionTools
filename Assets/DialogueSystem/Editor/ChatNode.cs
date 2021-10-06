@@ -5,10 +5,26 @@ using DialogueSystem;
 
 namespace DialogueSystem
 {
-    public class ChatNode : BasicNode
+    public class ChatNode : BasicNode, IGraphNode
     {
-        public string DialogueText;
-        public string CharacterName;
-        public string Audio;
+        private ChatNodeData NodeData 
+        {   
+            get { return (ChatNodeData)_nodeData; } 
+            set { _nodeData = (NodeData)value; } 
+        }
+
+        public string DialogueText { get; set; }
+        public string CharacterName { get; set; }
+        public string Audio { get; set; }
+
+        public override BasicNode CreateNode(NodeData data, string guid)
+        {
+            
+        }
+
+        public override NodeData SaveNodeData()
+        {
+            NodeData
+        }
     }
 }

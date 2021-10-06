@@ -57,7 +57,7 @@ namespace DialogueSystem
             var node = new BasicNode
             {
                 title = "START",
-                GUID = ensureGuid(),
+                Guid = ensureGuid(),
                 EntryPoint = true,
                 Type = NodeType.Entry
             };
@@ -72,7 +72,7 @@ namespace DialogueSystem
             node.capabilities &= ~Capabilities.Deletable;
 
             // GUID Label
-            node.extensionContainer.Add(new Label($"{node.GUID}") { name = "guid" });
+            node.extensionContainer.Add(new Label($"{node.Guid}") { name = "guid" });
 
             node.RefreshExpandedState();
             node.RefreshPorts();
@@ -103,10 +103,10 @@ namespace DialogueSystem
             }
         }
 
-        public string ensureGuid()
+        private string ensureGuid()
         {
             string tempGuid = Guid.NewGuid().ToString();
-            while (Nodes.Where(x => x.GUID == tempGuid).Count() > 0)
+            while (Nodes.Where(x => x.Guid == tempGuid).Count() > 0)
             {
                 tempGuid = Guid.NewGuid().ToString();
             }
@@ -119,7 +119,7 @@ namespace DialogueSystem
             {
                 title = "Condition",
                 Condition = condition,
-                GUID = (string.IsNullOrEmpty(overrideGUID) ? ensureGuid() : overrideGUID),
+                Guid = (string.IsNullOrEmpty(overrideGUID) ? ensureGuid() : overrideGUID),
                 Type = NodeType.Branch
             };
 
@@ -163,7 +163,7 @@ namespace DialogueSystem
             conditionNode.outputContainer.Add(failPort);
 
             // GUID Label
-            conditionNode.extensionContainer.Add(new Label($"{conditionNode.GUID}") { name = "guid" });
+            conditionNode.extensionContainer.Add(new Label($"{conditionNode.Guid}") { name = "guid" });
 
             // Update Graphics and Position
 
@@ -180,7 +180,7 @@ namespace DialogueSystem
             {
                 title = "Event",
                 Code = code,
-                GUID = (string.IsNullOrEmpty(overrideGUID) ? ensureGuid() : overrideGUID),
+                Guid = (string.IsNullOrEmpty(overrideGUID) ? ensureGuid() : overrideGUID),
                 Type = NodeType.Event
             };
             eventNode.styleSheets.Add(Resources.Load<StyleSheet>("Node"));
@@ -211,7 +211,7 @@ namespace DialogueSystem
             eventNode.inputContainer.Add(inputPort);
 
             // GUID Label
-            eventNode.extensionContainer.Add(new Label($"{eventNode.GUID}") { name = "guid" });
+            eventNode.extensionContainer.Add(new Label($"{eventNode.Guid}") { name = "guid" });
 
             // Update Graphics and Position
 
@@ -228,7 +228,7 @@ namespace DialogueSystem
             {
                 title = "Variables",
                 Code = code,
-                GUID = (string.IsNullOrEmpty(overrideGUID) ? ensureGuid() : overrideGUID),
+                Guid = (string.IsNullOrEmpty(overrideGUID) ? ensureGuid() : overrideGUID),
                 Type = NodeType.Variable
             };
             varNode.styleSheets.Add(Resources.Load<StyleSheet>("Node"));
@@ -251,7 +251,7 @@ namespace DialogueSystem
             varNode.mainContainer.Add(varContainer);
 
             // GUID Label
-            varNode.extensionContainer.Add(new Label($"{varNode.GUID}") { name = "guid" });
+            varNode.extensionContainer.Add(new Label($"{varNode.Guid}") { name = "guid" });
 
             // Update Graphics and Position
 
@@ -274,7 +274,7 @@ namespace DialogueSystem
                 title = $"Dialogue: {limit(nodeName, 20)}",
                 DialogueText = nodeName,
                 CharacterName = charcaterName,
-                GUID = (string.IsNullOrEmpty(overrideGUID) ? ensureGuid() : overrideGUID),
+                Guid = (string.IsNullOrEmpty(overrideGUID) ? ensureGuid() : overrideGUID),
                 Type = NodeType.Dialogue,
                 Audio = audioFile
             };
@@ -351,7 +351,7 @@ namespace DialogueSystem
             dialogueNode.extensionContainer.Add(scriptContainer);
 
             // GUID Label
-            dialogueNode.extensionContainer.Add(new Label($"{dialogueNode.GUID}") { name = "guid" });
+            dialogueNode.extensionContainer.Add(new Label($"{dialogueNode.Guid}") { name = "guid" });
 
             // Update Graphics and Position
 
@@ -369,7 +369,7 @@ namespace DialogueSystem
                 title = $"Chat: {limit(nodeName, 20)}",
                 DialogueText = nodeName,
                 CharacterName = charcaterName,
-                GUID = (string.IsNullOrEmpty(overrideGUID) ? ensureGuid() : overrideGUID),
+                Guid = (string.IsNullOrEmpty(overrideGUID) ? ensureGuid() : overrideGUID),
                 Type = NodeType.Chat,
                 Audio = audioFile
             };
@@ -435,7 +435,7 @@ namespace DialogueSystem
             dialogueNode.outputContainer.Add(outputPort);
 
             // GUID Label
-            dialogueNode.extensionContainer.Add(new Label($"{dialogueNode.GUID}") { name = "guid" });
+            dialogueNode.extensionContainer.Add(new Label($"{dialogueNode.Guid}") { name = "guid" });
 
             // Update Graphics and Position
 
@@ -452,7 +452,7 @@ namespace DialogueSystem
             var outputPortCount = dialogueNode.outputContainer.Query("connector").ToList().Count;
             var outputPort = new OutputPort
             {
-                NodeGUID = dialogueNode.GUID,
+                NodeGUID = dialogueNode.Guid,
                 GUID = (string.IsNullOrEmpty(overriddenGUID) ? Guid.NewGuid().ToString() : overriddenGUID),
                 Condition = conditions,
                 Value = ""

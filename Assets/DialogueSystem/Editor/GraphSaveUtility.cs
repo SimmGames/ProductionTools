@@ -25,12 +25,18 @@ namespace DialogueSystem
                 _targetGraphView = targetGraphView
             };
         }
-
+        
+        /// <summary>
+        /// Save the instance of Dialogue Graph View to a file with the name of <paramref name="fileName"/>.
+        /// </summary>
+        /// <param name="fileName"></param>
         public void SaveGraph(string fileName)
         {
             var dialogueContainer = ScriptableObject.CreateInstance<DialogueContainer>();
 
             dialogueContainer.DialogueName = fileName;
+
+            // Port Saving
 
             if (Edges.Any())
             {
@@ -47,21 +53,21 @@ namespace DialogueSystem
                         var outputPort = ((DialogueNode)outputNode).outputPorts.Find(x => x.GUID == lookingForGUID);
                         dialogueContainer.NodeLinks.Add(new NodeLinkData
                         {
-                            BaseNodeGuid = outputNode.GUID,
+                            BaseNodeGuid = outputNode.Guid,
                             PortGUID = connectedPorts[i].output.portName,
                             PortName = outputPort.Value,
                             Condition = outputPort.Condition,
-                            TargetNodeGuid = inputNode.GUID
+                            TargetNodeGuid = inputNode.Guid
                         });
                     }
                     else
                     {
                         dialogueContainer.NodeLinks.Add(new NodeLinkData
                         {
-                            BaseNodeGuid = outputNode.GUID,
+                            BaseNodeGuid = outputNode.Guid,
                             PortName = connectedPorts[i].output.portName,
                             Condition = "",
-                            TargetNodeGuid = inputNode.GUID,
+                            TargetNodeGuid = inputNode.Guid,
                             PortGUID = ""
                         });
                     }
@@ -78,7 +84,7 @@ namespace DialogueSystem
                     var outputPort = ((DialogueNode)outputNode).outputPorts.Find(x => x.GUID == unconnectedPorts[i].portName);
                     dialogueContainer.NodeLinks.Add(new NodeLinkData
                     {
-                        BaseNodeGuid = outputNode.GUID,
+                        BaseNodeGuid = outputNode.Guid,
                         PortName = outputPort.Value,
                         Condition = outputPort.Condition,
                         TargetNodeGuid = "",
@@ -87,15 +93,17 @@ namespace DialogueSystem
                 }
             }
 
-            dialogueContainer.EntryPointGUID = Nodes.Find(x => x.EntryPoint).GUID;
+            // Node Saving. All of this will be defined by the node itself
+
+            dialogueContainer.EntryPointGUID = Nodes.Find(x => x.EntryPoint).Guid;
 
             foreach (var node in Nodes.Where(node => !node.EntryPoint))
             {
-                if (node.Type == NodeType.Dialogue)
+                if (node.Type == NodeType.Dialogue) // Dialogue Node
                 {
                     dialogueContainer.DialogueNodeData.Add(new DialogueNodeData
                     {
-                        Guid = node.GUID,
+                        Guid = node.Guid,
                         DialogueText = ((DialogueNode)node).DialogueText,
                         CharacterName = ((DialogueNode)node).CharacterName,
                         Position = node.GetPosition().position,
@@ -103,41 +111,41 @@ namespace DialogueSystem
                         Audio = ((DialogueNode)node).Audio
                     });
                 }
-                else if (node.Type == NodeType.Branch)
+                else if (node.Type == NodeType.Branch) // Branch Node
                 {
                     dialogueContainer.ConditionNodeData.Add(new ConditionNodeData
                     {
-                        Guid = node.GUID,
+                        Guid = node.Guid,
                         Condition = ((ConditionNode)node).Condition,
                         Position = node.GetPosition().position,
                         Type = NodeType.Branch
                     });
                 }
-                else if (node.Type == NodeType.Event)
+                else if (node.Type == NodeType.Event) // Event Node
                 {
                     dialogueContainer.EventNodeData.Add(new EventNodeData
                     {
-                        Guid = node.GUID,
+                        Guid = node.Guid,
                         code = ((EventNode)node).Code,
                         Position = node.GetPosition().position,
                         Type = NodeType.Event
                     });
                 }
-                else if (node.Type == NodeType.Variable)
+                else if (node.Type == NodeType.Variable) // Variable Node
                 {
                     dialogueContainer.VariableNodeData.Add(new VariableNodeData
                     {
-                        Guid = node.GUID,
+                        Guid = node.Guid,
                         Code = ((VariableNode)node).Code,
                         Position = node.GetPosition().position,
                         Type = NodeType.Variable
                     });
                 }
-                else if (node.Type == NodeType.Chat) 
+                else if (node.Type == NodeType.Chat) // Chat Node
                 {
                     dialogueContainer.ChatNodeData.Add(new DialogueNodeData 
                     {
-                        Guid = node.GUID,
+                        Guid = node.Guid,
                         DialogueText = ((DialogueNode)node).DialogueText,
                         CharacterName = ((DialogueNode)node).CharacterName,
                         Position = node.GetPosition().position,
@@ -146,6 +154,8 @@ namespace DialogueSystem
                     });
                 }
             }
+
+            // Creating Asset (And asset folder)
 
             if (!AssetDatabase.IsValidFolder("Assets/Resources"))
                 AssetDatabase.CreateFolder("Assets", "Resources");
@@ -157,6 +167,10 @@ namespace DialogueSystem
             AssetDatabase.SaveAssets();
         }
 
+        /// <summary>
+        /// Load an instance of Dialogue Graph View from a file with the name of <paramref name="fileName"/>.
+        /// </summary>
+        /// <param name="fileName"></param>
         public void LoadGraph(string fileName)
         {
             _containerCache = Resources.Load<DialogueContainer>("DialogueTrees/" + fileName);
@@ -176,7 +190,7 @@ namespace DialogueSystem
         {
             for (var i = 0; i < Nodes.Count; i++)
             {
-                var connections = _containerCache.NodeLinks.Where(x => x.BaseNodeGuid == Nodes[i].GUID && !string.IsNullOrEmpty(x.TargetNodeGuid)).ToList();
+                var connections = _containerCache.NodeLinks.Where(x => x.BaseNodeGuid == Nodes[i].Guid && !string.IsNullOrEmpty(x.TargetNodeGuid)).ToList();
                 for (var j = 0; j < connections.Count; j++)
                 {
                     List<Port> outputPorts;
@@ -186,9 +200,9 @@ namespace DialogueSystem
                         outputPorts = Ports.Where(x => x.portName == connections[j].PortGUID).ToList();
 
                     var targetNodeGuid = connections[j].TargetNodeGuid;
-                    var targetNode = Nodes.First(x => x.GUID == targetNodeGuid);
+                    var targetNode = Nodes.First(x => x.Guid == targetNodeGuid);
 
-                    Port basePort = outputPorts.Where(x => ((BasicNode)x.node).GUID == connections[j].BaseNodeGuid).First();
+                    Port basePort = outputPorts.Where(x => ((BasicNode)x.node).Guid == connections[j].BaseNodeGuid).First();
                     Port targetPort = (Port)targetNode.inputContainer[0];
                     LinkNodes(basePort, targetPort);
 
@@ -212,6 +226,7 @@ namespace DialogueSystem
 
         private void CreateNodes()
         {
+            // Replace this with a "Load Node"
             foreach (var nodeData in _containerCache.ConditionNodeData)
             {
                 var tempNode = _targetGraphView.CreateConditionNode(nodeData.Condition, nodeData.Position, nodeData.Guid);
@@ -258,7 +273,7 @@ namespace DialogueSystem
         private void ClearGraph()
         {
             var entryPoint = Nodes.Find(x => x.EntryPoint);
-            entryPoint.GUID = _containerCache.EntryPointGUID;
+            entryPoint.Guid = _containerCache.EntryPointGUID;
 
             foreach (var node in Nodes)
             {
