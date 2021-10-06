@@ -52,17 +52,16 @@ namespace DialogueSystem
             // Create a container to put everything in
             VisualElement visualElement = new VisualElement { name = label };
 
-            // Make a label for our input and add it
-            visualElement.Add(new Label(label));
+            if (!string.IsNullOrEmpty(label))
+            {
+                // Make a label for our input and add it
+                visualElement.Add(new Label(label));
+            }
 
             // Here's our actual input
-            TextField text = new TextField(string.Empty);
+            TextField text = new TextField(string.Empty) { name = name };
             text.multiline = true;
             text.SetValueWithoutNotify(startValue);
-            if (string.IsNullOrEmpty(name)) 
-            {
-                text.name = name;
-            }
 
             // Event Callback 
             text.RegisterValueChangedCallback(onChange);

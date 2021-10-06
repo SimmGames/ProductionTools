@@ -7,7 +7,7 @@ using UnityEditor.Experimental.GraphView;
 
 namespace DialogueSystem
 {
-    public class ChatNode : BasicNode, IGraphNode
+    public class ChatNode : BasicNode
     {
         public string DialogueText 
         {

@@ -229,23 +229,17 @@ namespace DialogueSystem
             // Replace this with a "Load Node"
             foreach (var nodeData in _containerCache.ConditionNodeData)
             {
-                var tempNode = _targetGraphView.CreateConditionNode(nodeData.Condition, nodeData.Position, nodeData.Guid);
-
-                _targetGraphView.AddElement(tempNode);
+                _targetGraphView.CreateNode(nodeData);
             }
 
             foreach (var nodeData in _containerCache.EventNodeData)
             {
-                var tempNode = _targetGraphView.CreateEventNode(nodeData.code, nodeData.Position, nodeData.Guid);
-
-                _targetGraphView.AddElement(tempNode);
+                _targetGraphView.CreateNode(nodeData);
             }
 
             foreach (var nodeData in _containerCache.VariableNodeData)
             {
-                var tempNode = _targetGraphView.CreateVariableNode(nodeData.Code, nodeData.Position, nodeData.Guid);
-
-                _targetGraphView.AddElement(tempNode);
+                _targetGraphView.CreateNode(nodeData);
             }
 
             foreach (var nodeData in _containerCache.DialogueNodeData)

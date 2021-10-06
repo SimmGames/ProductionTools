@@ -147,66 +147,6 @@ namespace DialogueSystem
             return tempGuid;
         }
 
-        public ConditionNode CreateConditionNode(string condition, Vector2 location, string overrideGUID = "")
-        {
-            var conditionNode = new ConditionNode
-            {
-                title = "Condition",
-                Condition = condition,
-                Guid = (string.IsNullOrEmpty(overrideGUID) ? ensureGuid() : overrideGUID),
-                Type = NodeType.Branch
-            };
-
-
-
-            conditionNode.styleSheets.Add(Resources.Load<StyleSheet>("Node"));
-
-            // Condition Info
-            var conditionContainer = new VisualElement
-            {
-                name = "bottom"
-            };
-
-            var conditionLabel = new Label("Condition: ");
-            conditionContainer.Add(conditionLabel);
-
-            var conditionTextField = new TextField(string.Empty) { name = "script" };
-            conditionTextField.multiline = true;
-            conditionTextField.RegisterValueChangedCallback(evt =>
-            {
-                conditionNode.Condition = evt.newValue;
-            });
-            conditionTextField.SetValueWithoutNotify(conditionNode.Condition);
-            conditionContainer.Add(conditionTextField);
-
-            conditionNode.mainContainer.Add(conditionContainer);
-
-            // Input
-            var inputPort = GeneratePort(conditionNode, Direction.Input, Port.Capacity.Multi);
-            inputPort.portName = "Input";
-            conditionNode.inputContainer.Add(inputPort);
-
-            // Output
-
-            var passPort = GeneratePort(conditionNode, Direction.Output, Port.Capacity.Multi);
-            passPort.portName = "Pass";
-            conditionNode.outputContainer.Add(passPort);
-
-            var failPort = GeneratePort(conditionNode, Direction.Output, Port.Capacity.Multi);
-            failPort.portName = "Fail";
-            conditionNode.outputContainer.Add(failPort);
-
-            // GUID Label
-            conditionNode.extensionContainer.Add(new Label($"{conditionNode.Guid}") { name = "guid" });
-
-            // Update Graphics and Position
-
-            conditionNode.RefreshExpandedState();
-            conditionNode.RefreshPorts();
-            conditionNode.SetPosition(new Rect(location, DefaltNodeSize));
-
-            return conditionNode;
-        }
 
         public EventNode CreateEventNode(string code, Vector2 location, string overrideGUID = "")
         {
