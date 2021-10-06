@@ -47,6 +47,11 @@ namespace DialogueSystem
         }
 
         // ~ Node Drawing Tools ~ //
+        public static Port GeneratePort(BasicNode node, Direction portDirection, Port.Capacity capacity)
+        {
+            return node.InstantiatePort(Orientation.Horizontal, portDirection, capacity, typeof(float));
+        }
+
         protected static VisualElement GenerateTextInput(string label, string startValue, EventCallback<ChangeEvent<string>> onChange, string name = "") 
         {
             // Create a container to put everything in
@@ -75,11 +80,7 @@ namespace DialogueSystem
         {
             return $"{label} {limit(extra,20)}";
         }
-        protected static Port GeneratePort(BasicNode node, Direction portDirection, Port.Capacity capacity)
-        {
-            return node.InstantiatePort(Orientation.Horizontal, portDirection, capacity, typeof(float));
-        }
-
+        
         private static string limit(string str, int length)
         {
             return (str.Length <= length ? str : $"{str.Substring(0, length - 3)}...");

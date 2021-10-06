@@ -36,11 +36,6 @@ namespace DialogueSystem
 
             AddElement(GenerateEntryPointNode());
         }
-
-        private Port GeneratePort(BasicNode node, Direction portDirection, Port.Capacity capacity)
-        {
-            return node.InstantiatePort(Orientation.Horizontal, portDirection, capacity, typeof(float));
-        }
         public override List<Port> GetCompatiblePorts(Port startPort, NodeAdapter nodeAdapter)
         {
             var compatiblePorts = new List<Port>();
@@ -66,7 +61,7 @@ namespace DialogueSystem
 
             node.styleSheets.Add(Resources.Load<StyleSheet>("Node"));
 
-            var generatedPort = GeneratePort(node, Direction.Output, Port.Capacity.Multi);
+            var generatedPort = BasicNode.GeneratePort(node, Direction.Output, Port.Capacity.Multi);
             generatedPort.portName = "Next";
             node.outputContainer.Add(generatedPort);
 
@@ -146,97 +141,6 @@ namespace DialogueSystem
             }
             return tempGuid;
         }
-
-
-        public EventNode CreateEventNode(string code, Vector2 location, string overrideGUID = "")
-        {
-            var eventNode = new EventNode
-            {
-                title = "Event",
-                Code = code,
-                Guid = (string.IsNullOrEmpty(overrideGUID) ? ensureGuid() : overrideGUID),
-                Type = NodeType.Event
-            };
-            eventNode.styleSheets.Add(Resources.Load<StyleSheet>("Node"));
-
-            // Event Info
-            var eventContainer = new VisualElement
-            {
-                name = "bottom"
-            };
-
-            var eventLabel = new Label("Code: ");
-            eventContainer.Add(eventLabel);
-
-            var eventTextField = new TextField(string.Empty) { name = "script" };
-            eventTextField.multiline = true;
-            eventTextField.RegisterValueChangedCallback(evt =>
-            {
-                eventNode.Code = evt.newValue;
-            });
-            eventTextField.SetValueWithoutNotify(eventNode.Code);
-            eventContainer.Add(eventTextField);
-
-            eventNode.mainContainer.Add(eventContainer);
-
-            // Input
-            var inputPort = GeneratePort(eventNode, Direction.Input, Port.Capacity.Multi);
-            inputPort.portName = "Input";
-            eventNode.inputContainer.Add(inputPort);
-
-            // GUID Label
-            eventNode.extensionContainer.Add(new Label($"{eventNode.Guid}") { name = "guid" });
-
-            // Update Graphics and Position
-
-            eventNode.RefreshExpandedState();
-            eventNode.RefreshPorts();
-            eventNode.SetPosition(new Rect(location, DefaltNodeSize));
-
-            return eventNode;
-        }
-
-        public VariableNode CreateVariableNode(string code, Vector2 location, string overrideGUID = "")
-        {
-            var varNode = new VariableNode
-            {
-                title = "Variables",
-                Code = code,
-                Guid = (string.IsNullOrEmpty(overrideGUID) ? ensureGuid() : overrideGUID),
-                Type = NodeType.Variable
-            };
-            varNode.styleSheets.Add(Resources.Load<StyleSheet>("Node"));
-
-            // Event Info
-            var varContainer = new VisualElement
-            {
-                name = "bottom"
-            };
-
-            var varTextField = new TextField(string.Empty) { name = "script" };
-            varTextField.multiline = true;
-            varTextField.RegisterValueChangedCallback(evt =>
-            {
-                varNode.Code = evt.newValue;
-            });
-            varTextField.SetValueWithoutNotify(varNode.Code);
-            varContainer.Add(varTextField);
-
-            varNode.mainContainer.Add(varContainer);
-
-            // GUID Label
-            varNode.extensionContainer.Add(new Label($"{varNode.Guid}") { name = "guid" });
-
-            // Update Graphics and Position
-
-            varNode.RefreshExpandedState();
-            varNode.RefreshPorts();
-            varNode.SetPosition(new Rect(location, DefaltNodeSize));
-
-            return varNode;
-        }
-
-        
         private void RemovePort(DialogueNode dialogueNode, Port generatedPort)
         {
             dialogueNode.outputPorts.Remove(dialogueNode.outputPorts.Find(x => x.GUID == generatedPort.portName));
