@@ -9,25 +9,26 @@ namespace DialogueSystem
 {
     public class ChatNode : BasicNode, IGraphNode
     {
-        private ChatNodeData NodeData
+        public string DialogueText 
         {
-            get { return (ChatNodeData)_nodeData; }
-            set { _nodeData = (NodeData)value; }
+            get { return TextFields.TryGetValue("DialogueText", out var tmp) ? tmp : string.Empty; } 
+            set { TextFields["DialogueText"] = value; } 
         }
-
-        public string DialogueText { get { return NodeData.DialogueText; } set { NodeData.DialogueText = value; } }
-        public string CharacterName { get { return NodeData.CharacterName; } set { NodeData.CharacterName = value; } }
-        public string Audio { get { return NodeData.Audio; } set { NodeData.Audio = value; } }
-
-        public ChatNode() : base()
+        public string CharacterName
         {
-            NodeData = new ChatNodeData();
+            get { return TextFields.TryGetValue("CharacterName", out var tmp) ? tmp : string.Empty; }
+            set { TextFields["CharacterName"] = value; }
+        }
+        public string Audio
+        {
+            get { return TextFields.TryGetValue("Audio", out var tmp) ? tmp : string.Empty; }
+            set { TextFields["Audio"] = value; }
         }
 
         public static new BasicNode CreateNode(Vector2 location, string defaultText, string guid)
         {
-            ChatNodeData node = new ChatNodeData();
-            node.DialogueText = defaultText;
+            NodeData node = new NodeData();
+            node.TextFields["DialogueText"] = defaultText;
             node.Position = location;
             node.Type = NodeType.Chat;
             return CreateNode(node, guid);
@@ -38,9 +39,9 @@ namespace DialogueSystem
             ChatNode node = new ChatNode();
 
             // Node Data Info
-            node.NodeData = (ChatNodeData)data;
+            node._nodeData = data;
             node.Guid = guid;
-            node.title = GenerateTitle("Chat:", node.NodeData.DialogueText);
+            node.title = GenerateTitle("Chat:", node.DialogueText);
 
             // Style Sheet
             node.styleSheets.Add(Resources.Load<StyleSheet>("Node"));
@@ -88,7 +89,7 @@ namespace DialogueSystem
             // Update Graphics and Position
             node.RefreshExpandedState();
             node.RefreshPorts();
-            node.SetPosition(new Rect(node.NodeData.Position, DefaltNodeSize));
+            node.SetPosition(new Rect(node._nodeData.Position, DefaltNodeSize));
 
             return node;
         }

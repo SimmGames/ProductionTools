@@ -14,11 +14,13 @@ namespace DialogueSystem
     {
         public readonly Vector2 DefaltNodeSize = new Vector2(150, 200);
         public Vector2 localMousePosition;
+        public delegate void RemovePortDelegate(DialogueNode dialogueNode, Port generatedPort);
 
         private List<BasicNode> Nodes => nodes.ToList().Cast<BasicNode>().ToList();
 
         public DialogueGraphView()
         {
+
             styleSheets.Add(Resources.Load<StyleSheet>("DialogueGraph"));
             SetupZoom(ContentZoomer.DefaultMinScale, ContentZoomer.DefaultMaxScale);
 
@@ -81,43 +83,49 @@ namespace DialogueSystem
             return node;
         }
 
-        public void CreateNode(NodeData data) 
+        public BasicNode CreateNode(NodeData data) 
         {
-            switch(data.Type)
+            BasicNode temp = null;
+            switch (data.Type)
             {
                 case NodeType.Dialogue:
-                    
+                    RemovePortDelegate Remove = RemovePort;
+                    temp = DialogueNode.CreateNode(data, ensureGuid(data.Guid), Remove);
                     break;
                 case NodeType.Branch:
-                    
+                    temp = ConditionNode.CreateNode(data, ensureGuid(data.Guid));
                     break;
                 case NodeType.Event:
-                    
+                    temp = EventNode.CreateNode(data, ensureGuid(data.Guid));
                     break;
                 case NodeType.Variable:
-                    
+                    temp = VariableNode.CreateNode(data, ensureGuid(data.Guid));
                     break;
                 case NodeType.Chat:
-                    AddElement(ChatNode.CreateNode(data, ensureGuid(data.Guid)));
+                    temp = ChatNode.CreateNode(data, ensureGuid(data.Guid));
                     break;
             }
-        }
+            if(temp != null)
+                AddElement(temp);
+            return temp;
+    }
 
         public void CreateNode(string nodeName, NodeType type, Vector2 location)
         {
             switch (type)
             {
                 case NodeType.Dialogue:
-                    AddElement(CreateDialogueNode(nodeName, location));
+                    RemovePortDelegate Remove = RemovePort;
+                    AddElement(DialogueNode.CreateNode(location, nodeName, ensureGuid(), Remove));
                     break;
                 case NodeType.Branch:
-                    AddElement(CreateConditionNode(nodeName, location));
+                    AddElement(ConditionNode.CreateNode(location, nodeName, ensureGuid()));
                     break;
                 case NodeType.Event:
-                    AddElement(CreateEventNode(nodeName, location));
+                    AddElement(EventNode.CreateNode(location, nodeName, ensureGuid()));
                     break;
                 case NodeType.Variable:
-                    AddElement(CreateVariableNode(nodeName, location));
+                    AddElement(VariableNode.CreateNode(location, nodeName, ensureGuid()));
                     break;
                 case NodeType.Chat:
                     AddElement(ChatNode.CreateNode(location, nodeName, ensureGuid()));
@@ -288,176 +296,7 @@ namespace DialogueSystem
             return varNode;
         }
 
-        private string limit(string str, int length)
-        {
-            return (str.Length <= length ? str : $"{str.Substring(0, length - 3)}...");
-        }
-
-        public DialogueNode CreateDialogueNode(string nodeName, Vector2 position, string charcaterName = "", string audioFile = "", string overrideGUID = "")
-        {
-            var dialogueNode = new DialogueNode
-            {
-                title = $"Dialogue: {limit(nodeName, 20)}",
-                DialogueText = nodeName,
-                CharacterName = charcaterName,
-                Guid = (string.IsNullOrEmpty(overrideGUID) ? ensureGuid() : overrideGUID),
-                Type = NodeType.Dialogue,
-                Audio = audioFile
-            };
-            dialogueNode.styleSheets.Add(Resources.Load<StyleSheet>("Node"));
-
-            // Dialogue Text Info
-
-            var dialogueContainer = new VisualElement
-            {
-                name = "bottom"
-            };
-
-            dialogueContainer.Add(new Label("Character Name:"));
-
-            var nameTextField = new TextField(string.Empty);
-            nameTextField.multiline = true;
-            nameTextField.RegisterValueChangedCallback(evt =>
-            {
-                dialogueNode.CharacterName = evt.newValue;
-            });
-            nameTextField.SetValueWithoutNotify(dialogueNode.CharacterName);
-            dialogueContainer.Add(nameTextField);
-
-
-            var dialogueLabel = new Label("Dialogue Text:");
-            dialogueContainer.Add(dialogueLabel);
-
-            var dialogueTextField = new TextField(string.Empty);
-            dialogueTextField.multiline = true;
-            dialogueTextField.RegisterValueChangedCallback(evt =>
-            {
-                dialogueNode.DialogueText = evt.newValue;
-                dialogueNode.title = $"Dialogue: {limit(nodeName, 20)}";
-            });
-            dialogueTextField.SetValueWithoutNotify(dialogueNode.DialogueText);
-            dialogueContainer.Add(dialogueTextField);
-
-            // Audio File to be played
-
-            var audioLabel = new Label("Audio File:");
-            dialogueContainer.Add(audioLabel);
-            var audioField = new TextField(string.Empty);
-            audioField.RegisterValueChangedCallback(evt => 
-            {
-                dialogueNode.Audio = evt.newValue;
-            });
-            audioField.SetValueWithoutNotify(dialogueNode.Audio);
-
-            dialogueContainer.Add(audioField);
-
-            dialogueNode.mainContainer.Add(dialogueContainer);
-
-            // Input Ports
-
-            var inputPort = GeneratePort(dialogueNode, Direction.Input, Port.Capacity.Multi);
-            inputPort.portName = "Input";
-            dialogueNode.inputContainer.Add(inputPort);
-
-            // Output Ports
-
-            var button = new Button(() =>
-            {
-                AddChoicePort(dialogueNode, "");
-            });
-            button.text = "+";
-            dialogueNode.titleContainer.Add(button);
-
-            // Script Container
-            var scriptContainer = new VisualElement
-            {
-                name = "script"
-            };
-
-            dialogueNode.extensionContainer.Add(scriptContainer);
-
-            // GUID Label
-            dialogueNode.extensionContainer.Add(new Label($"{dialogueNode.Guid}") { name = "guid" });
-
-            // Update Graphics and Position
-
-            dialogueNode.RefreshExpandedState();
-            dialogueNode.RefreshPorts();
-            dialogueNode.SetPosition(new Rect(position, DefaltNodeSize));
-
-            return dialogueNode;
-        }
-
         
-        public void AddChoicePort(DialogueNode dialogueNode, string overriddenPortName = "", string conditions = "", string overriddenGUID = "")
-        {
-            var generatedPort = GeneratePort(dialogueNode, Direction.Output, Port.Capacity.Multi);
-            var outputPortCount = dialogueNode.outputContainer.Query("connector").ToList().Count;
-            var outputPort = new OutputPort
-            {
-                NodeGUID = dialogueNode.Guid,
-                GUID = (string.IsNullOrEmpty(overriddenGUID) ? Guid.NewGuid().ToString() : overriddenGUID),
-                Condition = conditions,
-                Value = ""
-            };
-            generatedPort.portName = outputPort.GUID;
-
-
-            var oldLabel = generatedPort.contentContainer.Q<Label>("type");
-            generatedPort.contentContainer.Remove(oldLabel);
-
-            var choicePortName = string.IsNullOrEmpty(overriddenPortName) ? $"Choice {outputPortCount}" : overriddenPortName;
-
-            outputPort.Value = choicePortName;
-
-            var textField = new TextField
-            {
-                name = string.Empty,
-                value = choicePortName,
-                isDelayed = true,
-                multiline = true
-            };
-            textField.RegisterValueChangedCallback(evt =>
-            {
-                outputPort.Value = evt.newValue;
-            });
-
-            var conditionField = new TextField
-            {
-                name = "script",
-                value = conditions,
-                multiline = true
-            };
-            conditionField.RegisterValueChangedCallback(evt =>
-            {
-                outputPort.Condition = evt.newValue;
-            });
-
-            var mainContainer = new VisualElement
-            {
-                name = "mainContainer"
-            };
-
-
-            generatedPort.contentContainer.Add(new Label("  "));
-            mainContainer.Add(textField);
-            mainContainer.Add(new Label("Condition:"));
-            mainContainer.Add(conditionField);
-            generatedPort.contentContainer.Add(mainContainer);
-
-            var deleteButton = new Button(() => RemovePort(dialogueNode, generatedPort))
-            {
-                text = "-"
-            };
-            generatedPort.contentContainer.Add(deleteButton);
-
-            dialogueNode.outputPorts.Add(outputPort);
-
-            dialogueNode.outputContainer.Add(generatedPort);
-            dialogueNode.RefreshExpandedState();
-            dialogueNode.RefreshPorts();
-        }
-
         private void RemovePort(DialogueNode dialogueNode, Port generatedPort)
         {
             dialogueNode.outputPorts.Remove(dialogueNode.outputPorts.Find(x => x.GUID == generatedPort.portName));

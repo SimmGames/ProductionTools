@@ -250,15 +250,13 @@ namespace DialogueSystem
 
             foreach (var nodeData in _containerCache.DialogueNodeData)
             {
-                var tempNode = _targetGraphView.CreateDialogueNode(nodeData.DialogueText, _containerCache.DialogueNodeData.First(x => x.Guid == nodeData.Guid).Position, nodeData.CharacterName, nodeData.Audio, nodeData.Guid);
-
-                _targetGraphView.AddElement(tempNode);
+                var tempNode = (DialogueNode)_targetGraphView.CreateNode(nodeData);
 
                 var nodePorts = _containerCache.NodeLinks.Where(x => x.BaseNodeGuid == nodeData.Guid).ToList();
                 nodePorts.ForEach((x) => 
                 {
                     if(tempNode.outputPorts.Find(y => y.GUID == x.PortGUID) == null)
-                        _targetGraphView.AddChoicePort(tempNode, x.PortName, x.Condition, x.PortGUID);
+                        DialogueNode.AddChoicePort(tempNode, x.PortName, x.Condition, x.PortGUID);
                 });
             }
 

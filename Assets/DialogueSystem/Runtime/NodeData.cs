@@ -11,6 +11,6 @@ namespace DialogueSystem
         public string Guid;
         public Vector2 Position;
         public NodeType Type;
-        public Dictionary<string, string> TextFields;
+        public Dictionary<string, string> TextFields = new Dictionary<string, string>();
     }
 }

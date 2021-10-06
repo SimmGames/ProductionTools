@@ -16,6 +16,7 @@ namespace DialogueSystem
 
         public string Guid { get { return _nodeData.Guid; } set { _nodeData.Guid = value; } }
         public NodeType Type { get { return _nodeData.Type; } set { _nodeData.Type = value; } }
+        public Dictionary<string, string> TextFields { get { return _nodeData.TextFields; } set { _nodeData.TextFields = value; } }
 
         public bool EntryPoint { get; set; }
         public List<OutputPort> outputPorts { get; set; }
@@ -46,7 +47,7 @@ namespace DialogueSystem
         }
 
         // ~ Node Drawing Tools ~ //
-        protected static VisualElement GenerateTextInput(string label, string startValue, EventCallback<ChangeEvent<string>> onChange) 
+        protected static VisualElement GenerateTextInput(string label, string startValue, EventCallback<ChangeEvent<string>> onChange, string name = "") 
         {
             // Create a container to put everything in
             VisualElement visualElement = new VisualElement { name = label };
@@ -58,6 +59,10 @@ namespace DialogueSystem
             TextField text = new TextField(string.Empty);
             text.multiline = true;
             text.SetValueWithoutNotify(startValue);
+            if (string.IsNullOrEmpty(name)) 
+            {
+                text.name = name;
+            }
 
             // Event Callback 
             text.RegisterValueChangedCallback(onChange);

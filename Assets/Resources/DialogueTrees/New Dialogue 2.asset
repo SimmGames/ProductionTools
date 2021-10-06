@@ -13,108 +13,16 @@ MonoBehaviour:
   m_Name: New Dialogue 2
   m_EditorClassIdentifier: 
   DialogueName: New Dialogue 2
-  EntryPointGUID: 
-  NodeLinks:
-  - BaseNodeGuid: 
-    PortName: Next
-    PortGUID: 
-    Condition: 
-    TargetNodeGuid: e7fb90dd-0181-47a2-885d-49cbce973e60
-  - BaseNodeGuid: e7fb90dd-0181-47a2-885d-49cbce973e60
-    PortName: Fail
-    PortGUID: 
-    Condition: 
-    TargetNodeGuid: 149e58de-faa2-40fd-abd4-ac1f2f60327c
-  - BaseNodeGuid: e7fb90dd-0181-47a2-885d-49cbce973e60
-    PortName: Pass
-    PortGUID: 
-    Condition: 
-    TargetNodeGuid: 1eb83f95-81a3-4f4c-a596-03054104c516
-  - BaseNodeGuid: e7fb90dd-0181-47a2-885d-49cbce973e60
-    PortName: Pass
-    PortGUID: 
-    Condition: 
-    TargetNodeGuid: 170a9adb-3f04-4715-9a1b-47da17e0de11
-  - BaseNodeGuid: 861ad73d-cb4b-4b88-bb45-648115de3356
-    PortName: Pass
-    PortGUID: 
-    Condition: 
-    TargetNodeGuid: 4ceaf7fa-8c74-4d95-9fa9-b9f589d1ee02
-  - BaseNodeGuid: 149e58de-faa2-40fd-abd4-ac1f2f60327c
-    PortName: Pass
-    PortGUID: 
-    Condition: 
-    TargetNodeGuid: 875d8195-659d-4612-9b68-bda5007b356c
-  - BaseNodeGuid: 170a9adb-3f04-4715-9a1b-47da17e0de11
-    PortName: Choice 2
-    PortGUID: a66d2751-7b51-46f6-8861-9a24bfdda113
-    Condition: fun == 3
-    TargetNodeGuid: 875d8195-659d-4612-9b68-bda5007b356c
-  - BaseNodeGuid: 170a9adb-3f04-4715-9a1b-47da17e0de11
-    PortName: Choice 2
-    PortGUID: ae8d8931-fd1c-488b-85b4-acc549975dfa
-    Condition: fun == 2
-    TargetNodeGuid: 498f128a-0a15-44d3-9eef-a5194b6d058d
-  - BaseNodeGuid: 170a9adb-3f04-4715-9a1b-47da17e0de11
-    PortName: Choice 1
-    PortGUID: b0b90bb4-38f3-4f47-9c2c-5203d1ca477b
-    Condition: fun == 1
-    TargetNodeGuid: 875d8195-659d-4612-9b68-bda5007b356c
-  - BaseNodeGuid: 875d8195-659d-4612-9b68-bda5007b356c
-    PortName: Next
-    PortGUID: 
-    Condition: 
-    TargetNodeGuid: 861ad73d-cb4b-4b88-bb45-648115de3356
-  DialogueNodeData:
-  - Guid: 170a9adb-3f04-4715-9a1b-47da17e0de11
-    Position: {x: 588, y: -313}
-    Type: 0
-    DialogueText: Dialogue Node
-    CharacterName: Jeffery Bezos
-    Audio: FILE 1
+  EntryPointGUID: 820e83db-6148-4d43-a9c2-08ca43efb60d
+  NodeLinks: []
+  DialogueNodeData: []
   ChatNodeData:
-  - Guid: 875d8195-659d-4612-9b68-bda5007b356c
-    Position: {x: 1023, y: -96}
-    Type: 4
-    DialogueText: A BUNCH OF TEXT
-    CharacterName: Spongebob
-    Audio: FILE 2
-  - Guid: 4ceaf7fa-8c74-4d95-9fa9-b9f589d1ee02
-    Position: {x: 1553, y: -86}
-    Type: 4
-    DialogueText: Sucks to suck
-    CharacterName: squidward
-    Audio: 
-  - Guid: a003e41d-40d5-4269-bb9e-4bbcb27275d2
-    Position: {x: 1030, y: 243}
+  - Guid: a906c143-bba9-43ae-b66a-28cc311b7650
+    Position: {x: 352, y: 265}
     Type: 4
     DialogueText: Chat Node
-    CharacterName: hrdh
-    Audio: GSDF
-  ConditionNodeData:
-  - Guid: e7fb90dd-0181-47a2-885d-49cbce973e60
-    Position: {x: 201, y: 31}
-    Type: 1
-    Condition: fun <= 5
-  - Guid: 861ad73d-cb4b-4b88-bb45-648115de3356
-    Position: {x: 1247, y: -157}
-    Type: 1
-    Condition: true
-  - Guid: 149e58de-faa2-40fd-abd4-ac1f2f60327c
-    Position: {x: 721, y: 15}
-    Type: 1
-    Condition: true
-  EventNodeData:
-  - Guid: 1eb83f95-81a3-4f4c-a596-03054104c516
-    Position: {x: 678, y: 179}
-    Type: 2
-    code: // TODO //
-  - Guid: 498f128a-0a15-44d3-9eef-a5194b6d058d
-    Position: {x: 1006, y: -228}
-    Type: 2
-    code: fun = 1000;
-  VariableNodeData:
-  - Guid: 38013ccc-4839-4be0-bec0-505a0c69e8dd
-    Position: {x: 108, y: -133}
-    Type: 3
-    Code: int fun = 0;
+    CharacterName: 
+    Audio: 
+  ConditionNodeData: []
+  EventNodeData: []
+  VariableNodeData: []
