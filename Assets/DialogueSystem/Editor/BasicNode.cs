@@ -27,6 +27,7 @@ namespace DialogueSystem
             _nodeData = new NodeData();
             EntryPoint = false;
             outputPorts = new List<OutputPort>();
+            Type = NodeType.None;
         }
 
         public static BasicNode CreateNode(Vector2 location, string defaultText, string guid)

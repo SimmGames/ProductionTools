@@ -23,6 +23,7 @@ namespace DialogueSystem
 
         public static void GenerateCode(List<DialogueContainer> containers)
         {
+            CleanDirectory();
             foreach (DialogueContainer container in containers)
             {
                 string setUp = $"{Tab(3)}// Setup //\n";
@@ -58,27 +59,27 @@ namespace DialogueSystem
 
                             conditionChecks += $"{Tab(2)}// Condition From Node: {node.Guid} //\n" +
                                 $"{Tab(2)}public bool {functionName}() {{\n" +
-                                $"{Tab(3)}return ({node.TextFields["Condition"]});\n" +
+                                $"{Tab(3)}return ({(string.IsNullOrEmpty(node.TextFields["Condition"]) ? $"Debug.LogWarning(\"There is no condition in Condition Node with Guid: {node.Guid}.\");" : node.TextFields["Condition"])});\n" +
                                 $"{Tab(2)}}}\n";
 
                             setUp += $"conditionChecks.Add(\"{functionName}\",{functionName});\n";
                             break;
 
                         case NodeType.Dialogue:
-                            List<string> ListedPorts = new List<string>();
-                            foreach (NodeLinkData dialogueChoiceCondition in container.NodeLinks)
-                            {
-                                if (container.Nodes.Find(x => x.Guid == dialogueChoiceCondition.BaseNodeGuid) != null && ListedPorts.Find(y => y.Equals(dialogueChoiceCondition.PortGUID)) == null)
+                            List<string> ListedPorts = new List<string>(); // Record of already displayed ports
+                            foreach (NodeLinkData port in container.NodeLinks)
+                            {       // Make sure the link's base node matches our current node       // Make sure that the port hasn't been used yet
+                                if (port.BaseNodeGuid == node.Guid && !ListedPorts.Contains(port.PortGUID.ToString()))
                                 {
-                                    functionName = DialogueCodeUtility.GenerateFunctionName(container.DialogueName, dialogueChoiceCondition.BaseNodeGuid, dialogueChoiceCondition.PortGUID);
+                                    functionName = DialogueCodeUtility.GenerateFunctionName(container.DialogueName, node.Guid, port.PortGUID);
 
-                                    dialogueChecks += $"{Tab(2)}// From Node: {dialogueChoiceCondition.BaseNodeGuid} //\n{Tab(2)}// Choice: {dialogueChoiceCondition.PortName} - {dialogueChoiceCondition.PortGUID} //\n";
+                                    dialogueChecks += $"{Tab(2)}// From Node: {node.Guid} //\n{Tab(2)}// Choice: {port.PortName} - {port.PortGUID} //\n";
                                     dialogueChecks += $"{Tab(2)}public bool {functionName}()\n{Tab(2)}{{\n{Tab(3)}return (";
-                                    dialogueChecks += (string.IsNullOrEmpty(dialogueChoiceCondition.Condition.Trim()) ? "true" : dialogueChoiceCondition.Condition);
+                                    dialogueChecks += (string.IsNullOrEmpty(port.Condition.Trim()) ? "true" : port.Condition);
                                     dialogueChecks += $");\n{Tab(2)}}}\n";
 
-                                    setUp += $"dialogueChecks.Add(\"{functionName}\",{functionName});\n";
-                                    ListedPorts.Add(dialogueChoiceCondition.PortGUID);
+                                    setUp += $"{Tab(3)}dialogueChecks.Add(\"{functionName}\",{functionName});\n";
+                                    ListedPorts.Add(port.PortGUID.ToString());
                                 }
                             }
                             break;
@@ -115,11 +116,10 @@ namespace DialogueSystem.Code
 ";
             string postcode = @"    }
 }";
-            string toWrite = $"{precode1}{treeName}_GenCode{precode2}\n\n{variables}\n\n{Tab(2)}public void Start()\n{Tab(2)}{{\n{setUp}\n{Tab(2)}}}" +
+            string toWrite = $"{precode1}{treeName}_DialogueCode{precode2}\n\n{variables}\n\n{Tab(2)}public void Start()\n{Tab(2)}{{\n{setUp}\n{Tab(2)}}}" +
                 $"\n\n{dialogueChecks}\n\n{conditionNodesChecks}\n\n{eventNodeFunctions}\n{postcode}";
 
-
-            WriteString(toWrite, $"{treeName}_GenCode");
+            WriteString(toWrite, $"{treeName}_DialogueCode");
         }
 
         private static string Tab(int amount = 1)
@@ -138,8 +138,11 @@ namespace DialogueSystem.Code
         {
             string path = $"Assets/DialogueSystem/Runtime/GeneratedCode/{file}.cs";
 
-            if (!AssetDatabase.IsValidFolder("Runtime/GeneratedCode"))
-                AssetDatabase.CreateFolder("Runtime", "GeneratedCode");
+            // Clean inconsistant new line characters
+            code = Regex.Replace(code, @"\r\n?|\n", System.Environment.NewLine);
+
+            if (!AssetDatabase.IsValidFolder("Assets/DialogueSystem/Runtime/GeneratedCode"))
+                AssetDatabase.CreateFolder("Assets/DialogueSystem/Runtime", "GeneratedCode");
 
             // Write the code to a CS file
             StreamWriter writer = new StreamWriter(path, false);
@@ -148,6 +151,18 @@ namespace DialogueSystem.Code
 
             // Tell unity that there's a new file present
             AssetDatabase.Refresh();
+        }
+
+        private static void CleanDirectory() 
+        {
+            if (!AssetDatabase.IsValidFolder("Assets/DialogueSystem/Runtime/GeneratedCode"))
+                AssetDatabase.CreateFolder("Runtime", "GeneratedCode");
+            string[] CodeFolder = { "Assets/DialogueSystem/Runtime/GeneratedCode" };
+            foreach (var codeFile in AssetDatabase.FindAssets(string.Empty, CodeFolder)) 
+            {
+                var path = AssetDatabase.GUIDToAssetPath(codeFile);
+                AssetDatabase.DeleteAsset(path);
+            }
         }
     }
 
