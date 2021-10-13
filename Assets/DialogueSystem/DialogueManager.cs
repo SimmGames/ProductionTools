@@ -11,8 +11,7 @@ namespace DialogueSystem
     {
         [SerializeField]
         private DialogueContainer ActiveDialogue = null; // Our dialogue tree to track
-        private IDialogueCode dialogueCode; // The tree's dialogue code
-        //private DialogueCodeHelper; // 
+        private IDialogueCode dialogueCode = null; // The tree's dialogue code
 
         private NodeData currentNode;
 
@@ -22,12 +21,6 @@ namespace DialogueSystem
         public Dictionary<string, string> DialogueOptions => getDialogueOptions();
 
 
-        private void OnEnable()
-        {
-            // Makes sure to grab a copy of the Generated Dialogue Code
-            // Grab dialogue code based on Active Dialogue!!!
-            //dialogueCode = new GeneratedDialogueCode();
-        }
         // Start is called before the first frame update
         void Start()
         {
@@ -35,7 +28,9 @@ namespace DialogueSystem
             if (ActiveDialogue != null) 
             {
                 Next(ActiveDialogue.EntryPointGUID);
-                // Grab the related Dialogue Code
+                Type type = Type.GetType(DialogueCodeUtility.GenerateClassName(ActiveDialogue.name));
+                if(type != null)
+                    dialogueCode = (IDialogueCode)Activator.CreateInstance(type);
             }
         }
 
@@ -243,7 +238,7 @@ namespace DialogueSystem
         {
             if (currentNode.Type == NodeType.Chat || currentNode.Type == NodeType.Dialogue)
             {
-                return currentNode.TextFields["CharacterName"];
+                return GetTextField(currentNode, "CharacterName");
             }
             else
             {
@@ -254,7 +249,7 @@ namespace DialogueSystem
         {
             if (currentNode.Type == NodeType.Chat || currentNode.Type == NodeType.Dialogue)
             {
-                return currentNode.TextFields["DialogueText"];
+                return GetTextField(currentNode, "DialogueText");
             }
             else 
             {
@@ -265,13 +260,18 @@ namespace DialogueSystem
         {
             if (currentNode.Type == NodeType.Chat || currentNode.Type == NodeType.Dialogue)
             {
-                string file = currentNode.TextFields["Audio"];
+                string file = GetTextField(currentNode, "Audio");
                 return string.IsNullOrEmpty(file) ? null : file;
             }
             else
             {
                 return null;
             }
+        }
+
+        private static string GetTextField(NodeData node, string field)
+        {
+            return DialogueCodeUtility.GetTextField(node, field);
         }
     }
 }

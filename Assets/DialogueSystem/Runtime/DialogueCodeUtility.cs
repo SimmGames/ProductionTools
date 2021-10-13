@@ -21,5 +21,16 @@ namespace DialogueSystem.Code
             name = Regex.Replace(name, @"^([0-9_])+", string.Empty);
             return name;
         }
+
+        public static string GenerateClassName(string name) 
+        {
+            name = name.Trim() + "_DialogueCode";
+            return SanitizeName(name);
+        }
+        public static string GetTextField(NodeData node, string field)
+        {
+            node.TextFields.TryGetValue(field, out string output);
+            return (string.IsNullOrEmpty(output) ? string.Empty : output);
+        }
     }
 }

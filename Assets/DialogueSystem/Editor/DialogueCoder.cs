@@ -31,7 +31,7 @@ namespace DialogueSystem
                 string eventFunctions = $"{Tab(2)}// Event Functions //\n";
                 string conditionChecks = $"{Tab(2)}// Condition Checks //\n";
                 string dialogueChecks = $"{Tab(2)}// Dialogue Checks //\n";
-                string treeName = SanitizeName(container.DialogueName);
+                string treeName = DialogueCodeUtility.GenerateClassName(container.DialogueName);
 
                 foreach (NodeData node in container.Nodes)
                 {
@@ -62,7 +62,7 @@ namespace DialogueSystem
                                 $"{Tab(3)}return ({(string.IsNullOrEmpty(GetTextField(node, "Condition")) ? $"Debug.LogWarning(\"There is no condition in Condition Node with Guid: {node.Guid}.\");" : GetTextField(node, "Condition"))});\n" +
                                 $"{Tab(2)}}}\n";
 
-                            setUp += $"conditionChecks.Add(\"{functionName}\",{functionName});\n";
+                            setUp += $"{Tab(3)}conditionChecks.Add(\"{functionName}\",{functionName});\n";
                             break;
 
                         case NodeType.Dialogue:
@@ -91,8 +91,7 @@ namespace DialogueSystem
 
         private static string GetTextField(NodeData node, string field) 
         {
-            node.TextFields.TryGetValue(field, out string output);
-            return (string.IsNullOrEmpty(output) ? string.Empty : output);
+            return DialogueCodeUtility.GetTextField(node, field);
         }
 
         private static void CodeBuilder(string setUp, string variables, string dialogueChecks, string conditionNodesChecks, string eventNodeFunctions, string treeName)
@@ -122,10 +121,10 @@ namespace DialogueSystem.Code
 ";
             string postcode = @"    }
 }";
-            string toWrite = $"{precode1}{treeName}_DialogueCode{precode2}\n\n{variables}\n\n{Tab(2)}public void Start()\n{Tab(2)}{{\n{setUp}\n{Tab(2)}}}" +
+            string toWrite = $"{precode1}{treeName}{precode2}\n\n{variables}\n\n{Tab(2)}public void Start()\n{Tab(2)}{{\n{setUp}\n{Tab(2)}}}" +
                 $"\n\n{dialogueChecks}\n\n{conditionNodesChecks}\n\n{eventNodeFunctions}\n{postcode}";
 
-            WriteString(toWrite, $"{treeName}_DialogueCode");
+            WriteString(toWrite, treeName);
         }
 
         private static string Tab(int amount = 1)
