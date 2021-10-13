@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using DialogueSystem;
+using DialogueSystem.Code;
 using System;
 
 namespace DialogueSystem
@@ -9,8 +10,9 @@ namespace DialogueSystem
     public class DialogueManager : MonoBehaviour
     {
         [SerializeField]
-        private DialogueContainer ActiveDialogue = null;
-        private GeneratedDialogueCode dialogueCode;
+        private DialogueContainer ActiveDialogue = null; // Our dialogue tree to track
+        private IDialogueCode dialogueCode; // The tree's dialogue code
+        //private DialogueCodeHelper; // 
 
         private NodeData currentNode;
 
@@ -23,7 +25,8 @@ namespace DialogueSystem
         private void OnEnable()
         {
             // Makes sure to grab a copy of the Generated Dialogue Code
-            dialogueCode = new GeneratedDialogueCode();
+            // Grab dialogue code based on Active Dialogue!!!
+            //dialogueCode = new GeneratedDialogueCode();
         }
         // Start is called before the first frame update
         void Start()
@@ -32,6 +35,7 @@ namespace DialogueSystem
             if (ActiveDialogue != null) 
             {
                 Next(ActiveDialogue.EntryPointGUID);
+                // Grab the related Dialogue Code
             }
         }
 
@@ -50,7 +54,7 @@ namespace DialogueSystem
         /// <returns></returns>
         public static string GenerateFunctionName(string dialogueName, string nodeGuid, string portGuid = "") 
         {
-            return $"{dialogueName.Replace(" ", "_").Trim()}_{nodeGuid.Replace("-", "")}{(string.IsNullOrEmpty(portGuid) ? string.Empty : ('_' + portGuid))}";
+            return DialogueCodeUtility.GenerateFunctionName(dialogueName, nodeGuid, portGuid);
         }
 
         /// <summary>
@@ -113,7 +117,7 @@ namespace DialogueSystem
                         newNode = x;
                         break;
                     case NodeType.Event:
-                        runEventNode((EventNodeData)x);
+                        runEventNode(x);
                         break;
                     case NodeType.Exit:
                         break;
@@ -134,8 +138,8 @@ namespace DialogueSystem
         /// <param name="nodeGUID"></param>
         private NodeData runBranchCondition(string nodeGUID) 
         {
-            Dictionary<string, GeneratedDialogueCode.conditionDelegate> branchCondition = dialogueCode.GetConditionChecks();
-            GeneratedDialogueCode.conditionDelegate conditionCheck;
+            Dictionary<string, IDialogueCode.ConditionDelegate> branchCondition = dialogueCode.ConditionChecks;
+            IDialogueCode.ConditionDelegate conditionCheck;
             branchCondition.TryGetValue(GenerateFunctionName(ActiveDialogue.DialogueName, nodeGUID), out conditionCheck);
             if (conditionCheck())
             {
@@ -164,24 +168,7 @@ namespace DialogueSystem
             List<NodeData> outputNodes = new List<NodeData>();
             guids.ForEach(guid => 
             {
-                // Test Dialogue Node
-                NodeData speachnode = ActiveDialogue.DialogueNodeData.Find(x => x.Guid == guid);
-                if (speachnode != null)
-                {
-                    outputNodes.Add(speachnode);
-                }
-                else 
-                {
-                    // If no dialogue node, check Chat Node
-                    speachnode = ActiveDialogue.ChatNodeData.Find(x => x.Guid == guid);
-                    if (speachnode != null)
-                    {
-                        outputNodes.Add(speachnode);
-                    }
-                }
-
-                ActiveDialogue.ConditionNodeData.FindAll(x => x.Guid == guid).ForEach(x => outputNodes.Add(x));
-                ActiveDialogue.EventNodeData.FindAll(x => x.Guid == guid).ForEach(x => outputNodes.Add(x));
+                ActiveDialogue.Nodes.FindAll(x => x.Guid == guid).ForEach(x => outputNodes.Add(x));
             });
             return outputNodes;
         }
@@ -191,7 +178,7 @@ namespace DialogueSystem
         /// </summary>
         /// <param name="dialogueNode"></param>
         /// <returns>If the conditions pass, they are returned as Dictionary ( Option Text, Option Guid )</Option></returns>
-        private Dictionary<string, string> formDialogueChoices(DialogueNodeData dialogueNode) 
+        private Dictionary<string, string> formDialogueChoices(NodeData dialogueNode) 
         {
             // Find ports in node where the basenode guid's match. Make sure they're not in the list already
             Dictionary<string, string> dialogueOptions = new Dictionary<string, string>();
@@ -221,8 +208,8 @@ namespace DialogueSystem
         /// <returns></returns>
         private bool checkCondition(string baseNodeGUID, string portGUID) 
         {
-            Dictionary<string, GeneratedDialogueCode.conditionDelegate> portConditions = dialogueCode.GetDialogueChecks();
-            GeneratedDialogueCode.conditionDelegate conditionCheck;
+            Dictionary<string, IDialogueCode.ConditionDelegate> portConditions = dialogueCode.DialogueChecks;
+            IDialogueCode.ConditionDelegate conditionCheck;
             portConditions.TryGetValue(GenerateFunctionName(ActiveDialogue.DialogueName, baseNodeGUID, portGUID), out conditionCheck);
             return conditionCheck();
         }
@@ -231,12 +218,12 @@ namespace DialogueSystem
         /// Takes an <see cref="EventNodeData"/> and runs the associated code in <see cref="GeneratedDialogueCode"/>
         /// </summary>
         /// <param name="eventNode"></param>
-        private void runEventNode(EventNodeData eventNode) 
+        private void runEventNode(NodeData eventNode) 
         {
             if (eventNode.Type != NodeType.Event) return;
 
-            Dictionary<string, GeneratedDialogueCode.eventDelegate> events = dialogueCode.GetEventFunctions();
-            GeneratedDialogueCode.eventDelegate eventFunction;
+            Dictionary<string, IDialogueCode.EventDelegate> events = dialogueCode.EventFunctions;
+            IDialogueCode.EventDelegate eventFunction;
             events.TryGetValue(GenerateFunctionName(ActiveDialogue.DialogueName, eventNode.Guid), out eventFunction);
             eventFunction();
         }
@@ -245,7 +232,7 @@ namespace DialogueSystem
         {
             if (currentNode.Type == NodeType.Dialogue)
             {
-                return formDialogueChoices((DialogueNodeData)currentNode);
+                return formDialogueChoices(currentNode);
             }
             else
             {
@@ -256,7 +243,7 @@ namespace DialogueSystem
         {
             if (currentNode.Type == NodeType.Chat || currentNode.Type == NodeType.Dialogue)
             {
-                return ((ChatNodeData)currentNode).CharacterName;
+                return currentNode.TextFields["CharacterName"];
             }
             else
             {
@@ -267,7 +254,7 @@ namespace DialogueSystem
         {
             if (currentNode.Type == NodeType.Chat || currentNode.Type == NodeType.Dialogue)
             {
-                return ((ChatNodeData)currentNode).DialogueText;
+                return currentNode.TextFields["DialogueText"];
             }
             else 
             {
@@ -278,7 +265,7 @@ namespace DialogueSystem
         {
             if (currentNode.Type == NodeType.Chat || currentNode.Type == NodeType.Dialogue)
             {
-                string file = ((ChatNodeData)currentNode).Audio;
+                string file = currentNode.TextFields["Audio"];
                 return string.IsNullOrEmpty(file) ? null : file;
             }
             else
