@@ -7,7 +7,5 @@ namespace DialogueSystem
     public interface IGraphNode
     {
         public NodeData SaveNodeData();
-
-        
     }
 }

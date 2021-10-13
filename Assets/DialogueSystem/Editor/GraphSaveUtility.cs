@@ -98,62 +98,7 @@ namespace DialogueSystem
             dialogueContainer.EntryPointGUID = Nodes.Find(x => x.EntryPoint).Guid;
 
             foreach (var node in Nodes.Where(node => !node.EntryPoint))
-            {
-                if (node.Type == NodeType.Dialogue) // Dialogue Node
-                {
-                    dialogueContainer.DialogueNodeData.Add(new DialogueNodeData
-                    {
-                        Guid = node.Guid,
-                        DialogueText = ((DialogueNode)node).DialogueText,
-                        CharacterName = ((DialogueNode)node).CharacterName,
-                        Position = node.GetPosition().position,
-                        Type = NodeType.Dialogue,
-                        Audio = ((DialogueNode)node).Audio
-                    });
-                }
-                else if (node.Type == NodeType.Branch) // Branch Node
-                {
-                    dialogueContainer.ConditionNodeData.Add(new ConditionNodeData
-                    {
-                        Guid = node.Guid,
-                        Condition = ((ConditionNode)node).Condition,
-                        Position = node.GetPosition().position,
-                        Type = NodeType.Branch
-                    });
-                }
-                else if (node.Type == NodeType.Event) // Event Node
-                {
-                    dialogueContainer.EventNodeData.Add(new EventNodeData
-                    {
-                        Guid = node.Guid,
-                        code = ((EventNode)node).Code,
-                        Position = node.GetPosition().position,
-                        Type = NodeType.Event
-                    });
-                }
-                else if (node.Type == NodeType.Variable) // Variable Node
-                {
-                    dialogueContainer.VariableNodeData.Add(new VariableNodeData
-                    {
-                        Guid = node.Guid,
-                        Code = ((VariableNode)node).Code,
-                        Position = node.GetPosition().position,
-                        Type = NodeType.Variable
-                    });
-                }
-                else if (node.Type == NodeType.Chat) // Chat Node
-                {
-                    dialogueContainer.ChatNodeData.Add(new ChatNodeData 
-                    {
-                        Guid = node.Guid,
-                        DialogueText = ((ChatNode)node).DialogueText,
-                        CharacterName = ((ChatNode)node).CharacterName,
-                        Position = node.GetPosition().position,
-                        Type = NodeType.Chat,
-                        Audio = ((ChatNode)node).Audio
-                    });
-                }
-            }
+                dialogueContainer.Nodes.Add(node.SaveNodeData());
 
             // Creating Asset (And asset folder)
 
@@ -226,37 +171,25 @@ namespace DialogueSystem
 
         private void CreateNodes()
         {
-            // Replace this with a "Load Node"
-            foreach (var nodeData in _containerCache.ConditionNodeData)
+            foreach (var node in _containerCache.Nodes)
             {
-                _targetGraphView.CreateNode(nodeData);
-            }
-
-            foreach (var nodeData in _containerCache.EventNodeData)
-            {
-                _targetGraphView.CreateNode(nodeData);
-            }
-
-            foreach (var nodeData in _containerCache.VariableNodeData)
-            {
-                _targetGraphView.CreateNode(nodeData);
-            }
-
-            foreach (var nodeData in _containerCache.DialogueNodeData)
-            {
-                var tempNode = (DialogueNode)_targetGraphView.CreateNode(nodeData);
-
-                var nodePorts = _containerCache.NodeLinks.Where(x => x.BaseNodeGuid == nodeData.Guid).ToList();
-                nodePorts.ForEach((x) => 
+                if (node.Type == NodeType.Dialogue)
                 {
-                    if(tempNode.outputPorts.Find(y => y.GUID == x.PortGUID) == null)
-                        DialogueNode.AddChoicePort(tempNode, x.PortName, x.Condition, x.PortGUID);
-                });
-            }
-
-            foreach (var nodeData in _containerCache.ChatNodeData)
-            {
-                _targetGraphView.CreateNode(nodeData);
+                    // For dialogue nodes, we need to look at the links, so we pull that one out seperatly
+                    var tempNode = (DialogueNode)_targetGraphView.CreateNode(node);
+                    var nodePorts = _containerCache.NodeLinks.Where(x => x.BaseNodeGuid == node.Guid).ToList();
+                    nodePorts.ForEach((x) =>
+                    {
+                        if (tempNode.outputPorts.Find(y => y.GUID == x.PortGUID) == null)
+                            DialogueNode.AddChoicePort(tempNode, x.PortName, x.Condition, x.PortGUID);
+                    });
+                }
+                else 
+                {
+                    // Everything else is okay with just being added as is.
+                    _targetGraphView.CreateNode(node);
+                }
+                
             }
         }
 
