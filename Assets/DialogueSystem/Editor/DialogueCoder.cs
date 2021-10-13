@@ -40,7 +40,7 @@ namespace DialogueSystem
                     {
                         case NodeType.Variable:
                             variables += $"{Tab(2)}// Variable(s) From Node: {node.Guid} //\n" +
-                                $"{node.TextFields["Code"]}\n";
+                                $"{GetTextField(node,"Code")}\n";
                             break;
 
                         case NodeType.Event:
@@ -48,7 +48,7 @@ namespace DialogueSystem
 
                             eventFunctions += $"{Tab(2)}// Event From Node: {node.Guid} //\n" +
                                 $"{Tab(2)}public void {functionName}() {{\n" +
-                                $"{node.TextFields["Code"]}\n" +
+                                $"{GetTextField(node, "Code")}\n" +
                                 $"{Tab(2)}}}\n";
 
                             setUp += $"{Tab(3)}eventFunctions.Add(\"{functionName}\",{functionName});\n";
@@ -59,7 +59,7 @@ namespace DialogueSystem
 
                             conditionChecks += $"{Tab(2)}// Condition From Node: {node.Guid} //\n" +
                                 $"{Tab(2)}public bool {functionName}() {{\n" +
-                                $"{Tab(3)}return ({(string.IsNullOrEmpty(node.TextFields["Condition"]) ? $"Debug.LogWarning(\"There is no condition in Condition Node with Guid: {node.Guid}.\");" : node.TextFields["Condition"])});\n" +
+                                $"{Tab(3)}return ({(string.IsNullOrEmpty(GetTextField(node, "Condition")) ? $"Debug.LogWarning(\"There is no condition in Condition Node with Guid: {node.Guid}.\");" : GetTextField(node, "Condition"))});\n" +
                                 $"{Tab(2)}}}\n";
 
                             setUp += $"conditionChecks.Add(\"{functionName}\",{functionName});\n";
@@ -87,6 +87,12 @@ namespace DialogueSystem
                 }
                 CodeBuilder(setUp, variables, dialogueChecks, conditionChecks, eventFunctions, treeName);
             }
+        }
+
+        private static string GetTextField(NodeData node, string field) 
+        {
+            node.TextFields.TryGetValue(field, out string output);
+            return (string.IsNullOrEmpty(output) ? string.Empty : output);
         }
 
         private static void CodeBuilder(string setUp, string variables, string dialogueChecks, string conditionNodesChecks, string eventNodeFunctions, string treeName)
