@@ -11,6 +11,16 @@ DialogueNode #output Port {
 	height: 200%;
 }
 
+ChatNode #title {
+	background-color: darkgreen;
+}
+ChatNode TextField {
+	white-space: normal;
+}
+ChatNode #output Port {
+	height: 200%;
+}
+
 #script #unity-text-input {
 	color: rgb(230, 90, 105);
 	background-color: rgba(80, 30, 40, 0.8);

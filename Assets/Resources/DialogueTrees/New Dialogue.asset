@@ -13,102 +13,200 @@ MonoBehaviour:
   m_Name: New Dialogue
   m_EditorClassIdentifier: 
   DialogueName: New Dialogue
-  EntryPointGUID: 
+  EntryPointGUID: 98e59bda-1c75-49a7-99ac-ed7b25ce2e31
   NodeLinks:
-  - BaseNodeGuid: 
+  - BaseNodeGuid: 98e59bda-1c75-49a7-99ac-ed7b25ce2e31
     PortName: Next
     PortGUID: 
     Condition: 
-    TargetNodeGuid: e7fb90dd-0181-47a2-885d-49cbce973e60
-  - BaseNodeGuid: e7fb90dd-0181-47a2-885d-49cbce973e60
+    TargetNodeGuid: 1105168d-7cf2-4844-bf02-5efcc454013f
+  - BaseNodeGuid: 1105168d-7cf2-4844-bf02-5efcc454013f
+    PortName: 70,264 CATS NOW!!!
+    PortGUID: 9c8aec03-2182-475b-98a2-d7ef96b5887c
+    Condition: 
+    TargetNodeGuid: 46a607dd-382c-49d2-a8c3-19de735e8157
+  - BaseNodeGuid: 1105168d-7cf2-4844-bf02-5efcc454013f
+    PortName: 2 Cats!
+    PortGUID: 2e82160d-18ce-4a8b-812a-b874a3fbb742
+    Condition: 
+    TargetNodeGuid: 30b2fb78-ba85-4d09-86b2-329052b9ecc4
+  - BaseNodeGuid: 1105168d-7cf2-4844-bf02-5efcc454013f
+    PortName: 1 cat
+    PortGUID: 37d9ac16-8f6f-4307-895d-d5f569baf054
+    Condition: 
+    TargetNodeGuid: 538836df-8f2f-45c0-84d2-30196dcaf5e9
+  - BaseNodeGuid: 1105168d-7cf2-4844-bf02-5efcc454013f
+    PortName: 70,264 CATS NOW!!!
+    PortGUID: 9c8aec03-2182-475b-98a2-d7ef96b5887c
+    Condition: 
+    TargetNodeGuid: c206f753-a078-453e-a7f6-f5bc92cbd79a
+  - BaseNodeGuid: 1105168d-7cf2-4844-bf02-5efcc454013f
+    PortName: 2 Cats!
+    PortGUID: 2e82160d-18ce-4a8b-812a-b874a3fbb742
+    Condition: 
+    TargetNodeGuid: c206f753-a078-453e-a7f6-f5bc92cbd79a
+  - BaseNodeGuid: 1105168d-7cf2-4844-bf02-5efcc454013f
+    PortName: 1 cat
+    PortGUID: 37d9ac16-8f6f-4307-895d-d5f569baf054
+    Condition: 
+    TargetNodeGuid: 4641f89a-dac6-4420-9536-4f001b38de20
+  - BaseNodeGuid: c206f753-a078-453e-a7f6-f5bc92cbd79a
+    PortName: Next
+    PortGUID: 
+    Condition: 
+    TargetNodeGuid: fd248e7f-bb8b-43a0-bce1-aab11f7ae84f
+  - BaseNodeGuid: 4641f89a-dac6-4420-9536-4f001b38de20
+    PortName: Next
+    PortGUID: 
+    Condition: 
+    TargetNodeGuid: fd248e7f-bb8b-43a0-bce1-aab11f7ae84f
+  - BaseNodeGuid: fd248e7f-bb8b-43a0-bce1-aab11f7ae84f
     PortName: Fail
     PortGUID: 
     Condition: 
-    TargetNodeGuid: 149e58de-faa2-40fd-abd4-ac1f2f60327c
-  - BaseNodeGuid: e7fb90dd-0181-47a2-885d-49cbce973e60
+    TargetNodeGuid: 184b0ec2-db49-4469-874d-5c974faac76a
+  - BaseNodeGuid: fd248e7f-bb8b-43a0-bce1-aab11f7ae84f
     PortName: Pass
     PortGUID: 
     Condition: 
-    TargetNodeGuid: 1eb83f95-81a3-4f4c-a596-03054104c516
-  - BaseNodeGuid: e7fb90dd-0181-47a2-885d-49cbce973e60
-    PortName: Pass
-    PortGUID: 
-    Condition: 
-    TargetNodeGuid: 170a9adb-3f04-4715-9a1b-47da17e0de11
-  - BaseNodeGuid: 861ad73d-cb4b-4b88-bb45-648115de3356
-    PortName: Pass
-    PortGUID: 
-    Condition: 
-    TargetNodeGuid: 4ceaf7fa-8c74-4d95-9fa9-b9f589d1ee02
-  - BaseNodeGuid: 149e58de-faa2-40fd-abd4-ac1f2f60327c
-    PortName: Pass
-    PortGUID: 
-    Condition: 
-    TargetNodeGuid: 875d8195-659d-4612-9b68-bda5007b356c
-  - BaseNodeGuid: 170a9adb-3f04-4715-9a1b-47da17e0de11
-    PortName: Choice 2
-    PortGUID: a66d2751-7b51-46f6-8861-9a24bfdda113
-    Condition: fun == 3
-    TargetNodeGuid: 875d8195-659d-4612-9b68-bda5007b356c
-  - BaseNodeGuid: 170a9adb-3f04-4715-9a1b-47da17e0de11
-    PortName: Choice 2
-    PortGUID: ae8d8931-fd1c-488b-85b4-acc549975dfa
-    Condition: fun == 2
-    TargetNodeGuid: 498f128a-0a15-44d3-9eef-a5194b6d058d
-  - BaseNodeGuid: 170a9adb-3f04-4715-9a1b-47da17e0de11
-    PortName: Choice 1
-    PortGUID: b0b90bb4-38f3-4f47-9c2c-5203d1ca477b
-    Condition: fun == 1
-    TargetNodeGuid: 875d8195-659d-4612-9b68-bda5007b356c
-  - BaseNodeGuid: 875d8195-659d-4612-9b68-bda5007b356c
+    TargetNodeGuid: 82b5907f-6e34-41e9-b439-9e7c444e9095
+  - BaseNodeGuid: 184b0ec2-db49-4469-874d-5c974faac76a
     PortName: Next
     PortGUID: 
     Condition: 
-    TargetNodeGuid: 861ad73d-cb4b-4b88-bb45-648115de3356
-  DialogueNodeData:
-  - Guid: 170a9adb-3f04-4715-9a1b-47da17e0de11
-    Position: {x: 588, y: -313}
-    Type: 0
-    DialogueText: Dialogue Node
-    CharacterName: Jeffery Bezos
-    Audio: FILE 1
-  ChatNodeData:
-  - Guid: 875d8195-659d-4612-9b68-bda5007b356c
-    Position: {x: 1023, y: -96}
+    TargetNodeGuid: 27776fa8-4a16-44d1-8680-558c02f485c3
+  - BaseNodeGuid: 82b5907f-6e34-41e9-b439-9e7c444e9095
+    PortName: Next
+    PortGUID: 
+    Condition: 
+    TargetNodeGuid: 7b28363f-37d4-4e84-a6b3-7b83252ff565
+  - BaseNodeGuid: 82b5907f-6e34-41e9-b439-9e7c444e9095
+    PortName: Next
+    PortGUID: 
+    Condition: 
+    TargetNodeGuid: 27776fa8-4a16-44d1-8680-558c02f485c3
+  - BaseNodeGuid: 27776fa8-4a16-44d1-8680-558c02f485c3
+    PortName: YES GIVE ME ALL THE CATS
+    PortGUID: 8c5a554f-8fb7-4b0c-88ef-a338653a0a9a
+    Condition: cats > 1
+    TargetNodeGuid: 465747a1-391f-4eef-ac5d-2a1344edd8e5
+  - BaseNodeGuid: 27776fa8-4a16-44d1-8680-558c02f485c3
+    PortName: No thank you!
+    PortGUID: 342e6c87-80eb-44cb-9016-8651300a2253
+    Condition: cats <= 1
+    TargetNodeGuid: 2dcdf1de-c763-4a10-9f81-ea57602a7956
+  Nodes:
+  - Guid: b30d63a8-6865-44dd-a010-fb4a7ebf602d
+    Position: {x: 247, y: -277}
+    Type: 16
+    _textKeys:
+    - Code
+    _textValues:
+    - 'int cats = 0;
+
+      string name = "Becky Sue";'
+  - Guid: 538836df-8f2f-45c0-84d2-30196dcaf5e9
+    Position: {x: 572, y: -173}
+    Type: 64
+    _textKeys:
+    - Code
+    _textValues:
+    - cats += 1;
+  - Guid: 30b2fb78-ba85-4d09-86b2-329052b9ecc4
+    Position: {x: 721, y: -173}
+    Type: 64
+    _textKeys:
+    - Code
+    _textValues:
+    - cats += 2;
+  - Guid: 46a607dd-382c-49d2-a8c3-19de735e8157
+    Position: {x: 874, y: -173}
+    Type: 64
+    _textKeys:
+    - Code
+    _textValues:
+    - cats += 70264;
+  - Guid: 1105168d-7cf2-4844-bf02-5efcc454013f
+    Position: {x: 264, y: -58}
     Type: 4
-    DialogueText: A BUNCH OF TEXT
-    CharacterName: Spongebob
-    Audio: FILE 2
-  - Guid: 4ceaf7fa-8c74-4d95-9fa9-b9f589d1ee02
-    Position: {x: 1553, y: -86}
+    _textKeys:
+    - DialogueText
+    - CharacterName
+    _textValues:
+    - How many cats do you want?
+    - ${name}
+  - Guid: c206f753-a078-453e-a7f6-f5bc92cbd79a
+    Position: {x: 637, y: 247}
+    Type: 8
+    _textKeys:
+    - DialogueText
+    - CharacterName
+    _textValues:
+    - ${cats} cats!? That's a heck ton of cats!
+    - ${name}
+  - Guid: 4641f89a-dac6-4420-9536-4f001b38de20
+    Position: {x: 645, y: 34}
+    Type: 8
+    _textKeys:
+    - DialogueText
+    - CharacterName
+    _textValues:
+    - ${cats} cat seems like a good amount.
+    - ${name}
+  - Guid: fd248e7f-bb8b-43a0-bce1-aab11f7ae84f
+    Position: {x: 1026, y: 119}
+    Type: 32
+    _textKeys:
+    - Condition
+    _textValues:
+    - cats > 5
+  - Guid: 184b0ec2-db49-4469-874d-5c974faac76a
+    Position: {x: 1308, y: 285}
+    Type: 8
+    _textKeys:
+    - DialogueText
+    - CharacterName
+    _textValues:
+    - It seems like a cat has fallen asleep!
+    - ${name}
+  - Guid: 82b5907f-6e34-41e9-b439-9e7c444e9095
+    Position: {x: 1265, y: 34}
+    Type: 8
+    _textKeys:
+    - DialogueText
+    - CharacterName
+    _textValues:
+    - OH NO! OVET 70k CATS ARE RUNNING AWAY!!!
+    - ${name}
+  - Guid: 7b28363f-37d4-4e84-a6b3-7b83252ff565
+    Position: {x: 1635, y: -136}
+    Type: 64
+    _textKeys:
+    - Code
+    _textValues:
+    - cats -= 70000;
+  - Guid: 27776fa8-4a16-44d1-8680-558c02f485c3
+    Position: {x: 1635, y: 148}
     Type: 4
-    DialogueText: Sucks to suck
-    CharacterName: squidward
-    Audio: 
-  ConditionNodeData:
-  - Guid: e7fb90dd-0181-47a2-885d-49cbce973e60
-    Position: {x: 201, y: 31}
-    Type: 1
-    Condition: fun <= 5
-  - Guid: 861ad73d-cb4b-4b88-bb45-648115de3356
-    Position: {x: 1247, y: -157}
-    Type: 1
-    Condition: true
-  - Guid: 149e58de-faa2-40fd-abd4-ac1f2f60327c
-    Position: {x: 721, y: 15}
-    Type: 1
-    Condition: true
-  EventNodeData:
-  - Guid: 1eb83f95-81a3-4f4c-a596-03054104c516
-    Position: {x: 678, y: 179}
-    Type: 2
-    code: // TODO //
-  - Guid: 498f128a-0a15-44d3-9eef-a5194b6d058d
-    Position: {x: 1006, y: -228}
-    Type: 2
-    code: fun = 1000;
-  VariableNodeData:
-  - Guid: 38013ccc-4839-4be0-bec0-505a0c69e8dd
-    Position: {x: 108, y: -133}
-    Type: 3
-    Code: int fun = 0;
+    _textKeys:
+    - DialogueText
+    - CharacterName
+    _textValues:
+    - Anyways, would you like another cat?
+    - ${name}
+  - Guid: 465747a1-391f-4eef-ac5d-2a1344edd8e5
+    Position: {x: 2084, y: 24}
+    Type: 64
+    _textKeys:
+    - Code
+    _textValues:
+    - cats++;
+  - Guid: 2dcdf1de-c763-4a10-9f81-ea57602a7956
+    Position: {x: 2181, y: 238}
+    Type: 8
+    _textKeys:
+    - DialogueText
+    - CharacterName
+    _textValues:
+    - Your cat tally comes out to... ${cats} cat(s).
+    - ${name}
