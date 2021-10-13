@@ -9,7 +9,8 @@ namespace DialogueSystem
 {
     public class ConditionNode : BasicNode
     {
-        public string Condition {
+        public string Condition
+        {
             get { return TextFields.TryGetValue("Condition", out var tmp) ? tmp : string.Empty; }
             set { TextFields["Condition"] = value; }
         }
@@ -19,7 +20,7 @@ namespace DialogueSystem
             NodeData node = new NodeData();
             node.TextFields["Condition"] = defaultText;
             node.Position = location;
-            node.Type = NodeType.Chat;
+            node.Type = NodeType.Branch;
             return CreateNode(node, guid);
         }
 

@@ -1,18 +1,18 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
-using UnityEditor;
 using System.IO;
 using DialogueSystem;
 using DialogueSystem.Code;
 using System.Text.RegularExpressions;
+using UnityEditor;
+using UnityEngine;
 
 namespace DialogueSystem
 {
     public static class DialogueCoder
     {
         // Code to make code
-        public static List<DialogueContainer> GrabDialogueContainers() 
+        public static List<DialogueContainer> GrabDialogueContainers()
         {
             DialogueContainer[] containers = Resources.LoadAll<DialogueContainer>("DialogueTrees");
             List<DialogueContainer> listOfContainers = new List<DialogueContainer>();
@@ -21,9 +21,9 @@ namespace DialogueSystem
             return listOfContainers;
         }
 
-        public static void GenerateCode(List<DialogueContainer> containers) 
+        public static void GenerateCode(List<DialogueContainer> containers)
         {
-            foreach (DialogueContainer container in containers) 
+            foreach (DialogueContainer container in containers)
             {
                 string setUp = $"{Tab(3)}// Setup //\n";
                 string variables = $"{Tab(2)}// Variables //\n";
@@ -32,10 +32,10 @@ namespace DialogueSystem
                 string dialogueChecks = $"{Tab(2)}// Dialogue Checks //\n";
                 string treeName = SanitizeName(container.DialogueName);
 
-                foreach (NodeData node in container.Nodes) 
+                foreach (NodeData node in container.Nodes)
                 {
                     string functionName = string.Empty;
-                    switch (node.Type) 
+                    switch (node.Type)
                     {
                         case NodeType.Variable:
                             variables += $"{Tab(2)}// Variable(s) From Node: {node.Guid} //\n" +
@@ -47,7 +47,7 @@ namespace DialogueSystem
 
                             eventFunctions += $"{Tab(2)}// Event From Node: {node.Guid} //\n" +
                                 $"{Tab(2)}public void {functionName}() {{\n" +
-                                $"{node.TextFields["code"]}\n" +
+                                $"{node.TextFields["Code"]}\n" +
                                 $"{Tab(2)}}}\n";
 
                             setUp += $"{Tab(3)}eventFunctions.Add(\"{functionName}\",{functionName});\n";
@@ -122,7 +122,7 @@ namespace DialogueSystem.Code
             WriteString(toWrite, $"{treeName}_GenCode");
         }
 
-        private static string Tab(int amount = 1) 
+        private static string Tab(int amount = 1)
         {
             string back = string.Empty;
             for (int i = 0; i < amount; i++)
@@ -130,7 +130,7 @@ namespace DialogueSystem.Code
             return back;
         }
 
-        private static string SanitizeName(string name) 
+        private static string SanitizeName(string name)
         {
             return DialogueCodeUtility.SanitizeName(name);
         }

@@ -1,10 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using UnityEditor;
-using UnityEditor.Experimental.GraphView;
+using UnityEngine;
 using DialogueSystem;
 using UnityEngine.UIElements;
-using UnityEngine;
+using UnityEditor.Experimental.GraphView;
 
 namespace DialogueSystem
 {
@@ -12,7 +11,7 @@ namespace DialogueSystem
     {
         private DialogueGraphView.RemovePortDelegate RemovePort;
 
-        public static new BasicNode CreateNode(Vector2 location, string defaultText, string guid) 
+        public static new BasicNode CreateNode(Vector2 location, string defaultText, string guid)
         {
             throw new System.Exception("Missing Remove Port Delegate");
         }
@@ -25,7 +24,7 @@ namespace DialogueSystem
             NodeData node = new NodeData();
             node.TextFields["DialogueText"] = defaultText;
             node.Position = location;
-            node.Type = NodeType.Chat;
+            node.Type = NodeType.Dialogue;
             return CreateNode(node, guid, remove);
         }
         public static BasicNode CreateNode(NodeData data, string guid, DialogueGraphView.RemovePortDelegate remove)
@@ -161,6 +160,6 @@ namespace DialogueSystem
             dialogueNode.RefreshExpandedState();
             dialogueNode.RefreshPorts();
         }
-        
+
     }
 }

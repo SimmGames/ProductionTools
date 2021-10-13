@@ -19,7 +19,7 @@ namespace DialogueSystem
             NodeData node = new NodeData();
             node.TextFields["Code"] = defaultText;
             node.Position = location;
-            node.Type = NodeType.Chat;
+            node.Type = NodeType.Variable;
             return CreateNode(node, guid);
         }
 
