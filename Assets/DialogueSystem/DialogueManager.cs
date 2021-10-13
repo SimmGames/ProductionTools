@@ -12,7 +12,6 @@ namespace DialogueSystem
         [SerializeField]
         private DialogueContainer ActiveDialogue = null; // Our dialogue tree to track
         private IDialogueCode dialogueCode = null; // The tree's dialogue code
-
         private NodeData currentNode;
 
         public string DialogueText => getDialogueText();
@@ -88,6 +87,15 @@ namespace DialogueSystem
             {
                 Debug.LogWarning("DialogueManager.Next should only be used on a Chat Node!");
             }
+        }
+        /// <summary>
+        /// Use this method to grab any text field not predefined. Pass the text field's name in <paramref name="field"/>
+        /// </summary>
+        /// <param name="field"></param>
+        /// <returns></returns>
+        public string GetSomething(string field)
+        {
+            return GetTextField(currentNode, field);
         }
 
         /// <summary>
@@ -222,7 +230,6 @@ namespace DialogueSystem
             events.TryGetValue(GenerateFunctionName(ActiveDialogue.DialogueName, eventNode.Guid), out eventFunction);
             eventFunction();
         }
-
         private Dictionary<string, string> getDialogueOptions()
         {
             if (currentNode.Type == NodeType.Dialogue)
