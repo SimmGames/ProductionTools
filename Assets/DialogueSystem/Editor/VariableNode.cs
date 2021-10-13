@@ -30,7 +30,7 @@ namespace DialogueSystem
             // Node Data Info
             node._nodeData = data;
             node.Guid = guid;
-            node.title = GenerateTitle("Event");
+            node.title = GenerateTitle("Variables");
 
             // Style Sheet
             node.styleSheets.Add(Resources.Load<StyleSheet>("Node"));

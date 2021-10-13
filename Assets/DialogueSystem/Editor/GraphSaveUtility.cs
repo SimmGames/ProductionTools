@@ -173,6 +173,7 @@ namespace DialogueSystem
         {
             foreach (var node in _containerCache.Nodes)
             {
+                node.DeSerialize();
                 if (node.Type == NodeType.Dialogue)
                 {
                     // For dialogue nodes, we need to look at the links, so we pull that one out seperatly

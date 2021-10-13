@@ -43,6 +43,7 @@ namespace DialogueSystem
         public virtual NodeData SaveNodeData()
         {
             _nodeData.Position = this.GetPosition().position;
+            _nodeData.Serialize();
             return _nodeData;
         }
 

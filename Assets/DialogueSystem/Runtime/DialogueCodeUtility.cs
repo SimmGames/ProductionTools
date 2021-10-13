@@ -9,7 +9,7 @@ namespace DialogueSystem.Code
     {
         public static string GenerateFunctionName(string dialogueName, string nodeGuid, string portGuid = "")
         {
-            return $"{SanitizeName(dialogueName)}_{nodeGuid.Replace("-", "")}{(string.IsNullOrEmpty(portGuid) ? string.Empty : ('_' + portGuid))}";
+            return $"{SanitizeName(dialogueName)}_{nodeGuid.Replace("-", "")}{(string.IsNullOrEmpty(portGuid) ? string.Empty : ("_" + portGuid.Replace("-", "")))}";
         }
 
         public static string SanitizeName(string name)
