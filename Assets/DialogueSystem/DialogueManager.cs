@@ -133,16 +133,16 @@ namespace DialogueSystem
                 Debug.LogWarning("DialogueManager.Next should only be used on a Chat Node!");
             }
         }
-        
+
         /// <summary>
-        /// Use this method to grab any text field not predefined. Pass the text field's name in <paramref name="field"/>
+        /// Use this method to grab any text field not predefined. Pass the text field's name in <paramref name="fieldName"/>
         /// </summary>
-        /// <param name="field"></param>
+        /// <param name="fieldName"></param>
         /// <returns></returns>
-        public string GetSomething(string field)
+        public string GetField(string fieldName)
         {
             if (!InConversation) return null;
-            return replaceVariables(GetTextField(currentNode, field));
+            return replaceVariables(GetTextField(currentNode, fieldName));
         }
 
         /// <summary>
