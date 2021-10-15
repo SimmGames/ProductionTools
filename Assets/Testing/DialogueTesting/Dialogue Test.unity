@@ -925,8 +925,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 406217eb23a055c48ad332cb61ec540f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ActiveDialogue: {fileID: 11400000, guid: 916fb2142c209e7409307a1f19b467e4, type: 2}
-  InConversation: 0
+  DialogueName: New Dialogue
 --- !u!4 &1048727441
 Transform:
   m_ObjectHideFlags: 0
