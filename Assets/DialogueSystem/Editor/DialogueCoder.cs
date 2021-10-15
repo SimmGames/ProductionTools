@@ -35,6 +35,7 @@ namespace DialogueSystem
 
                 foreach (NodeData node in container.Nodes)
                 {
+                    node.DeSerialize();
                     string functionName = string.Empty;
                     switch (node.Type)
                     {
@@ -59,7 +60,7 @@ namespace DialogueSystem
 
                             conditionChecks += $"{Tab(2)}// Condition From Node: {node.Guid} //\n" +
                                 $"{Tab(2)}public bool {functionName}() {{\n" +
-                                $"{Tab(3)}return ({(string.IsNullOrEmpty(GetTextField(node, "Condition")) ? $"Debug.LogWarning(\"There is no condition in Condition Node with Guid: {node.Guid}.\");" : GetTextField(node, "Condition"))});\n" +
+                                $"{Tab(3)}return ({(string.IsNullOrEmpty(GetTextField(node, "Condition")) ? $"true" : GetTextField(node, "Condition"))});\n" +
                                 $"{Tab(2)}}}\n";
 
                             setUp += $"{Tab(3)}conditionChecks.Add(\"{functionName}\",{functionName});\n";
@@ -102,6 +103,7 @@ using UnityEngine;
 using System;
 using UnityEditor;
 using DialogueSystem;
+using System.Reflection;
 
 namespace DialogueSystem.Code
 {
@@ -116,12 +118,17 @@ namespace DialogueSystem.Code
         public Dictionary<string, IDialogueCode.ConditionDelegate> ConditionChecks => conditionChecks;
         public Dictionary<string, IDialogueCode.ConditionDelegate> DialogueChecks => dialogueChecks;
         public string GetVariable(string variableName) {
-            return this.GetType().GetField(variableName).GetValue(this).ToString(); 
+            return this.GetType().GetField(variableName, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic).GetValue(this).ToString(); 
+        }
+        public ";
+            string precode3 = @"() 
+        {
+            Start();
         }
 ";
             string postcode = @"    }
 }";
-            string toWrite = $"{precode1}{treeName}{precode2}\n\n{variables}\n\n{Tab(2)}public void Start()\n{Tab(2)}{{\n{setUp}\n{Tab(2)}}}" +
+            string toWrite = $"{precode1}{treeName}{precode2}{treeName}{precode3}\n\n{variables}\n\n{Tab(2)}public void Start()\n{Tab(2)}{{\n{setUp}\n{Tab(2)}}}" +
                 $"\n\n{dialogueChecks}\n\n{conditionNodesChecks}\n\n{eventNodeFunctions}\n{postcode}";
 
             WriteString(toWrite, treeName);

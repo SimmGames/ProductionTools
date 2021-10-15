@@ -4,61 +4,91 @@ using UnityEngine;
 using DialogueSystem;
 using DialogueSystem.Code;
 using System;
+using System.Text.RegularExpressions;
+using System.Linq;
 
 namespace DialogueSystem
 {
     public class DialogueManager : MonoBehaviour
     {
+        [Tooltip("Enter the name of the dialogue you want to use. This is the same name used in the Dialogue Graph.")]
         [SerializeField]
+        private string DialogueName = string.Empty;
+
         private DialogueContainer ActiveDialogue = null; // Our dialogue tree to track
         private IDialogueCode dialogueCode = null; // The tree's dialogue code
         private NodeData currentNode;
 
+        /// <summary>
+        /// Returns the dialogue text of the current node
+        /// </summary>
         public string DialogueText => getDialogueText();
+        /// <summary>
+        /// Returns the character text of the current node
+        /// </summary>
         public string Character => getCharacter();
+        /// <summary>
+        /// Returns the audio file text of the current node
+        /// </summary>
         public string AudioFile => getAudioFile();
+        /// <summary>
+        /// Returns the dialogue options of the current node (if avaliable). It's in the format of ( Option Text, Option Guid )
+        /// </summary>
         public Dictionary<string, string> DialogueOptions => getDialogueOptions();
+        /// <summary>
+        /// Returns true if in the middle of an active conversation. It will return false at the end of a conversation.
+        /// </summary>
+        public bool InConversation { get; private set; }
 
-
-        // Start is called before the first frame update
-        void Start()
+        private void OnEnable()
         {
-            currentNode = null;
-            if (ActiveDialogue != null) 
+            DialogueName = DialogueName.Trim();
+            if (!string.IsNullOrWhiteSpace(DialogueName))
             {
+                ActiveDialogue = Resources.Load<DialogueContainer>($"DialogueTrees/{DialogueName}");
+                if (ActiveDialogue == null) 
+                {
+                    Debug.LogWarning($"Dialogue, \"{DialogueName}\", could not be found. Are you sure that you've entered your name correctly?");
+                }
+            }
+            InConversation = false;
+            currentNode = null;
+            StartConversation();
+        }
+
+        /// <summary>
+        /// This will enable a conversation while preserving the variables from last time it was converced.
+        /// </summary>
+        public void StartConversation() 
+        {
+            if (ActiveDialogue != null)
+            {
+                if(dialogueCode == null)
+                    dialogueCode = DialogueCodeUtility.GetDialogueCode(ActiveDialogue.DialogueName);
+                // Find the first node
                 Next(ActiveDialogue.EntryPointGUID);
-                Type type = Type.GetType(DialogueCodeUtility.GenerateClassName(ActiveDialogue.name));
-                if(type != null)
-                    dialogueCode = (IDialogueCode)Activator.CreateInstance(type);
+                // Mark that we're in a convo
+                InConversation = true;
             }
         }
-
+        
+        /// <summary>
+        /// This will reset the dialogue to it's begining state. (Includes reseting variables as well!!)
+        /// </summary>
         public void Reset()
         {
-            Start();
+            OnEnable();
         }
 
-        /// <summary>
-        /// Generates the name of a function inside of the <see cref="GeneratedDialogueCode"/> class.
-        /// <paramref name="portGuid"/> is optional but is needed for Conditions on <see cref="DialogueNodeData">Dialogue Nodes</see>.
-        /// </summary>
-        /// <param name="dialogueName"></param>
-        /// <param name="nodeGuid"></param>
-        /// <param name="portGuid"></param>
-        /// <returns></returns>
-        public static string GenerateFunctionName(string dialogueName, string nodeGuid, string portGuid = "") 
-        {
-            return DialogueCodeUtility.GenerateFunctionName(dialogueName, nodeGuid, portGuid);
-        }
 
         /// <summary>
-        /// Sets the working dialogue tree
+        /// Sets the working dialogue tree. This will overwrite the current one!
         /// </summary>
         /// <param name="newDialogue"></param>
         public void SetDialogue(DialogueContainer newDialogue) 
         {
             ActiveDialogue = newDialogue;
-            Start();
+            OnEnable();
         }
 
         /// <summary>
@@ -67,6 +97,15 @@ namespace DialogueSystem
         /// <param name="optionGUID"></param>
         public void Next(string optionGUID) 
         {
+            if (currentNode == null) 
+            {
+                // If the node is blank, we'll grab the start port's output guid and use that
+                optionGUID = GetStartPort(optionGUID);
+                // Steps through and gets the first node
+                currentNode = stepThroughNodes(optionGUID);
+                return;
+            }
+
             if (currentNode.Type == NodeType.Dialogue)
                 currentNode = stepThroughNodes(optionGUID);
             else
@@ -80,7 +119,13 @@ namespace DialogueSystem
         {
             if (currentNode.Type == NodeType.Chat)
             {
-                string portGuid = ActiveDialogue.NodeLinks.Find(x => x.BaseNodeGuid == currentNode.Guid).PortGUID;
+                NodeLinkData NodeLink = ActiveDialogue.NodeLinks.Find(x => x.BaseNodeGuid == currentNode.Guid);
+                if (NodeLink == null)
+                {
+                    endConversation();
+                    return;
+                }
+                string portGuid = NodeLink.PortGUID;
                 currentNode = stepThroughNodes(portGuid);
             }
             else
@@ -88,6 +133,7 @@ namespace DialogueSystem
                 Debug.LogWarning("DialogueManager.Next should only be used on a Chat Node!");
             }
         }
+        
         /// <summary>
         /// Use this method to grab any text field not predefined. Pass the text field's name in <paramref name="field"/>
         /// </summary>
@@ -95,7 +141,16 @@ namespace DialogueSystem
         /// <returns></returns>
         public string GetSomething(string field)
         {
-            return GetTextField(currentNode, field);
+            if (!InConversation) return null;
+            return replaceVariables(GetTextField(currentNode, field));
+        }
+
+        /// <summary>
+        /// Sets the In Conversation bool to false
+        /// </summary>
+        private void endConversation() 
+        {
+            InConversation = false;
         }
 
         /// <summary>
@@ -123,6 +178,7 @@ namespace DialogueSystem
                         runEventNode(x);
                         break;
                     case NodeType.Exit:
+                        endConversation();
                         break;
                 }
             });
@@ -130,6 +186,11 @@ namespace DialogueSystem
             if (newNode == null)
             {
                 // end condition
+                endConversation();
+            }
+            else 
+            {
+                newNode.DeSerialize();
             }
 
             return newNode;
@@ -144,6 +205,8 @@ namespace DialogueSystem
             Dictionary<string, IDialogueCode.ConditionDelegate> branchCondition = dialogueCode.ConditionChecks;
             IDialogueCode.ConditionDelegate conditionCheck;
             branchCondition.TryGetValue(GenerateFunctionName(ActiveDialogue.DialogueName, nodeGUID), out conditionCheck);
+            if (conditionCheck == null)
+                return null;
             if (conditionCheck())
             {
                 // Pass
@@ -164,14 +227,28 @@ namespace DialogueSystem
         private List<NodeData> getNextNodes(string outputGuid) 
         {
             // Get the GUIDs of the targeted nodes
-            List<string> guids = new List<string>(); 
-            ActiveDialogue.NodeLinks.FindAll(x => x.PortGUID == outputGuid).ForEach(x => guids.Add(x.TargetNodeGuid));
+            List<string> guids = new List<string>();
+            NodeLinkData basePort = ActiveDialogue.NodeLinks.Find(x => x.PortGUID.Equals(outputGuid));
+            NodeData currentNode = ActiveDialogue.Nodes.Find(y => y.Guid.Equals(basePort.BaseNodeGuid));
+            if (currentNode == null) 
+            {
+                currentNode = new NodeData()
+                {
+                    Type = NodeType.Entry,
+                    Guid = basePort.BaseNodeGuid
+                };
+            }
+
+            if (currentNode.Type == NodeType.Dialogue)
+                ActiveDialogue.NodeLinks.FindAll(x => x.PortGUID.Equals(outputGuid)).ForEach(x => guids.Add(x.TargetNodeGuid));
+            else
+                ActiveDialogue.NodeLinks.FindAll(x => (x.BaseNodeGuid.Equals(currentNode.Guid) && x.PortName.Equals(basePort.PortName))).ForEach(x => guids.Add(x.TargetNodeGuid));
 
             // Convert the GUIDs into NodeData objects
             List<NodeData> outputNodes = new List<NodeData>();
             guids.ForEach(guid => 
             {
-                ActiveDialogue.Nodes.FindAll(x => x.Guid == guid).ForEach(x => outputNodes.Add(x));
+                ActiveDialogue.Nodes.FindAll(x => x.Guid.Equals(guid)).ForEach(x => outputNodes.Add(x));
             });
             return outputNodes;
         }
@@ -185,9 +262,10 @@ namespace DialogueSystem
         {
             // Find ports in node where the basenode guid's match. Make sure they're not in the list already
             Dictionary<string, string> dialogueOptions = new Dictionary<string, string>();
-            ActiveDialogue.NodeLinks.FindAll(x => x.BaseNodeGuid == dialogueNode.Guid && !dialogueOptions.ContainsValue(x.PortGUID)).ForEach(x => 
+            ActiveDialogue.NodeLinks.FindAll(x => x.BaseNodeGuid == dialogueNode.Guid).ForEach(x => 
             {
-                dialogueOptions.Add(x.PortName, x.PortGUID);
+                if(!dialogueOptions.ContainsValue(x.PortGUID))
+                    dialogueOptions.Add(x.PortName, x.PortGUID);
             });
 
             // Check the conditions for the ports to run
@@ -196,7 +274,7 @@ namespace DialogueSystem
             {
                 if (checkCondition(dialogueNode.Guid, option.Value)) 
                 {
-                    toReturnOptions.Add(option.Key, option.Value);
+                    toReturnOptions.Add(replaceVariables(option.Key), option.Value);
                 }
             }
 
@@ -230,8 +308,34 @@ namespace DialogueSystem
             events.TryGetValue(GenerateFunctionName(ActiveDialogue.DialogueName, eventNode.Guid), out eventFunction);
             eventFunction();
         }
+
+        /// <summary>
+        /// Generates the name of a function inside of the <see cref="GeneratedDialogueCode"/> class.
+        /// <paramref name="portGuid"/> is optional but is needed for Conditions on <see cref="DialogueNodeData">Dialogue Nodes</see>.
+        /// </summary>
+        /// <param name="dialogueName"></param>
+        /// <param name="nodeGuid"></param>
+        /// <param name="portGuid"></param>
+        /// <returns></returns>
+        private static string GenerateFunctionName(string dialogueName, string nodeGuid, string portGuid = "") 
+        {
+            return DialogueCodeUtility.GenerateFunctionName(dialogueName, nodeGuid, portGuid);
+        }
+
+        /// <summary>
+        /// Returns the output guid of the start node
+        /// </summary>
+        /// <param name="startNodeGuid"></param>
+        /// <returns></returns>
+        private string GetStartPort(string startNodeGuid) 
+        {
+            string outputGuid = ActiveDialogue.NodeLinks.Find(x => x.BaseNodeGuid == startNodeGuid).PortGUID;
+            return outputGuid;
+        }
+
         private Dictionary<string, string> getDialogueOptions()
         {
+            if (!InConversation) return null;
             if (currentNode.Type == NodeType.Dialogue)
             {
                 return formDialogueChoices(currentNode);
@@ -243,9 +347,10 @@ namespace DialogueSystem
         }
         private string getCharacter()
         {
+            if (!InConversation) return null;
             if (currentNode.Type == NodeType.Chat || currentNode.Type == NodeType.Dialogue)
             {
-                return GetTextField(currentNode, "CharacterName");
+                return replaceVariables(GetTextField(currentNode, "CharacterName"));
             }
             else
             {
@@ -254,9 +359,10 @@ namespace DialogueSystem
         }
         private string getDialogueText()
         {
+            if (!InConversation) return null;
             if (currentNode.Type == NodeType.Chat || currentNode.Type == NodeType.Dialogue)
             {
-                return GetTextField(currentNode, "DialogueText");
+                return replaceVariables(GetTextField(currentNode, "DialogueText"));
             }
             else 
             {
@@ -265,10 +371,10 @@ namespace DialogueSystem
         }
         private string getAudioFile() 
         {
+            if (!InConversation) return null;
             if (currentNode.Type == NodeType.Chat || currentNode.Type == NodeType.Dialogue)
             {
-                string file = GetTextField(currentNode, "Audio");
-                return string.IsNullOrEmpty(file) ? null : file;
+                return replaceVariables(GetTextField(currentNode, "Audio"));
             }
             else
             {
@@ -276,9 +382,33 @@ namespace DialogueSystem
             }
         }
 
+        private string replaceVariables(string text) 
+        {
+            MatchCollection matches = Regex.Matches(text, @"(?<=\$\{).*?(?=\})");
+            List<string> matchList = matches.Cast<Match>().Select(match => match.Value).ToList();
+            foreach (string vari in matchList) 
+            {
+                try
+                {
+                    string variableValue = dialogueCode.GetVariable(vari);
+                    string oldValue = "${" + vari + "}";
+                    text = text.Replace(oldValue, variableValue);
+                } 
+                catch (Exception e)
+                {
+                    Debug.LogError(e);
+                    //Debug.LogWarning($"The variable, {vari}, is not present in your Dialogue Tree, {ActiveDialogue.DialogueName}." +
+                    //    $" This was from the node with the GUID of {currentNode.Guid}.");
+                }
+            }
+            return text;
+        }
+
         private static string GetTextField(NodeData node, string field)
         {
-            return DialogueCodeUtility.GetTextField(node, field);
+            
+            string text = DialogueCodeUtility.GetTextField(node, field);
+            return string.IsNullOrEmpty(text) ? null : text;
         }
     }
 }
