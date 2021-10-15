@@ -17,7 +17,7 @@ namespace DialogueSystem.Code
         public Dictionary<string, IDialogueCode.ConditionDelegate> ConditionChecks => conditionChecks;
         public Dictionary<string, IDialogueCode.ConditionDelegate> DialogueChecks => dialogueChecks;
         public string GetVariable(string variableName) {
-            return this.GetType().GetField(variableName, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic).GetValue(this).ToString();
+            return this.GetType().GetField(variableName, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic).GetValue(this).ToString(); 
         }
         public New_Dialogue_DialogueCode() 
         {
@@ -42,9 +42,9 @@ string name = "Becky Sue";
             dialogueChecks.Add("New_Dialogue_1105168d7cf24844bf025efcc454013f_37d9ac168f6f4307895dd5f569baf054",New_Dialogue_1105168d7cf24844bf025efcc454013f_37d9ac168f6f4307895dd5f569baf054);
             conditionChecks.Add("New_Dialogue_fd248e7fbb8b43a0bce1aab11f7ae84f",New_Dialogue_fd248e7fbb8b43a0bce1aab11f7ae84f);
             eventFunctions.Add("New_Dialogue_7b28363f37d44e84a6b37b83252ff565",New_Dialogue_7b28363f37d44e84a6b37b83252ff565);
+            eventFunctions.Add("New_Dialogue_465747a1391f4eefac5d2a1344edd8e5",New_Dialogue_465747a1391f4eefac5d2a1344edd8e5);
             dialogueChecks.Add("New_Dialogue_27776fa84a1644d18680558c02f485c3_8c5a554f8fb74b0c88efa338653a0a9a",New_Dialogue_27776fa84a1644d18680558c02f485c3_8c5a554f8fb74b0c88efa338653a0a9a);
             dialogueChecks.Add("New_Dialogue_27776fa84a1644d18680558c02f485c3_342e6c8780eb44cb90168651300a2253",New_Dialogue_27776fa84a1644d18680558c02f485c3_342e6c8780eb44cb90168651300a2253);
-            eventFunctions.Add("New_Dialogue_465747a1391f4eefac5d2a1344edd8e5",New_Dialogue_465747a1391f4eefac5d2a1344edd8e5);
 
         }
 

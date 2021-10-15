@@ -11,7 +11,10 @@ namespace DialogueSystem
 {
     public class DialogueManager : MonoBehaviour
     {
+        [Tooltip("Enter the name of the dialogue you want to use. This is the same name used in the Dialogue Graph.")]
         [SerializeField]
+        private string DialogueName = string.Empty;
+
         private DialogueContainer ActiveDialogue = null; // Our dialogue tree to track
         private IDialogueCode dialogueCode = null; // The tree's dialogue code
         private NodeData currentNode;
@@ -32,11 +35,22 @@ namespace DialogueSystem
         /// Returns the dialogue options of the current node (if avaliable). It's in the format of ( Option Text, Option Guid )
         /// </summary>
         public Dictionary<string, string> DialogueOptions => getDialogueOptions();
-        [SerializeField]
-        public bool InConversation;
+        /// <summary>
+        /// Returns true if in the middle of an active conversation. It will return false at the end of a conversation.
+        /// </summary>
+        public bool InConversation { get; private set; }
 
         private void OnEnable()
         {
+            DialogueName = DialogueName.Trim();
+            if (!string.IsNullOrWhiteSpace(DialogueName))
+            {
+                ActiveDialogue = Resources.Load<DialogueContainer>($"DialogueTrees/{DialogueName}");
+                if (ActiveDialogue == null) 
+                {
+                    Debug.LogWarning($"Dialogue, \"{DialogueName}\", could not be found. Are you sure that you've entered your name correctly?");
+                }
+            }
             InConversation = false;
             currentNode = null;
             StartConversation();

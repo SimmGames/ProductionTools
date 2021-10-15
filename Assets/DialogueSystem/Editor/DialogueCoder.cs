@@ -35,6 +35,7 @@ namespace DialogueSystem
 
                 foreach (NodeData node in container.Nodes)
                 {
+                    node.DeSerialize();
                     string functionName = string.Empty;
                     switch (node.Type)
                     {
@@ -59,7 +60,7 @@ namespace DialogueSystem
 
                             conditionChecks += $"{Tab(2)}// Condition From Node: {node.Guid} //\n" +
                                 $"{Tab(2)}public bool {functionName}() {{\n" +
-                                $"{Tab(3)}return ({(string.IsNullOrEmpty(GetTextField(node, "Condition")) ? $"Debug.LogWarning(\"There is no condition in Condition Node with Guid: {node.Guid}.\");" : GetTextField(node, "Condition"))});\n" +
+                                $"{Tab(3)}return ({(string.IsNullOrEmpty(GetTextField(node, "Condition")) ? $"true" : GetTextField(node, "Condition"))});\n" +
                                 $"{Tab(2)}}}\n";
 
                             setUp += $"{Tab(3)}conditionChecks.Add(\"{functionName}\",{functionName});\n";
