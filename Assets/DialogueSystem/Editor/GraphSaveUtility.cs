@@ -68,7 +68,7 @@ namespace DialogueSystem
                             PortName = connectedPorts[i].output.portName,
                             Condition = "",
                             TargetNodeGuid = inputNode.Guid,
-                            PortGUID = ""
+                            PortGUID = Guid.NewGuid().ToString()
                         });
                     }
                 }
@@ -139,10 +139,14 @@ namespace DialogueSystem
                 for (var j = 0; j < connections.Count; j++)
                 {
                     List<Port> outputPorts;
-                    if (string.IsNullOrEmpty(connections[j].PortGUID))
+
+                    BasicNode baseNode = Nodes.First(x => x.Guid == connections[j].BaseNodeGuid);
+
+                    if (baseNode.Type != NodeType.Dialogue)
                         outputPorts = Ports.Where(x => x.portName == connections[j].PortName).ToList();
                     else
                         outputPorts = Ports.Where(x => x.portName == connections[j].PortGUID).ToList();
+
 
                     var targetNodeGuid = connections[j].TargetNodeGuid;
                     var targetNode = Nodes.First(x => x.Guid == targetNodeGuid);

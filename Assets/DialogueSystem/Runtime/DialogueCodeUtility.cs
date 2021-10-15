@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Text.RegularExpressions;
 using UnityEngine;
 
@@ -31,6 +33,16 @@ namespace DialogueSystem.Code
         {
             node.TextFields.TryGetValue(field, out string output);
             return (string.IsNullOrEmpty(output) ? string.Empty : output);
+        }
+
+        public static IDialogueCode GetDialogueCode(string dialogueName) 
+        {
+            string className = $"DialogueSystem.Code.{GenerateClassName(dialogueName)}";
+            Assembly asm = typeof(IDialogueCode).Assembly;
+            Type type = asm.GetType(className);
+            if (type != null)
+                return (IDialogueCode)Activator.CreateInstance(type);
+            return null;
         }
     }
 }
