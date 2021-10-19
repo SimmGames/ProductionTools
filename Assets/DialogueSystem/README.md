@@ -1,4 +1,4 @@
-# Dialogue System v2.0.1
+# Dialogue System v2.0.2
 # About
 [To-Do](https://github.com/SimmGames/ProductionTools/wiki/Dialogue-System#to-do) | [Manual](https://github.com/SimmGames/ProductionTools/wiki/Dialogue-System#manual) | [Scripting API](https://github.com/SimmGames/ProductionTools/wiki/Dialogue-System#scripting-api)
 
@@ -19,7 +19,7 @@ The Dialogue Graph can be opened in **Window\>Dialogue System\>Dialogue Graph**.
 1. Open up Unity's Package Manager (**Window\>Package Manager**)
 2. In the top left, hit the **Plus** button and select **Add package from git URL...**
 3. In the box, paste the package's git repository `https://github.com/SimmGames/com.simmgames.dialoguesystem.git` then hit Add
-4. Everything should be installed after that! Samples are located at **Assets\>Dialogue System\>Samples**
+4. Everything should be installed after that! Samples are located at **Packages\>Dialogue System\>Samples**
 
 # To-Do
 - [ ]  Create Separate File to define Nodes [#13](https://github.com/SimmGames/ProductionTools/issues/13)
