@@ -6,7 +6,7 @@ All of these tools are primarly for my own personal developer library, but they'
 All of the different sections are kept in the tags section. They're just Unity Packages and can be added to your project by dragging and dropping the *.unitypackage* file into Unity.
 
 Here's instructions on how to install each modual:
-* [Dialogue System v2.0.1](https://github.com/SimmGames/com.simmgames.dialoguesystem#how-to-install)
+* [Dialogue System v2.0.2](https://github.com/SimmGames/com.simmgames.dialoguesystem#how-to-install)
 
 # What's In This Project
 Each project will have it's own Wiki page for both Scripting information and for the User Manual.
