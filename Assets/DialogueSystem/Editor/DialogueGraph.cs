@@ -8,7 +8,7 @@ using UnityEngine;
 using UnityEngine.UIElements;
 using DialogueSystem;
 
-namespace DialogueSystem
+namespace DialogueSystem.Editor
 {
     public class DialogueGraph : EditorWindow
     {

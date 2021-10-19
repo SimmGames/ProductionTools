@@ -7,7 +7,7 @@ using UnityEngine;
 using UnityEngine.UIElements;
 using DialogueSystem;
 
-namespace DialogueSystem
+namespace DialogueSystem.Editor
 {
     public class GraphSaveUtility
     {
@@ -101,16 +101,14 @@ namespace DialogueSystem
                 dialogueContainer.Nodes.Add(node.SaveNodeData());
 
             // Creating Asset (And asset folder)
-            if (!AssetDatabase.IsValidFolder("Assets/DialogueSystem"))
-                AssetDatabase.CreateFolder("Assets", "DialogueSystem");
 
-            if (!AssetDatabase.IsValidFolder("Assets/DialogueSystem/Resources"))
-                AssetDatabase.CreateFolder("Assets/DialogueSystem", "Resources");
+            if (!AssetDatabase.IsValidFolder("Assets/Resources"))
+                AssetDatabase.CreateFolder("Assets", "Resources");
 
-            if (!AssetDatabase.IsValidFolder("Assets/DialogueSystem/Resources/DialogueTrees"))
-                AssetDatabase.CreateFolder("Assets/DialogueSystem/Resources", "DialogueTrees");
+            if (!AssetDatabase.IsValidFolder("Assets/Resources/DialogueTrees"))
+                AssetDatabase.CreateFolder("Assets/Resources", "DialogueTrees");
 
-            AssetDatabase.CreateAsset(dialogueContainer, $"Assets/DialogueSystem/Resources/DialogueTrees/{fileName}.asset");
+            AssetDatabase.CreateAsset(dialogueContainer, $"Assets/Resources/DialogueTrees/{fileName}.asset");
             AssetDatabase.SaveAssets();
         }
 

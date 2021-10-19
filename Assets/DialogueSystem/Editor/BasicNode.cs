@@ -7,7 +7,7 @@ using System;
 using UnityEngine.UIElements;
 using UnityEngine;
 
-namespace DialogueSystem
+namespace DialogueSystem.Editor
 {
     public class BasicNode : Node, IGraphNode
     {

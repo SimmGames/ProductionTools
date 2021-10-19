@@ -5,7 +5,7 @@ using DialogueSystem;
 using UnityEngine.UIElements;
 using UnityEditor.Experimental.GraphView;
 
-namespace DialogueSystem
+namespace DialogueSystem.Editor
 {
     public class ChatNode : BasicNode
     {

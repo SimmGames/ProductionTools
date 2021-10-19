@@ -8,7 +8,7 @@ using UnityEngine.UIElements;
 using System.Linq;
 using DialogueSystem;
 
-namespace DialogueSystem
+namespace DialogueSystem.Editor
 {
     public class DialogueGraphView : GraphView
     {
